@@ -1,0 +1,29 @@
+{
+  "app": { "title": "Vardiya Uygulaması", "loading": "Yükleniyor …" },
+  "nav": { "plan": "Vardiya planı", "time": "Zaman kaydı", "absence": "İzin / Hastalık", "payslips": "Maaş bordrosu", "logout": "Çıkış" },
+  "auth": {
+    "signin": "Giriş",
+    "email": "E-posta",
+    "password": "Şifre",
+    "submit": "Giriş yap",
+    "error": "Giriş başarısız",
+    "demoNote": "Demo modu: Supabase bağlantısı yok. Bir .env dosyası oluştur (bkz. .env.example)."
+  },
+  "roles": {
+    "mitarbeiter": "Çalışan",
+    "schichtmeister": "Vardiya amiri",
+    "betriebsleiter": "İşletme müdürü",
+    "personal": "İnsan kaynakları"
+  },
+  "shift": { "tag": "Gündüz", "nacht": "Gece", "frei": "İzinli" },
+  "plan": { "title": "Vardiya planın", "next14": "Sonraki 14 gün", "team": "Ekip" },
+  "absence": {
+    "title": "İzin / Hastalık",
+    "type": "Tür", "urlaub": "İzin", "krank": "Hastalık",
+    "from": "Başlangıç", "to": "Bitiş", "note": "Not", "submit": "Talep gönder",
+    "status": "Durum",
+    "offen": "Beklemede", "genehmigt": "Onaylandı", "abgelehnt": "Reddedildi", "geaendert": "Değiştirildi",
+    "approve": "Onayla", "reject": "Reddet", "change": "Değiştir"
+  },
+  "payslips": { "title": "Maaş bordrosu", "period": "Dönem", "download": "Aç", "empty": "Henüz bordro yok." }
+}

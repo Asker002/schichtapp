@@ -1,0 +1,29 @@
+{
+  "app": { "title": "Shift App", "loading": "Loading …" },
+  "nav": { "plan": "Shift plan", "time": "Time tracking", "absence": "Leave / Sick", "payslips": "Payslips", "logout": "Sign out" },
+  "auth": {
+    "signin": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "error": "Sign-in failed",
+    "demoNote": "Demo mode: no Supabase connection. Create a .env file (see .env.example)."
+  },
+  "roles": {
+    "mitarbeiter": "Employee",
+    "schichtmeister": "Shift supervisor",
+    "betriebsleiter": "Plant manager",
+    "personal": "HR / Payroll"
+  },
+  "shift": { "tag": "Day", "nacht": "Night", "frei": "Off" },
+  "plan": { "title": "Your shift plan", "next14": "Next 14 days", "team": "Team" },
+  "absence": {
+    "title": "Leave / Sick",
+    "type": "Type", "urlaub": "Leave", "krank": "Sick",
+    "from": "From", "to": "To", "note": "Note", "submit": "Submit request",
+    "status": "Status",
+    "offen": "Pending", "genehmigt": "Approved", "abgelehnt": "Rejected", "geaendert": "Changed",
+    "approve": "Approve", "reject": "Reject", "change": "Change"
+  },
+  "payslips": { "title": "Payslips", "period": "Period", "download": "Open", "empty": "No payslips yet." }
+}

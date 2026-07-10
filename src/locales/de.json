@@ -1,0 +1,29 @@
+{
+  "app": { "title": "Schicht-App", "loading": "Lädt …" },
+  "nav": { "plan": "Schichtplan", "time": "Zeiterfassung", "absence": "Urlaub / Krank", "payslips": "Lohnzettel", "logout": "Abmelden" },
+  "auth": {
+    "signin": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "error": "Anmeldung fehlgeschlagen",
+    "demoNote": "Demo-Modus: Keine Supabase-Verbindung. Lege eine .env an (siehe .env.example)."
+  },
+  "roles": {
+    "mitarbeiter": "Mitarbeiter",
+    "schichtmeister": "Schichtmeister",
+    "betriebsleiter": "Betriebsleiter",
+    "personal": "Personal"
+  },
+  "shift": { "tag": "Tag", "nacht": "Nacht", "frei": "Frei" },
+  "plan": { "title": "Dein Schichtplan", "next14": "Nächste 14 Tage", "team": "Team" },
+  "absence": {
+    "title": "Urlaub / Krank",
+    "type": "Art", "urlaub": "Urlaub", "krank": "Krank",
+    "from": "Von", "to": "Bis", "note": "Notiz", "submit": "Antrag stellen",
+    "status": "Status",
+    "offen": "Offen", "genehmigt": "Genehmigt", "abgelehnt": "Abgelehnt", "geaendert": "Geändert",
+    "approve": "Genehmigen", "reject": "Ablehnen", "change": "Ändern"
+  },
+  "payslips": { "title": "Lohnzettel", "period": "Zeitraum", "download": "Öffnen", "empty": "Noch keine Lohnzettel." }
+}
