@@ -697,7 +697,7 @@ export default function App(){
   const isoToDM = (iso)=> iso ? `${iso.slice(8,10)}.${iso.slice(5,7)}.` : "—";
   // DB-Zeile -> von der UI erwartete Form
   const mapReq = (r)=>({
-    id:r.id, profileId:r.profile_id, name:r.profile?.full_name || "—", type:r.type,
+    id:r.id, profileId:r.profile_id, teamId:r.profile?.team_id, name:r.profile?.full_name || "—", type:r.type,
     from:isoToDM(r.start_date), to:isoToDM(r.end_date), startISO:r.start_date, endISO:r.end_date,
     days:(r.start_date&&r.end_date)?Math.max(1,Math.round((Date.parse(r.end_date)-Date.parse(r.start_date))/DAY_MS)+1):1,
     status:r.status, eau:r.type==="krank"?false:undefined,
@@ -738,8 +738,9 @@ export default function App(){
     if (c && "ABCD".includes(c)) setCrew(c);
     setAuthed(true);
     await loadRequests();
-    // Team-Mitglieder gleich mitladen (RLS: Meister -> eigenes Team, BL -> Betrieb).
-    try{ setEmps(await listEmployees()); }catch(e){ console.warn("[team]", e.message); }
+    // Team-Mitglieder + Schichten gleich mitladen (RLS: Meister -> eigenes Team, BL -> Betrieb).
+    try{ const [e,tm] = await Promise.all([listEmployees(), listTeams()]); setEmps(e); setTeamOpts(tm); }
+    catch(e){ console.warn("[team]", e.message); }
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -934,22 +935,37 @@ export default function App(){
   const onDutyCount = team.filter(m=>m.st==="duty").length;
   const statusMap = { duty:{c:"g",k:"statusDuty"}, off:{c:"mut",k:"statusOff"}, sick:{c:"h",k:"statusSick"}, vac:{c:"s",k:"statusVac"} };
 
-  // Betriebsleiter / Personal – werksweite Ableitungen
+  // Betriebsleiter / Personal – werksweite Ableitungen (echt aus DB, sonst Demo-Mock)
   const crewsAll = ["A","B","C","D"];
-  const crewStats = crewsAll.map(c=>({
-    c,
-    duty:(TEAM[c]||[]).filter(m=>m.st==="duty").length,
-    total:(TEAM[c]||[]).length,
-    open:(REQUESTS[c]||[]).filter(r=>!decisions[r.id]).length,
-    absent:(TEAM[c]||[]).filter(m=>m.st==="sick"||m.st==="vac").length,
-  }));
+  const crewOf = (id)=>{ const tm=teamOpts.find(x=>x.id===id); return tm ? tm.name.trim().slice(-1).toUpperCase() : "—"; };
+  const absStatusMap = { approved:{c:"g",k:"stApproved"}, pending:{c:"s",k:"stPending"}, active:{c:"h",k:"stActive"} };
+  // heute genehmigt-abwesende Personen-IDs (für Dienst-/Abwesenheitszählung)
+  const absentTodayIds = new Set(dbRequests.filter(r=>(r.status==="genehmigt"||r.status==="geaendert") && absCoversDay(r,now)).map(r=>r.profileId));
+
+  const crewStats = hasSupabaseConfig
+    ? teamOpts.map(tm=>{
+        const members = emps.filter(e=>e.team_id===tm.id);
+        const worksToday = shiftType(now, {offset:tm.rotation_offset||0, anchorMs:anchorToMs(tm.anchor_date)}) !== "F";
+        const absent = members.filter(m=>absentTodayIds.has(m.id)).length;
+        return { c: tm.name.trim().slice(-1).toUpperCase(), total: members.length,
+          duty: worksToday ? members.length-absent : 0, absent,
+          open: dbRequests.filter(r=>r.teamId===tm.id && !decOf(r)).length };
+      })
+    : crewsAll.map(c=>({ c,
+        duty:(TEAM[c]||[]).filter(m=>m.st==="duty").length, total:(TEAM[c]||[]).length,
+        open:(REQUESTS[c]||[]).filter(r=>!decisions[r.id]).length, absent:(TEAM[c]||[]).filter(m=>m.st==="sick"||m.st==="vac").length,
+      }));
   const plantDuty = crewStats.reduce((s,x)=>s+x.duty,0);
   const plantTotal = crewStats.reduce((s,x)=>s+x.total,0);
   const plantOpen = crewStats.reduce((s,x)=>s+x.open,0);
-  const allAbsences = crewsAll.flatMap(c=>(ABSENCES[c]||[]).map(a=>({...a,crew:c})));
-  const allRequests = crewsAll.flatMap(c=>(REQUESTS[c]||[]).map(r=>({...r,crew:c})));
+  const allAbsences = hasSupabaseConfig
+    ? dbRequests.filter(r=>r.status==="genehmigt"||r.status==="geaendert")
+        .map(r=>({ name:r.name, type:r.type, from:r.from, to:r.to, status: r.type==="krank"?"active":"approved", crew:crewOf(r.teamId) }))
+    : crewsAll.flatMap(c=>(ABSENCES[c]||[]).map(a=>({...a,crew:c})));
+  const allRequests = hasSupabaseConfig
+    ? dbRequests.map(r=>({ ...r, crew:crewOf(r.teamId) }))
+    : crewsAll.flatMap(c=>(REQUESTS[c]||[]).map(r=>({...r,crew:c})));
   const allTeam = crewsAll.flatMap(c=>(TEAM[c]||[]).map(m=>({...m,crew:c})));
-  const absStatusMap = { approved:{c:"g",k:"stApproved"}, pending:{c:"s",k:"stPending"}, active:{c:"h",k:"stActive"} };
 
   const langPicker = (
     <select className="lang-select" value={lang} onChange={e=>setLang(e.target.value)} aria-label="Sprache">
@@ -1306,7 +1322,7 @@ export default function App(){
 
         {/* BODY */}
         <div className="body" key={tab+lang}>
-          {(role==="bl"||role==="hr") && <div className="preview-note">{t.previewNote}</div>}
+          {role==="hr" && <div className="preview-note">{t.previewNote}</div>}
           {role==="ma" && tab===0 && (
             <>
               <div className={"hero "+heroType}>
@@ -1671,6 +1687,7 @@ export default function App(){
             <>
               <div className="eyebrow">{t.absTitle}</div>
               <div className="card" style={{marginTop:0}}>
+                {allAbsences.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noneAbsent}</div>}
                 {allAbsences.map((a,i)=>{
                   const s = absStatusMap[a.status];
                   return (
@@ -1695,8 +1712,9 @@ export default function App(){
             <>
               <div className="eyebrow">{t.approvalsTitle}</div>
               <div className="card" style={{marginTop:0}}>
+                {allRequests.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.allClear}</div>}
                 {allRequests.map(r=>{
-                  const dec = decisions[r.id];
+                  const dec = decOf(r);
                   const label = !dec ? t.stPending : dec==="approved"?t.approved : dec==="rejected"?t.rejected : t.acked;
                   const cls = !dec ? "s" : dec==="rejected"?"h":"g";
                   return (

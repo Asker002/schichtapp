@@ -11,7 +11,7 @@ import { supabase, createSignupClient } from './supabase'
 // ---------- ADMIN: MITARBEITER-VERWALTUNG ----------
 // Teams im eigenen Betrieb (für die Schicht-Auswahl). RLS begrenzt automatisch.
 export async function listTeams() {
-  const { data, error } = await supabase.from('teams').select('id, name').order('name')
+  const { data, error } = await supabase.from('teams').select('id, name, rotation_offset, anchor_date').order('name')
   if (error) throw error
   return data
 }
