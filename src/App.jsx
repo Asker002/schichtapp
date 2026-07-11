@@ -738,6 +738,8 @@ export default function App(){
     if (c && "ABCD".includes(c)) setCrew(c);
     setAuthed(true);
     await loadRequests();
+    // Team-Mitglieder gleich mitladen (RLS: Meister -> eigenes Team, BL -> Betrieb).
+    try{ setEmps(await listEmployees()); }catch(e){ console.warn("[team]", e.message); }
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -920,7 +922,15 @@ export default function App(){
   // Meister-Ableitungen (eigene Anträge des Mitarbeiters oben eingemischt)
   const reqs = hasSupabaseConfig ? dbRequests : [...submitted.filter(r=>r.crew===crew), ...(REQUESTS[crew] || [])];
   const pending = reqs.filter(r=>!decOf(r));
-  const team = TEAM[crew] || [];
+  // Team heute: echte Mitglieder aus der DB; Status aus genehmigter Abwesenheit
+  // (Urlaub/Krank) bzw. der Team-Rotation (Schicht heute = Dienst, sonst frei).
+  const team = hasSupabaseConfig
+    ? emps.filter(e=>e.team_id && e.team_id===dbProfile?.team?.id).map(e=>{
+        const abs = dbRequests.find(r=>r.profileId===e.id && (r.status==="genehmigt"||r.status==="geaendert") && absCoversDay(r, now));
+        const st = abs ? (abs.type==="krank"?"sick":"vac") : (shiftType(now, rot)!=="F" ? "duty" : "off");
+        return { name:e.full_name, st };
+      })
+    : (TEAM[crew] || []);
   const onDutyCount = team.filter(m=>m.st==="duty").length;
   const statusMap = { duty:{c:"g",k:"statusDuty"}, off:{c:"mut",k:"statusOff"}, sick:{c:"h",k:"statusSick"}, vac:{c:"s",k:"statusVac"} };
 
