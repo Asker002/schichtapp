@@ -29,19 +29,19 @@ const CSS = `
   --frei:#C4CCD3; --plus:#2E9E5B; --plus-soft:rgba(46,158,91,.12);
   --accent:#00869A; --red:#C92A2E; --red-soft:rgba(201,42,46,.10);
   font-family:'Inter',system-ui,sans-serif;
-  display:flex; justify-content:center; background:#e9edf1; min-height:100vh; padding:0;
+  display:flex; justify-content:center; background:#e9edf1; height:100vh; height:100dvh; overflow:hidden; padding:0;
 }
 .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;}
 .disp{font-family:'Space Grotesk',system-ui,sans-serif;}
 
 .phone{
   width:100%; max-width:428px; background:var(--bg); color:var(--text);
-  min-height:100vh; position:relative; display:flex; flex-direction:column;
+  height:100%; overflow:hidden; position:relative; display:flex; flex-direction:column;
   box-shadow:0 0 40px rgba(0,0,0,.08);
 }
 
 /* header */
-.hdr{padding:18px 20px 14px; border-bottom:1px solid var(--line);}
+.hdr{padding:calc(18px + env(safe-area-inset-top)) 20px 14px; border-bottom:1px solid var(--line); flex-shrink:0;}
 .hdr-top{display:flex; align-items:center; justify-content:space-between;}
 .brand{font-size:11px; letter-spacing:.22em; color:var(--muted); font-weight:600; text-transform:uppercase;}
 .brand-logo{height:26px; width:auto; display:block;}
@@ -63,7 +63,7 @@ const CSS = `
   border:1px solid var(--line); border-radius:6px; padding:2px 7px; margin-top:2px; display:inline-block;}
 
 /* scroll body */
-.body{flex:1; overflow-y:auto; padding:18px 20px 96px; animation:fade .25s ease;}
+.body{flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:18px 20px calc(96px + env(safe-area-inset-bottom)); animation:fade .25s ease;}
 @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 .eyebrow{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:10px;}
 
@@ -155,7 +155,7 @@ const CSS = `
 
 /* tabbar */
 .tabs{position:absolute; bottom:0; left:0; right:0; display:grid; grid-template-columns:repeat(4,1fr);
-  background:rgba(255,255,255,.92); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:8px 6px 12px;}
+  background:rgba(255,255,255,.92); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:8px 6px calc(12px + env(safe-area-inset-bottom));}
 .tab{display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none; cursor:pointer;
   color:var(--faint); font-size:10px; font-weight:600; transition:.15s;}
 .tab.on{color:var(--text);}
@@ -182,9 +182,9 @@ const CSS = `
 
 /* antrags-formular (bottom sheet / overlay) */
 .sheet{position:absolute; inset:0; background:var(--bg); z-index:20; display:flex; flex-direction:column; animation:fade .2s ease;}
-.sheet-hd{padding:18px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px;}
+.sheet-hd{padding:calc(18px + env(safe-area-inset-top)) 20px 18px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; flex-shrink:0;}
 .sheet-hd .disp{font-size:18px; font-weight:600;}
-.sheet-body{flex:1; overflow-y:auto; padding:20px;}
+.sheet-body{flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px 20px calc(20px + env(safe-area-inset-bottom));}
 .field{display:grid; gap:6px; margin-bottom:16px;}
 .field label{font-size:12px; color:var(--muted); font-weight:600;}
 .field input, .field textarea{background:var(--surface); border:1px solid var(--line); color:var(--text);
