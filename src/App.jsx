@@ -559,7 +559,7 @@ function nextShift(now, rot){
     const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()+i);
     const t = shiftType(d, rot);
     if(t==="F") continue;
-    const start = new Date(d); start.setHours(t==="T"?6:18,0,0,0);
+    const start = new Date(d); start.setHours(t==="T"?5:17, 25, 0, 0);
     if(start.getTime() > now.getTime()) return {type:t, start};
   }
   return {type:"T", start:new Date(now.getTime()+DAY_MS)};
@@ -859,7 +859,7 @@ export default function App(){
   const cdM = Math.floor((diff%3600000)/60000);
   const heroType = ns.type==="N" ? "nacht" : "tag";
   const typeLabel = ns.type==="N" ? t.nacht : t.tag;
-  const timeRange = ns.type==="N" ? "18:00 – 06:00" : "06:00 – 18:00";
+  const timeRange = ns.type==="N" ? "17:25 – 05:25" : "05:25 – 17:25";
 
   // Schicht-Erinnerung: nächste Schicht + berechnete Erinnerungszeit
   const pad = (n)=> String(n).padStart(2,"0");
@@ -1180,7 +1180,7 @@ export default function App(){
           {selDay.t!=="F"
             ? <>
                 <div className="num" style={{color:"var(--muted)",fontSize:14,marginTop:4}}>
-                  {selDay.t==="N"?"18:00 – 06:00":"06:00 – 18:00"}
+                  {selDay.t==="N"?"17:25 – 05:25":"05:25 – 17:25"}
                 </div>
                 <div className="tags">
                   {selDay.t==="N" && <span className="tg n">{t.nachtzu} +25%</span>}
@@ -1566,7 +1566,7 @@ export default function App(){
                     <div style={{display:"flex",alignItems:"center",gap:9,marginTop:8}}>
                       {selAbs.shift==="N"?<Moon size={18} style={{color:"var(--nacht)"}}/>:selAbs.shift==="T"?<Sun size={18} style={{color:"var(--tag)"}}/>:<Coffee size={18} style={{color:"var(--faint)"}}/>}
                       <span className="disp" style={{fontSize:17,fontWeight:600}}>{selAbs.shift==="N"?t.nacht:selAbs.shift==="T"?t.tag:t.frei}</span>
-                      {selAbs.shift!=="F" && <span className="num" style={{color:"var(--muted)",fontSize:13,marginLeft:"auto"}}>{selAbs.shift==="N"?"18:00 – 06:00":"06:00 – 18:00"}</span>}
+                      {selAbs.shift!=="F" && <span className="num" style={{color:"var(--muted)",fontSize:13,marginLeft:"auto"}}>{selAbs.shift==="N"?"17:25 – 05:25":"05:25 – 17:25"}</span>}
                     </div>
                     {selAbs.who.length===0
                       ? <div style={{color:"var(--faint)",fontSize:14,marginTop:12}}>{t.noneAbsent}</div>
