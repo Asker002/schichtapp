@@ -268,7 +268,7 @@ const I18N = {
     crewPlan:"Schichtplan Team",
     selMA:"Mitarbeiter", selMeister:"Meister", selBL:"Leitung", selHR:"Personal",
     roleBL:"Betriebsleiter", roleHR:"Personalabteilung", change:"Ändern", withdraw:"Zurückziehen", save:"Speichern",
-    manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
+    manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
@@ -329,7 +329,7 @@ const I18N = {
     crewPlan:"Ekip vardiya planı",
     selMA:"Çalışan", selMeister:"Ustabaşı", selBL:"Yönetim", selHR:"Personel",
     roleBL:"İşletme müdürü", roleHR:"Personel dairesi", change:"Değiştir", withdraw:"Geri çek", save:"Kaydet",
-    manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", adminHint:"Giriş: e-posta + başlangıç şifresi.",
+    manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
@@ -390,7 +390,7 @@ const I18N = {
     crewPlan:"Team shift plan",
     selMA:"Employee", selMeister:"Supervisor", selBL:"Management", selHR:"HR",
     roleBL:"Plant manager", roleHR:"HR department", change:"Change", withdraw:"Withdraw", save:"Save",
-    manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", adminHint:"Login later with email + starting password.",
+    manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
@@ -451,7 +451,7 @@ const I18N = {
     crewPlan:"План смены бригады",
     selMA:"Сотрудник", selMeister:"Бригадир", selBL:"Руководство", selHR:"Кадры",
     roleBL:"Начальник завода", roleHR:"Отдел кадров", change:"Изменить", withdraw:"Отозвать", save:"Сохранить",
-    manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", adminHint:"Вход: эл. почта + стартовый пароль.",
+    manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
@@ -512,7 +512,7 @@ const I18N = {
     crewPlan:"Plan zmian zespołu",
     selMA:"Pracownik", selMeister:"Mistrz", selBL:"Kierownictwo", selHR:"Kadry",
     roleBL:"Kierownik zakładu", roleHR:"Dział kadr", change:"Zmień", withdraw:"Wycofaj", save:"Zapisz",
-    manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", adminHint:"Logowanie: e-mail + hasło startowe.",
+    manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
@@ -1000,6 +1000,13 @@ export default function App(){
   const ROLE_OPTS = [["mitarbeiter",t.roleMA],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
   const adminIsBL = role==="bl";
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
+  // Belegschaft nach Schichten gruppieren (Schichtführung inklusive); Teamlose separat.
+  const empGroups = (()=>{
+    const gs = teamOpts.map(tm=>({ key:tm.id, title:tm.name, members: emps.filter(e=>e.team_id===tm.id) }));
+    const noTeam = emps.filter(e=>!e.team_id);
+    if(noTeam.length) gs.push({ key:"__none", title:t.noTeamCat, members:noTeam });
+    return gs;
+  })();
   const adminSheet = showAdmin && (
     <div className="sheet">
       <div className="sheet-hd">
@@ -1033,28 +1040,32 @@ export default function App(){
           <div className="login-note" style={{marginTop:12}}>{t.adminHint}</div>
         </div>
 
-        <div className="card">
-          <div className="eyebrow" style={{marginBottom:12}}>{t.manageEmp} · {emps.length}</div>
-          {emps.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div>}
-          {emps.map(e=>(
-            <div key={e.id} style={{padding:"11px 0",borderBottom:"1px solid var(--line)",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-              <div className="row-l" style={{flex:"1 1 120px"}}>
-                <span className="row-ic">{initials(e.full_name||"—")}</span>
-                <div>
-                  <div style={{fontWeight:600}}>{e.full_name}</div>
-                  <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{e.team?.name || "—"}{e.personalnummer?` · ${e.personalnummer}`:""}</div>
+        <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {emps.length}</div>
+        {emps.length===0 && <div className="card"><div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div></div>}
+        {empGroups.map(g=>(
+          <div className="card" key={g.key}>
+            <div className="eyebrow" style={{marginBottom:12}}>{g.title} · {g.members.length}</div>
+            {g.members.length===0 && <div style={{color:"var(--faint)",fontSize:13}}>—</div>}
+            {g.members.map(e=>(
+              <div key={e.id} style={{padding:"11px 0",borderBottom:"1px solid var(--line)",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                <div className="row-l" style={{flex:"1 1 120px"}}>
+                  <span className="row-ic">{initials(e.full_name||"—")}</span>
+                  <div>
+                    <div style={{fontWeight:600}}>{e.full_name}</div>
+                    <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}{e.personalnummer?` · ${e.personalnummer}`:""}</div>
+                  </div>
                 </div>
+                {adminIsBL
+                  ? <select className="lang-select" value={e.role} onChange={ev=>changeEmpRole(e.id,ev.target.value)}>
+                      {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                    </select>
+                  : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
+                {e.id!==dbProfile?.id && (adminIsBL || e.role==="mitarbeiter") &&
+                  <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
               </div>
-              {adminIsBL
-                ? <select className="lang-select" value={e.role} onChange={ev=>changeEmpRole(e.id,ev.target.value)}>
-                    {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
-                  </select>
-                : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
-              {e.id!==dbProfile?.id && (adminIsBL || e.role==="mitarbeiter") &&
-                <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ))}
         <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
       </div>
     </div>
