@@ -15,7 +15,7 @@ import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest,
    ============================================================ */
 
 const PATTERN = ["T", "N", "F", "F"]; // 4-Tage-Zyklus: 1 Tag · 1 Nacht · 2 frei
-const PATTERN_OFFSET = 0; // verschiebt die Gruppe C in der Rotation
+// rot = { offset, anchorMs }: kommt aus dem Team (teams.rotation_offset / anchor_date).
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap');
@@ -541,18 +541,23 @@ const DAY_MS = 86400000;
 const eur = (n) => n.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
 
 // shift type for a given Date, continuous across months
-function shiftType(date){
-  const idx = Math.floor(date.getTime()/DAY_MS + PATTERN_OFFSET);
-  const t = PATTERN[((idx % PATTERN.length) + PATTERN.length) % PATTERN.length];
-  return t;
+// Schichtart (T/N/F) aus dem Rotationsmuster + Team-Rotation.
+// rot.anchorMs = UTC-Mitternacht des Ankertags, rot.offset = Team-Versatz (0–3).
+function shiftType(date, rot){
+  const anchorMs = rot?.anchorMs ?? 0;
+  const offset = rot?.offset ?? 0;
+  const dayMs = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const days = Math.floor((dayMs - anchorMs)/DAY_MS);
+  const idx = (((days + offset) % PATTERN.length) + PATTERN.length) % PATTERN.length;
+  return PATTERN[idx];
 }
 function isSun(date){ return date.getDay() === 0; }
 
 // find next working shift start from now
-function nextShift(now){
+function nextShift(now, rot){
   for(let i=0;i<9;i++){
     const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()+i);
-    const t = shiftType(d);
+    const t = shiftType(d, rot);
     if(t==="F") continue;
     const start = new Date(d); start.setHours(t==="T"?6:18,0,0,0);
     if(start.getTime() > now.getTime()) return {type:t, start};
@@ -841,7 +846,13 @@ export default function App(){
   useEffect(()=>{ const id=setInterval(()=>setNow(new Date()),30000); return ()=>clearInterval(id); },[]);
   useEffect(()=>{ if(!toast) return; const id=setTimeout(()=>setToast(false),2600); return ()=>clearTimeout(id); },[toast]);
 
-  const ns = nextShift(now);
+  // Echte Rotation aus dem Team (Supabase). Demo: Standard-Muster ab Epoche.
+  const anchorToMs = (iso)=>{ if(!iso) return 0; const [y,m,d]=iso.split("-").map(Number); return Date.UTC(y,m-1,d); };
+  const rot = (hasSupabaseConfig && dbProfile?.team)
+    ? { offset: dbProfile.team.rotation_offset || 0, anchorMs: anchorToMs(dbProfile.team.anchor_date) }
+    : { offset: 0, anchorMs: 0 };
+
+  const ns = nextShift(now, rot);
   const diff = ns.start.getTime() - now.getTime();
   const cdDays = Math.floor(diff/DAY_MS);
   const cdH = Math.floor((diff%DAY_MS)/3600000);
@@ -883,7 +894,7 @@ export default function App(){
   const ribbon = [];
   for(let i=0;i<8;i++){
     const d = new Date(now.getFullYear(),now.getMonth(),now.getDate()-2+i);
-    ribbon.push({ t:shiftType(d), today: d.toDateString()===now.toDateString(), dow:t.wk[(d.getDay()+6)%7] });
+    ribbon.push({ t:shiftType(d, rot), today: d.toDateString()===now.toDateString(), dow:t.wk[(d.getDay()+6)%7] });
   }
 
   // calendar
@@ -899,7 +910,7 @@ export default function App(){
   for(let i=0;i<firstDow;i++) cells.push(null);
   for(let d=1;d<=daysIn;d++){
     const date = new Date(yr,mo,d);
-    cells.push({ d, date, t:shiftType(date), today:date.toDateString()===now.toDateString(), sun:isSun(date),
+    cells.push({ d, date, t:shiftType(date, rot), today:date.toDateString()===now.toDateString(), sun:isSun(date),
       abs: myAbsences.find(a=>absCoversDay(a,date)) || null });
   }
   const selDay = sel!==null ? cells.find(c=>c && c.d===sel) : cells.find(c=>c && c.today);
@@ -1522,7 +1533,7 @@ export default function App(){
             for(let d=1; d<=daysIn; d++){
               const date = new Date(yr,mo,d);
               const who = absC.filter(a=>absCoversDay(a,date));
-              acells.push({ d, date, who, shift: shiftType(date), today: date.toDateString()===now.toDateString() });
+              acells.push({ d, date, who, shift: shiftType(date, rot), today: date.toDateString()===now.toDateString() });
             }
             const selAbs = sel!==null ? acells.find(c=>c&&c.d===sel) : acells.find(c=>c&&c.today);
             return (

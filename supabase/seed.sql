@@ -12,13 +12,15 @@ with b as (
   values ('SE Tylose · Werk Wiesbaden')
   returning id
 )
+-- Geeicht auf den echten SE-Tylose-Plan: Anker So 12.07.2026 (D=Tag, B=Nacht),
+-- Offsets so, dass Mo 13.07. A=Tag/D=Nacht ergibt. Muster: T/N/F/F.
 insert into teams (betrieb_id, name, rotation_offset, anchor_date)
-select b.id, t.name, t.off, date '2026-01-01'
+select b.id, t.name, t.off, date '2026-07-12'
 from b, (values
-  ('Schicht A', 0),
+  ('Schicht A', 3),
   ('Schicht B', 1),
   ('Schicht C', 2),
-  ('Schicht D', 3)
+  ('Schicht D', 0)
 ) as t(name, off);
 
 -- =====================================================================
