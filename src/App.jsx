@@ -1220,9 +1220,11 @@ export default function App(){
     return (
       <div className="app-root">
         <style>{CSS}</style>
-        <div className="phone"><div className="login"><div className="login-mid" style={{alignItems:"center",justifyContent:"center"}}>
-          <img src="/setylose-logo.svg" className="brand-logo" alt="SE Tylose" />
-        </div></div></div>
+        <div className="phone">
+          <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+            <img src="/setylose-logo.svg" className="brand-logo" alt="SE Tylose" style={{height:34}} />
+          </div>
+        </div>
       </div>
     );
   }
