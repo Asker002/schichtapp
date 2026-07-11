@@ -63,7 +63,7 @@ const CSS = `
   border:1px solid var(--line); border-radius:6px; padding:2px 7px; margin-top:2px; display:inline-block;}
 
 /* scroll body */
-.body{flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:18px 20px calc(96px + env(safe-area-inset-bottom)); animation:fade .25s ease;}
+.body{flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; padding:18px 20px 24px; animation:fade .25s ease;}
 @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 .eyebrow{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:10px;}
 
@@ -154,8 +154,8 @@ const CSS = `
 .note{font-size:11px; color:var(--faint); margin-top:12px; line-height:1.5; display:flex; gap:7px;}
 
 /* tabbar */
-.tabs{position:absolute; bottom:0; left:0; right:0; display:grid; grid-template-columns:repeat(4,1fr);
-  background:rgba(255,255,255,.92); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:8px 6px calc(12px + env(safe-area-inset-bottom));}
+.tabs{flex-shrink:0; display:grid; grid-template-columns:repeat(4,1fr);
+  background:var(--bg); border-top:1px solid var(--line); padding:8px 6px calc(12px + env(safe-area-inset-bottom));}
 .tab{display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none; cursor:pointer;
   color:var(--faint); font-size:10px; font-weight:600; transition:.15s;}
 .tab.on{color:var(--text);}

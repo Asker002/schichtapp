@@ -6,12 +6,15 @@
 
 * { box-sizing: border-box; }
 
-body {
+html, body {
   margin: 0;
+  height: 100dvh;
+  overflow: hidden;                 /* Dokument scrollt NIE – nur die App-Mitte */
+  overscroll-behavior: none;        /* kein Rubber-Band/Bounce */
   background: #e9edf1;
   color: #181716;
 }
 
-#root { min-height: 100svh; }
+#root { height: 100dvh; }
 
 button { font: inherit; }
