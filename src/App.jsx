@@ -17,6 +17,7 @@ import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest,
    ============================================================ */
 
 const PATTERN = ["T", "N", "F", "F"]; // 4-Tage-Zyklus: 1 Tag · 1 Nacht · 2 frei
+const URLAUB_TAGE = 28;               // Standard-Jahresurlaub (Resturlaub-Anzeige)
 // rot = { offset, anchorMs }: kommt aus dem Team (teams.rotation_offset / anchor_date).
 
 const CSS = `
@@ -1154,9 +1155,11 @@ export default function App(){
           <div className="note"><FileText size={13} style={{flexShrink:0,marginTop:1}}/><span>{t.payslipNote}</span></div>
         </div>
         <div className="card">
-          <div className="eyebrow" style={{marginBottom:12}}>{t.zeitkonto}</div>
-          <div className="payrow"><span className="l">{t.gleit}</span><span className="r num" style={{color:"var(--plus)"}}>+18,5 {t.unitStd}</span></div>
-          <div className="payrow"><span className="l">{t.ueber}</span><span className="r num">12,0 {t.unitStd}</span></div>
+          <div className="eyebrow" style={{marginBottom:12}}>{t.urlaubKonto}</div>
+          <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+            <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{URLAUB_TAGE}</span>
+            <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
+          </div>
         </div>
         <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
       </div>
@@ -1637,15 +1640,9 @@ export default function App(){
                 <div style={{fontSize:12,color:"var(--muted)",marginTop:8}}>{t.cycleSub}</div>
               </div>
 
-              <div className="stats">
-                <div className="stat">
-                  <div className="k"><Clock size={13}/>{t.saldo}</div>
-                  <div className="v plus num">+18,5 {t.unitStd}</div>
-                </div>
-                <div className="stat">
-                  <div className="k"><Plane size={13}/>{t.urlaubKonto}</div>
-                  <div className="v amber num">18 {t.daysWord}</div>
-                </div>
+              <div className="stat" style={{marginTop:16}}>
+                <div className="k"><Plane size={13}/>{t.urlaubKonto}</div>
+                <div className="v amber num">{URLAUB_TAGE} {t.daysWord}</div>
               </div>
 
               <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
@@ -1668,9 +1665,11 @@ export default function App(){
               </div>
 
               <div className="card">
-                <div className="eyebrow" style={{marginBottom:12}}>{t.zeitkonto}</div>
-                <div className="payrow"><span className="l">{t.gleit}</span><span className="r num" style={{color:"var(--plus)"}}>+18,5 {t.unitStd}</span></div>
-                <div className="payrow"><span className="l">{t.ueber}</span><span className="r num">12,0 {t.unitStd}</span></div>
+                <div className="eyebrow" style={{marginBottom:12}}>{t.urlaubKonto}</div>
+                <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+                  <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{URLAUB_TAGE}</span>
+                  <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
+                </div>
               </div>
               <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
             </>
