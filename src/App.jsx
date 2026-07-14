@@ -1178,7 +1178,7 @@ export default function App(){
             <div className="legal-b">{s.b}</div>
           </div>
         ))}
-        <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
+        <div className="foot" style={{marginTop:24}}>PROTOTYP · U. Kebeli</div>
       </div>
     </div>
   );
@@ -1218,7 +1218,7 @@ export default function App(){
             <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
           </div>
         </div>
-        <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
+        <div className="foot" style={{marginTop:24}}>PROTOTYP · U. Kebeli</div>
       </div>
     </div>
   );
@@ -1299,7 +1299,7 @@ export default function App(){
             ))}
           </div>
         ))}
-        <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
+        <div className="foot" style={{marginTop:24}}>PROTOTYP · U. Kebeli</div>
       </div>
     </div>
   );
@@ -1422,7 +1422,7 @@ export default function App(){
             ))}
           </>
         )}
-        <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
+        <div className="foot" style={{marginTop:24}}>PROTOTYP · U. Kebeli</div>
       </div>
     </div>
   );
@@ -1722,14 +1722,14 @@ export default function App(){
                 <div className="v amber num">{resturlaub} {t.daysWord}</div>
               </div>
 
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
           {role==="ma" && tab===1 && (
             <>
               {calendarView}
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -1748,7 +1748,7 @@ export default function App(){
                   <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
                 </div>
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -1832,7 +1832,7 @@ export default function App(){
                   <ChevronRight size={16} color="var(--faint)"/>
                 </div>
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -1886,7 +1886,7 @@ export default function App(){
                   </div>
                 );
               })}
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -1919,7 +1919,7 @@ export default function App(){
                   );
                 })}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -1982,7 +1982,7 @@ export default function App(){
                         </>}
                   </div>
                 )}
-                <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+                <div className="foot">PROTOTYP · U. Kebeli</div>
               </>
             );
           })()}
@@ -2013,7 +2013,7 @@ export default function App(){
                 </div>
               </div>
               <div style={{marginTop:14}}>{settingsCard}</div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2039,7 +2039,7 @@ export default function App(){
                   </div>
                 ))}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2064,7 +2064,7 @@ export default function App(){
                   );
                 })}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2091,7 +2091,7 @@ export default function App(){
                   );
                 })}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2104,7 +2104,7 @@ export default function App(){
                 </div>
               </div>
               <div style={{marginTop:14}}>{settingsCard}</div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2141,7 +2141,7 @@ export default function App(){
                     </div>); })}
                 </div>
               )}
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2162,7 +2162,7 @@ export default function App(){
                   </div>
                 ))}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
@@ -2186,12 +2186,12 @@ export default function App(){
                   );
                 })}
               </div>
-              <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
 
           {role==="hr" && tab===3 && (
-            <><div style={{marginBottom:14}}>{settingsCard}</div><div className="foot">PROTOTYP · OMBERA STUDIOS</div></>
+            <><div style={{marginBottom:14}}>{settingsCard}</div><div className="foot">PROTOTYP · U. Kebeli</div></>
           )}
         </div>
 
