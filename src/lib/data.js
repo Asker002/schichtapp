@@ -81,6 +81,23 @@ export async function deleteMessage(id) {
   const { error } = await supabase.from('messages').delete().eq('id', id)
   if (error) throw error
 }
+
+// ---------- SCHICHTEINTEILUNG (Bereich je Mitarbeiter) ----------
+// RLS liefert nur Erlaubtes (eigene / eigenes Team / Betrieb).
+export async function listAssignments() {
+  const { data, error } = await supabase.from('station_assignments').select('profile_id, station')
+  if (error) throw error
+  return data
+}
+// Einteilen (nur Schichtführung fürs eigene Team, per RLS abgesichert).
+export async function setAssignment(profileId, station) {
+  const { data: u } = await supabase.auth.getUser()
+  const { error } = await supabase.from('station_assignments').upsert(
+    { profile_id: profileId, station: station || null, updated_by: u.user.id, updated_at: new Date().toISOString() },
+    { onConflict: 'profile_id' },
+  )
+  if (error) throw error
+}
 export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
