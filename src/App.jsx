@@ -8,7 +8,7 @@ import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
-  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment } from "./lib/data";
+  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -277,7 +277,7 @@ const I18N = {
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
     postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
     uploadTitle:"Lohnzettel hochladen", periodLabel:"Monat", pickPdf:"PDF wählen", uploadBtn:"Hochladen", uploadOk:"Hochgeladen ✓", noPayslips:"Noch keine Lohnzettel", pdfOnly:"Nur PDF-Dateien",
-    einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)",
+    einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
@@ -342,7 +342,7 @@ const I18N = {
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
     postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
     uploadTitle:"Maaş bordrosu yükle", periodLabel:"Ay", pickPdf:"PDF seç", uploadBtn:"Yükle", uploadOk:"Yüklendi ✓", noPayslips:"Henüz bordro yok", pdfOnly:"Sadece PDF dosyaları",
-    einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç",
+    einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
@@ -407,7 +407,7 @@ const I18N = {
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
     postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
     uploadTitle:"Upload payslip", periodLabel:"Month", pickPdf:"Choose PDF", uploadBtn:"Upload", uploadOk:"Uploaded ✓", noPayslips:"No payslips yet", pdfOnly:"PDF files only",
-    einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member",
+    einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
@@ -472,7 +472,7 @@ const I18N = {
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
     postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
     uploadTitle:"Загрузить расчётный лист", periodLabel:"Месяц", pickPdf:"Выбрать PDF", uploadBtn:"Загрузить", uploadOk:"Загружено ✓", noPayslips:"Пока нет расчётных листов", pdfOnly:"Только файлы PDF",
-    einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого",
+    einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
@@ -537,7 +537,7 @@ const I18N = {
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
     postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
     uploadTitle:"Wgraj pasek wypłaty", periodLabel:"Miesiąc", pickPdf:"Wybierz PDF", uploadBtn:"Wgraj", uploadOk:"Wgrano ✓", noPayslips:"Brak pasków wypłat", pdfOnly:"Tylko pliki PDF",
-    einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego",
+    einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
@@ -730,7 +730,9 @@ export default function App(){
   const [mFiles,setMFiles] = useState([]); const [upBusy,setUpBusy] = useState(false); const [attUrls,setAttUrls] = useState({});
   const [delConfirm,setDelConfirm] = useState(null);   // Nachricht-ID mit Lösch-Bestätigung
   const [dbPayslips,setDbPayslips] = useState([]);     // echte Lohnzettel des eingeloggten Nutzers
-  const [assignments,setAssignments] = useState({});   // Schichteinteilung: profileId -> Bereich
+  const [assignments,setAssignments] = useState({});   // Einteilung des gewählten Tages: profileId -> Bereich
+  const [assignDate,setAssignDate] = useState("");     // Datum der Einteilung (Führung; Historie)
+  const [teamToday,setTeamToday] = useState([]);       // Kollegen-Sicht heute: [{profile_id, full_name, station}]
   const [psEmp,setPsEmp] = useState(""); const [psPeriod,setPsPeriod] = useState(""); const [psFile,setPsFile] = useState(null);
   const [psList,setPsList] = useState([]); const [psBusy,setPsBusy] = useState(false); const [psErr,setPsErr] = useState(""); const [psOk,setPsOk] = useState(false);
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
@@ -766,14 +768,23 @@ export default function App(){
     try{ const rows = await listPayslips(); setDbPayslips(rows.map(p=>({ id:p.id, period:p.period, storagePath:p.storage_path }))); }
     catch(e){ console.warn("[payslips]", e.message); }
   }
-  async function loadAssignments(){
+  const isoOf = (d)=>{ const p=n=>String(n).padStart(2,"0"); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; };
+  async function loadAssignments(date){
     if(!hasSupabaseConfig) return;
-    try{ const rows = await listAssignments(); setAssignments(Object.fromEntries(rows.map(a=>[a.profile_id, a.station]))); }
+    const dt = date || isoOf(new Date());
+    setAssignDate(dt);
+    try{ const rows = await listAssignments(dt); setAssignments(Object.fromEntries(rows.map(a=>[a.profile_id, a.station]))); }
+    catch(e){ console.warn("[assign]", e.message); }
+  }
+  async function loadTeamToday(){
+    if(!hasSupabaseConfig) return;
+    try{ setTeamToday(await teamAssignments(isoOf(new Date()))); }
     catch(e){ console.warn("[assign]", e.message); }
   }
   async function setStation(profileId, station){
     setAssignments(a=>({ ...a, [profileId]: station || null }));   // optimistisch
-    try{ await setAssignment(profileId, station); }
+    if(assignDate === isoOf(new Date())) setTeamToday(tt=>tt.map(x=>x.profile_id===profileId?{...x,station:station||null}:x));
+    try{ await setAssignment(profileId, assignDate, station); }
     catch(e){ console.warn("[assign]", e.message); }
   }
   async function openPayslip(storagePath){
@@ -879,6 +890,7 @@ export default function App(){
     await loadMessages();
     await loadPayslips();
     await loadAssignments();
+    await loadTeamToday();
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -1027,6 +1039,10 @@ export default function App(){
         .reduce((s,r)=> s + workingDaysBetween(r.startISO, r.endISO, rot), 0)
     : 0;
   const resturlaub = Math.max(0, URLAUB_TAGE - usedUrlaub);
+
+  // Schichteinteilung heute: eigener Bereich + Kollegen (aus der sicheren Team-Abfrage).
+  const myStation = (teamToday.find(x=>x.profile_id===dbProfile?.id) || {}).station;
+  const colleaguesToday = teamToday.filter(x=>x.profile_id!==dbProfile?.id);
 
   const ns = nextShift(now, rot);
   const diff = ns.start.getTime() - now.getTime();
@@ -1674,9 +1690,20 @@ export default function App(){
 
               <div className="card" style={{borderColor:"rgba(0,86,138,.28)"}}>
                 <div className="eyebrow" style={{marginBottom:8}}>{t.einteilung}</div>
-                <div className="disp" style={{fontSize:22,fontWeight:700,color: assignments[dbProfile?.id] ? "var(--nacht)" : "var(--faint)"}}>
-                  {assignments[dbProfile?.id] || t.notAssigned}
+                <div className="disp" style={{fontSize:22,fontWeight:700,color: myStation ? "var(--nacht)" : "var(--faint)"}}>
+                  {myStation || t.notAssigned}
                 </div>
+                {colleaguesToday.length>0 && (
+                  <div style={{marginTop:12,borderTop:"1px solid var(--line)",paddingTop:10}}>
+                    <div style={{fontSize:11,color:"var(--muted)",marginBottom:6,letterSpacing:".04em",textTransform:"uppercase"}}>{t.teamTodayLabel}</div>
+                    {colleaguesToday.map(x=>(
+                      <div key={x.profile_id} style={{display:"flex",justifyContent:"space-between",gap:10,fontSize:13,padding:"3px 0"}}>
+                        <span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.full_name}</span>
+                        <span style={{color:x.station?"var(--nacht)":"var(--faint)",fontWeight:600,whiteSpace:"nowrap"}}>{x.station||"—"}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="ribbon-wrap">
@@ -1879,7 +1906,11 @@ export default function App(){
                 <span style={{fontSize:13,color:"var(--muted)"}}>{t.onDuty}</span>
                 <span className="num" style={{fontSize:22,fontWeight:700,color:"var(--plus)"}}>{onDutyCount} / {team.length}</span>
               </div>
-              <div style={{fontSize:11,color:"var(--faint)",margin:"14px 2px 4px"}}>{t.assignHint}</div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,margin:"14px 2px 6px"}}>
+                <span style={{fontSize:11,color:"var(--faint)"}}>{t.assignHint}</span>
+                <input type="date" value={assignDate} onChange={e=>loadAssignments(e.target.value)}
+                  style={{background:"var(--surface)",border:"1px solid var(--line)",color:"var(--text)",borderRadius:8,padding:"6px 8px",fontSize:12,fontFamily:"inherit"}} />
+              </div>
               <div className="card" style={{marginTop:0}}>
                 {team.map((m,i)=>{
                   const s = statusMap[m.st];

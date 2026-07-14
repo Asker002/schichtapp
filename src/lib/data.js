@@ -82,21 +82,29 @@ export async function deleteMessage(id) {
   if (error) throw error
 }
 
-// ---------- SCHICHTEINTEILUNG (Bereich je Mitarbeiter) ----------
-// RLS liefert nur Erlaubtes (eigene / eigenes Team / Betrieb).
-export async function listAssignments() {
-  const { data, error } = await supabase.from('station_assignments').select('profile_id, station')
+// ---------- SCHICHTEINTEILUNG (Bereich je Mitarbeiter & Tag) ----------
+// Einteilung für einen Tag (RLS: eigenes Team / Betrieb). date = 'YYYY-MM-DD'.
+export async function listAssignments(date) {
+  let q = supabase.from('station_assignments').select('profile_id, station')
+  if (date) q = q.eq('work_date', date)
+  const { data, error } = await q
   if (error) throw error
   return data
 }
 // Einteilen (nur Schichtführung fürs eigene Team, per RLS abgesichert).
-export async function setAssignment(profileId, station) {
+export async function setAssignment(profileId, date, station) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('station_assignments').upsert(
-    { profile_id: profileId, station: station || null, updated_by: u.user.id, updated_at: new Date().toISOString() },
-    { onConflict: 'profile_id' },
+    { profile_id: profileId, work_date: date, station: station || null, updated_by: u.user.id, updated_at: new Date().toISOString() },
+    { onConflict: 'profile_id,work_date' },
   )
   if (error) throw error
+}
+// Team + Einteilung eines Tages (Name + Bereich) – auch für Mitarbeiter (Kollegen-Sicht).
+export async function teamAssignments(date) {
+  const { data, error } = await supabase.rpc('team_assignments', { d: date })
+  if (error) throw error
+  return data
 }
 export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
