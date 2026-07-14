@@ -7,7 +7,7 @@ import {
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
-  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl } from "./lib/data";
+  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -272,7 +272,7 @@ const I18N = {
     manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
-    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)",
+    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
@@ -335,7 +335,7 @@ const I18N = {
     manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
-    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)",
+    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
@@ -398,7 +398,7 @@ const I18N = {
     manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
-    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)",
+    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
@@ -461,7 +461,7 @@ const I18N = {
     manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
-    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)",
+    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
@@ -524,7 +524,7 @@ const I18N = {
     manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
-    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)",
+    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
@@ -704,6 +704,7 @@ export default function App(){
   const [composing,setComposing] = useState(false); const [mSubject,setMSubject] = useState(""); const [mBody,setMBody] = useState(""); const [mScope,setMScope] = useState("all");
   const [postErr,setPostErr] = useState(""); const [postBusy,setPostBusy] = useState(false);
   const [mFiles,setMFiles] = useState([]); const [upBusy,setUpBusy] = useState(false); const [attUrls,setAttUrls] = useState({});
+  const [delConfirm,setDelConfirm] = useState(null);   // Nachricht-ID mit Lösch-Bestätigung
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
   const [authErr,setAuthErr] = useState("");
   const [busy,setBusy] = useState(false);
@@ -725,7 +726,7 @@ export default function App(){
     try{ const rows = await listRequests(); setDbRequests(rows.map(mapReq)); }
     catch(e){ console.warn("[requests]", e.message); }
   }
-  const mapMsg = (m)=>({ id:m.id, subject:m.subject, body:m.body, teamId:m.team_id, created_at:m.created_at,
+  const mapMsg = (m)=>({ id:m.id, subject:m.subject, body:m.body, teamId:m.team_id, senderId:m.sender_id, created_at:m.created_at,
     senderName:m.sender?.full_name || "—", read:(m.reads?.length||0)>0, attachments:m.attachments||[] });
   async function loadMessages(){
     if(!hasSupabaseConfig) return;
@@ -733,7 +734,7 @@ export default function App(){
     catch(e){ console.warn("[messages]", e.message); }
   }
   const unreadCount = messages.filter(m=>!m.read).length;
-  const openPostfach = ()=>{ setShowPostfach(true); setComposing(false); setMsgOpen(null); setPostErr(""); setMFiles([]); loadMessages(); };
+  const openPostfach = ()=>{ setShowPostfach(true); setComposing(false); setMsgOpen(null); setPostErr(""); setMFiles([]); setDelConfirm(null); loadMessages(); };
   async function openMsg(m){
     const opening = msgOpen!==m.id;
     setMsgOpen(o=>o===m.id?null:m.id);
@@ -760,6 +761,13 @@ export default function App(){
       }
     }catch(err){ setPostErr(err.message); }
     setUpBusy(false);
+  }
+  async function doDeleteMessage(id){
+    try{
+      await deleteMessage(id);
+      setMessages(ms=>ms.filter(x=>x.id!==id));
+      setDelConfirm(null); setMsgOpen(null);
+    }catch(err){ setPostErr(err.message); }
   }
   async function doSendMessage(){
     setPostErr(""); setPostBusy(true);
@@ -1246,7 +1254,7 @@ export default function App(){
             <div className="field"><label>{t.msgBody}</label><textarea rows={6} value={mBody} onChange={e=>setMBody(e.target.value)} /></div>
             <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:12}}>
               <Paperclip size={14}/>{upBusy?"…":t.addFile}
-              <input type="file" multiple accept="image/*,application/pdf,.doc,.docx,.xlsx" onChange={onPickFiles} style={{display:"none"}} />
+              <input type="file" multiple onChange={onPickFiles} style={{display:"none"}} />
             </label>
             {mFiles.length>0 && <div style={{marginBottom:12}}>
               {mFiles.map((f,i)=>(
@@ -1288,6 +1296,13 @@ export default function App(){
                             </a>
                           );
                         })}
+                      </div>
+                    )}
+                    {m.senderId===dbProfile?.id && (
+                      <div style={{marginTop:14}} onClick={ev=>ev.stopPropagation()}>
+                        <button className="mini-btn danger" onClick={()=> delConfirm===m.id ? doDeleteMessage(m.id) : setDelConfirm(m.id)}>
+                          {delConfirm===m.id ? t.reallyDelete : t.deleteMsg}
+                        </button>
                       </div>
                     )}
                   </>

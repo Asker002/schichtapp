@@ -71,10 +71,15 @@ export async function sendPasswordReset(email) {
 export async function listMessages() {
   const { data, error } = await supabase
     .from('messages')
-    .select('id, subject, body, team_id, created_at, attachments, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
+    .select('id, subject, body, team_id, sender_id, created_at, attachments, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
     .order('created_at', { ascending: false })
   if (error) throw error
   return data
+}
+// Eigene Nachricht löschen (RLS: nur der Absender). Reads werden per Cascade entfernt.
+export async function deleteMessage(id) {
+  const { error } = await supabase.from('messages').delete().eq('id', id)
+  if (error) throw error
 }
 export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
