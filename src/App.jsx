@@ -1465,10 +1465,6 @@ export default function App(){
         <span className="row-l"><span className="row-ic"><Languages size={16}/></span>{t.sprache}</span>
         {langPicker}
       </div>
-      <div className="row">
-        <span className="row-l"><span className="row-ic"><Settings size={16}/></span>{t.settings}</span>
-        <ChevronRight size={16} color="var(--faint)"/>
-      </div>
       {hasSupabaseConfig && (
         <div className="row" onClick={openPw}>
           <span className="row-l"><span className="row-ic"><KeyRound size={16}/></span>{t.changePw}</span>
@@ -1802,7 +1798,6 @@ export default function App(){
                 {[
                   {ic:<HeartPulse size={16}/>, label:t.krank, action:()=>openForm("krank")},
                   {ic:<Plane size={16}/>, label:t.urlaub, action:()=>openForm("urlaub")},
-                  {ic:<FileText size={16}/>, label:t.docs, action:null},
                 ].map((r,i)=>(
                   <div className="row" key={i} onClick={r.action||undefined} style={r.action?undefined:{cursor:"default"}}>
                     <span className="row-l"><span className="row-ic">{r.ic}</span>{r.label}</span>
@@ -1817,10 +1812,6 @@ export default function App(){
                 <div className="row" style={{cursor:"default"}}>
                   <span className="row-l"><span className="row-ic"><Languages size={16}/></span>{t.sprache}</span>
                   {langPicker}
-                </div>
-                <div className="row">
-                  <span className="row-l"><span className="row-ic"><Settings size={16}/></span>{t.settings}</span>
-                  <ChevronRight size={16} color="var(--faint)"/>
                 </div>
                 {hasSupabaseConfig && (
                   <div className="row" onClick={openPw}>
