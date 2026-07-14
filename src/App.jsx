@@ -7,7 +7,8 @@ import {
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
-  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage } from "./lib/data";
+  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
+  listPayslips, payslipUrl, uploadPayslip } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -273,6 +274,7 @@ const I18N = {
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
     postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
+    uploadTitle:"Lohnzettel hochladen", periodLabel:"Monat", pickPdf:"PDF wählen", uploadBtn:"Hochladen", uploadOk:"Hochgeladen ✓", noPayslips:"Noch keine Lohnzettel", pdfOnly:"Nur PDF-Dateien",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
@@ -336,6 +338,7 @@ const I18N = {
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
     postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
+    uploadTitle:"Maaş bordrosu yükle", periodLabel:"Ay", pickPdf:"PDF seç", uploadBtn:"Yükle", uploadOk:"Yüklendi ✓", noPayslips:"Henüz bordro yok", pdfOnly:"Sadece PDF dosyaları",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
@@ -399,6 +402,7 @@ const I18N = {
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
     postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
+    uploadTitle:"Upload payslip", periodLabel:"Month", pickPdf:"Choose PDF", uploadBtn:"Upload", uploadOk:"Uploaded ✓", noPayslips:"No payslips yet", pdfOnly:"PDF files only",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
@@ -462,6 +466,7 @@ const I18N = {
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
     postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
+    uploadTitle:"Загрузить расчётный лист", periodLabel:"Месяц", pickPdf:"Выбрать PDF", uploadBtn:"Загрузить", uploadOk:"Загружено ✓", noPayslips:"Пока нет расчётных листов", pdfOnly:"Только файлы PDF",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
@@ -525,6 +530,7 @@ const I18N = {
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
     postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
+    uploadTitle:"Wgraj pasek wypłaty", periodLabel:"Miesiąc", pickPdf:"Wybierz PDF", uploadBtn:"Wgraj", uploadOk:"Wgrano ✓", noPayslips:"Brak pasków wypłat", pdfOnly:"Tylko pliki PDF",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
@@ -705,6 +711,9 @@ export default function App(){
   const [postErr,setPostErr] = useState(""); const [postBusy,setPostBusy] = useState(false);
   const [mFiles,setMFiles] = useState([]); const [upBusy,setUpBusy] = useState(false); const [attUrls,setAttUrls] = useState({});
   const [delConfirm,setDelConfirm] = useState(null);   // Nachricht-ID mit Lösch-Bestätigung
+  const [dbPayslips,setDbPayslips] = useState([]);     // echte Lohnzettel des eingeloggten Nutzers
+  const [psEmp,setPsEmp] = useState(""); const [psPeriod,setPsPeriod] = useState(""); const [psFile,setPsFile] = useState(null);
+  const [psList,setPsList] = useState([]); const [psBusy,setPsBusy] = useState(false); const [psErr,setPsErr] = useState(""); const [psOk,setPsOk] = useState(false);
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
   const [authErr,setAuthErr] = useState("");
   const [busy,setBusy] = useState(false);
@@ -732,6 +741,31 @@ export default function App(){
     if(!hasSupabaseConfig) return;
     try{ const rows = await listMessages(); setMessages(rows.map(mapMsg)); }
     catch(e){ console.warn("[messages]", e.message); }
+  }
+  async function loadPayslips(){
+    if(!hasSupabaseConfig) return;
+    try{ const rows = await listPayslips(); setDbPayslips(rows.map(p=>({ id:p.id, period:p.period, storagePath:p.storage_path }))); }
+    catch(e){ console.warn("[payslips]", e.message); }
+  }
+  async function openPayslip(storagePath){
+    try{ const url = await payslipUrl(storagePath); window.open(url, "_blank", "noopener"); }
+    catch(e){ console.warn("[payslip]", e.message); }
+  }
+  async function loadPsList(empId){
+    if(!empId){ setPsList([]); return; }
+    try{ const rows = await listPayslips(empId); setPsList(rows); }
+    catch(e){ console.warn("[payslips]", e.message); }
+  }
+  async function doUploadPayslip(){
+    if(!psEmp || !psPeriod || !psFile) return;
+    setPsBusy(true); setPsErr(""); setPsOk(false);
+    try{
+      if(psFile.type && psFile.type!=="application/pdf"){ setPsErr(t.pdfOnly); setPsBusy(false); return; }
+      await uploadPayslip(psEmp, psPeriod, psFile);
+      setPsFile(null); setPsPeriod(""); setPsOk(true);
+      await loadPsList(psEmp);
+    }catch(err){ setPsErr(err.message); }
+    setPsBusy(false);
   }
   const unreadCount = messages.filter(m=>!m.read).length;
   const openPostfach = ()=>{ setShowPostfach(true); setComposing(false); setMsgOpen(null); setPostErr(""); setMFiles([]); setDelConfirm(null); loadMessages(); };
@@ -814,6 +848,7 @@ export default function App(){
     try{ const [e,tm] = await Promise.all([listEmployees(), listTeams()]); setEmps(e); setTeamOpts(tm); }
     catch(e){ console.warn("[team]", e.message); }
     await loadMessages();
+    await loadPayslips();
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -1091,6 +1126,21 @@ export default function App(){
   );
 
   // Lohnzettel-Overlay – für jeden, der eigenen Lohn sehen darf (auch Meister).
+  // Echte Lohnzettel des eingeloggten Nutzers (Demo: die Platzhalter-Monate).
+  const psRows = hasSupabaseConfig
+    ? (dbPayslips.length===0
+        ? <div style={{color:"var(--faint)",fontSize:14,padding:"6px 0"}}>{t.noPayslips}</div>
+        : dbPayslips.map(p=>{ const [y,mo]=String(p.period).split("-"); return (
+            <div className="row" key={p.id} onClick={()=>openPayslip(p.storagePath)}>
+              <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.months[+mo-1]} {y}</span>
+              <span className="row-r">{t.openPdf}<ChevronRight size={15}/></span>
+            </div>); }))
+    : payslips.map((p,i)=>(
+        <div className="row" key={i} onClick={()=>{}}>
+          <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.months[p.m]} {p.y}</span>
+          <span className="row-r">{t.openPdf}<ChevronRight size={15}/></span>
+        </div>));
+
   const payslipSheet = showPayslips && (
     <div className="sheet">
       <div className="sheet-hd">
@@ -1100,12 +1150,7 @@ export default function App(){
       <div className="sheet-body">
         <div className="card" style={{marginTop:0}}>
           <div className="eyebrow" style={{marginBottom:12}}>{t.payslipList}</div>
-          {payslips.map((p,i)=>(
-            <div className="row" key={i} onClick={()=>{}}>
-              <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.months[p.m]} {p.y}</span>
-              <span className="row-r">{t.openPdf}<ChevronRight size={15}/></span>
-            </div>
-          ))}
+          {psRows}
           <div className="note"><FileText size={13} style={{flexShrink:0,marginTop:1}}/><span>{t.payslipNote}</span></div>
         </div>
         <div className="card">
@@ -1560,7 +1605,7 @@ export default function App(){
 
         {/* BODY */}
         <div className="body" key={tab+lang}>
-          {role==="hr" && <div className="preview-note">{t.previewNote}</div>}
+          {role==="hr" && tab!==0 && <div className="preview-note">{t.previewNote}</div>}
           {role==="ma" && tab===0 && (
             <>
               <div className={"hero "+heroType}>
@@ -1618,12 +1663,7 @@ export default function App(){
             <>
               <div className="card" style={{marginTop:0}}>
                 <div className="eyebrow" style={{marginBottom:12}}>{t.payslipList}</div>
-                {payslips.map((p,i)=>(
-                  <div className="row" key={i} onClick={()=>{}}>
-                    <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.months[p.m]} {p.y}</span>
-                    <span className="row-r">{t.openPdf}<ChevronRight size={15}/></span>
-                  </div>
-                ))}
+                {psRows}
                 <div className="note"><FileText size={13} style={{flexShrink:0,marginTop:1}}/><span>{t.payslipNote}</span></div>
               </div>
 
@@ -1989,16 +2029,36 @@ export default function App(){
           {/* ===== PERSONALABTEILUNG ===== */}
           {role==="hr" && tab===0 && (
             <>
-              <div className="eyebrow">{t.payrollTitle} · {t.months[now.getMonth()]}</div>
+              <div className="eyebrow">{t.uploadTitle}</div>
               <div className="card" style={{marginTop:0}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div>
-                    <div style={{fontSize:12,color:"var(--muted)"}}>142 {t.empLbl}</div>
-                    <div className="disp" style={{fontSize:22,fontWeight:700,marginTop:4,color:"var(--tag)"}}>{t.payrollStatus}</div>
-                  </div>
-                  <span className="tg s">118 / 142 {t.payrollDone}</span>
+                <div className="field"><label>{t.empLbl}</label>
+                  <select className="lang-select" style={selStyle} value={psEmp} onChange={e=>{ setPsEmp(e.target.value); setPsOk(false); setPsErr(""); loadPsList(e.target.value); }}>
+                    <option value="">—</option>
+                    {emps.map(e=><option key={e.id} value={e.id}>{e.full_name}</option>)}
+                  </select>
                 </div>
+                <div className="field"><label>{t.periodLabel}</label>
+                  <input type="month" value={psPeriod} onChange={e=>setPsPeriod(e.target.value)} />
+                </div>
+                <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:12,maxWidth:"100%"}}>
+                  <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psFile ? psFile.name : t.pickPdf}</span>
+                  <input type="file" accept="application/pdf,.pdf" onChange={e=>{ setPsFile(e.target.files?.[0]||null); e.target.value=""; }} style={{display:"none"}} />
+                </label>
+                <button className="submit" disabled={psBusy || !psEmp || !psPeriod || !psFile} onClick={doUploadPayslip}>{psBusy?"…":t.uploadBtn}</button>
+                {psOk && <div className="login-note" style={{color:"var(--plus)",marginTop:10}}>{t.uploadOk}</div>}
+                {psErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{psErr}</div>}
               </div>
+              {psEmp && (
+                <div className="card">
+                  <div className="eyebrow" style={{marginBottom:12}}>{t.payslipList} · {psList.length}</div>
+                  {psList.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noPayslips}</div>}
+                  {psList.map(p=>{ const [y,mo]=String(p.period).split("-"); return (
+                    <div className="row" key={p.id} onClick={()=>openPayslip(p.storage_path)}>
+                      <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.months[+mo-1]} {y}</span>
+                      <span className="row-r">{t.openPdf}<ChevronRight size={15}/></span>
+                    </div>); })}
+                </div>
+              )}
               <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
             </>
           )}

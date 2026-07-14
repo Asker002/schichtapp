@@ -216,20 +216,36 @@ export async function listTimeEntries(fromISO, toISO) {
 }
 
 // ---------- LOHNZETTEL (nur Anzeige) ----------
-export async function listPayslips() {
-  const { data, error } = await supabase
-    .from('payslips')
-    .select('id, period, storage_path')
+// Ohne profileId: eigene (RLS). Mit profileId: für Personal, um einen Mitarbeiter zu filtern.
+export async function listPayslips(profileId) {
+  let q = supabase.from('payslips')
+    .select('id, period, storage_path, profile_id')
     .order('period', { ascending: false })
+  if (profileId) q = q.eq('profile_id', profileId)
+  const { data, error } = await q
   if (error) throw error
   return data
 }
 
-// Kurzlebige signierte URL fürs PDF (60 s). Bucket 'payslips' ist privat.
+// Kurzlebige signierte URL fürs PDF (5 Min). Bucket 'payslips' ist privat.
 export async function payslipUrl(storagePath) {
   const { data, error } = await supabase.storage
     .from('payslips')
-    .createSignedUrl(storagePath, 60)
+    .createSignedUrl(storagePath, 300)
   if (error) throw error
   return data.signedUrl
+}
+
+// Lohnzettel hochladen (nur Personal, per RLS abgesichert). period = 'YYYY-MM'.
+export async function uploadPayslip(profileId, period, file) {
+  const path = `${profileId}/${period}.pdf`
+  const { error: upErr } = await supabase.storage.from('payslips')
+    .upload(path, file, { contentType: 'application/pdf', upsert: true })
+  if (upErr) throw upErr
+  const { data: u } = await supabase.auth.getUser()
+  const { error } = await supabase.from('payslips').upsert(
+    { profile_id: profileId, period: `${period}-01`, storage_path: path, uploaded_by: u.user.id },
+    { onConflict: 'profile_id,period' },
+  )
+  if (error) throw error
 }
