@@ -17,6 +17,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Demo-Zugangsdaten (echte Login-Passwörter) – NIE in ein öffentliches Repo
+supabase/reset_demo_users.sql
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
