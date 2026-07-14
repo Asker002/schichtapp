@@ -733,6 +733,7 @@ export default function App(){
   const [assignments,setAssignments] = useState({});   // Einteilung des gewählten Tages: profileId -> Bereich
   const [assignDate,setAssignDate] = useState("");     // Datum der Einteilung (Führung; Historie)
   const [teamToday,setTeamToday] = useState([]);       // Kollegen-Sicht heute: [{profile_id, full_name, station}]
+  const [selCrew,setSelCrew] = useState(null);         // BL-Übersicht: aufgeklappte Schicht (team_id)
   const [psEmp,setPsEmp] = useState(""); const [psPeriod,setPsPeriod] = useState(""); const [psFile,setPsFile] = useState(null);
   const [psList,setPsList] = useState([]); const [psBusy,setPsBusy] = useState(false); const [psErr,setPsErr] = useState(""); const [psOk,setPsOk] = useState(false);
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
@@ -1136,11 +1137,11 @@ export default function App(){
         const members = emps.filter(e=>e.team_id===tm.id);
         const worksToday = shiftType(now, {offset:tm.rotation_offset||0, anchorMs:anchorToMs(tm.anchor_date)}) !== "F";
         const absent = members.filter(m=>absentTodayIds.has(m.id)).length;
-        return { c: tm.name.trim().slice(-1).toUpperCase(), total: members.length,
+        return { c: tm.name.trim().slice(-1).toUpperCase(), id: tm.id, members, worksToday, total: members.length,
           duty: worksToday ? members.length-absent : 0, absent,
           open: dbRequests.filter(r=>r.teamId===tm.id && !decOf(r)).length };
       })
-    : crewsAll.map(c=>({ c,
+    : crewsAll.map(c=>({ c, id:c, members:(TEAM[c]||[]).map(m=>({id:m.name,full_name:m.name})), worksToday:true,
         duty:(TEAM[c]||[]).filter(m=>m.st==="duty").length, total:(TEAM[c]||[]).length,
         open:(REQUESTS[c]||[]).filter(r=>!decisions[r.id]).length, absent:(TEAM[c]||[]).filter(m=>m.st==="sick"||m.st==="vac").length,
       }));
@@ -2027,7 +2028,7 @@ export default function App(){
               </div>
               <div className="card">
                 {crewStats.map(cs=>(
-                  <div className="row" key={cs.c}>
+                  <div className="row" key={cs.c} onClick={()=>setSelCrew(selCrew===cs.id?null:cs.id)}>
                     <div className="row-l">
                       <span className="row-ic">{cs.c}</span>
                       <div>
@@ -2035,10 +2036,34 @@ export default function App(){
                         <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{cs.duty}/{cs.total} {t.statusDuty}{cs.absent>0?` · ${cs.absent} ${t.stActive}`:""}</div>
                       </div>
                     </div>
-                    {cs.open>0 ? <span className="tg s">{cs.open} {t.stPending}</span> : <ChevronRight size={16} color="var(--faint)"/>}
+                    <span style={{display:"flex",alignItems:"center",gap:8}}>
+                      {cs.open>0 && <span className="tg s">{cs.open} {t.stPending}</span>}
+                      <ChevronRight size={16} color="var(--faint)" style={{transform:selCrew===cs.id?"rotate(90deg)":"none",transition:"transform .15s"}}/>
+                    </span>
                   </div>
                 ))}
               </div>
+              {selCrew!==null && (()=>{
+                const cs = crewStats.find(x=>x.id===selCrew); if(!cs) return null;
+                const mem = [...cs.members].sort((a,b)=>(a.full_name||"").localeCompare(b.full_name||""));
+                return (
+                  <div className="card">
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:4}}>
+                      <div className="eyebrow" style={{margin:0}}>{t.crewLabel} {cs.c} · {t.einteilung}</div>
+                      <input type="date" value={assignDate} onChange={e=>loadAssignments(e.target.value)}
+                        style={{background:"var(--surface)",border:"1px solid var(--line)",color:"var(--text)",borderRadius:8,padding:"6px 8px",fontSize:12,fontFamily:"inherit"}} />
+                    </div>
+                    {mem.length===0
+                      ? <div style={{color:"var(--faint)",fontSize:14,marginTop:8}}>{t.noEmp}</div>
+                      : mem.map(m=>(
+                          <div className="row" key={m.id} style={{cursor:"default"}}>
+                            <span className="row-l"><span className="row-ic"><Users size={15}/></span>{m.full_name}</span>
+                            <span className="tg" style={{color:assignments[m.id]?"var(--nacht)":"var(--faint)",fontWeight:600}}>{assignments[m.id]||t.notAssigned}</span>
+                          </div>
+                        ))}
+                  </div>
+                );
+              })()}
               <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
           )}
