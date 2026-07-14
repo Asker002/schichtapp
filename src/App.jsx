@@ -583,6 +583,17 @@ function nextShift(now, rot){
   return {type:"T", start:new Date(now.getTime()+DAY_MS)};
 }
 
+// Arbeitstage (Schicht Tag/Nacht, KEINE freien Tage) in einem Zeitraum – für Resturlaub.
+function workingDaysBetween(startISO, endISO, rot){
+  if(!startISO || !endISO) return 0;
+  const s = new Date(startISO+"T00:00:00"), e = new Date(endISO+"T00:00:00");
+  let n = 0;
+  for(let d = new Date(s); d <= e; d.setDate(d.getDate()+1)){
+    if(shiftType(d, rot) !== "F") n++;
+  }
+  return n;
+}
+
 
 // Offene Anträge je Schichtgruppe (Meister sieht nur sein Team)
 const REQUESTS = {
@@ -890,6 +901,10 @@ export default function App(){
     try{ await updateEmployee(id,{role:newRole}); setEmps(es=>es.map(e=>e.id===id?{...e,role:newRole}:e)); }
     catch(err){ setAdminErr(err.message); }
   }
+  async function changeEmpTeam(id, teamId){
+    try{ await updateEmployee(id,{team_id: teamId || null}); setEmps(await listEmployees()); }
+    catch(err){ setAdminErr(err.message); }
+  }
   async function doRemoveEmp(id){
     setAdminErr("");
     try{ await removeFromTeam(id); setEmps(await listEmployees()); }
@@ -986,6 +1001,14 @@ export default function App(){
   const rot = (hasSupabaseConfig && dbProfile?.team)
     ? { offset: dbProfile.team.rotation_offset || 0, anchorMs: anchorToMs(dbProfile.team.anchor_date) }
     : { offset: 0, anchorMs: 0 };
+
+  // Resturlaub: 28 Standard minus genommene ARBEITSTAGE aus eigenen genehmigten Urlauben.
+  const usedUrlaub = hasSupabaseConfig
+    ? dbRequests
+        .filter(r=> r.profileId===dbProfile?.id && r.type==="urlaub" && (r.status==="genehmigt"||r.status==="geaendert"))
+        .reduce((s,r)=> s + workingDaysBetween(r.startISO, r.endISO, rot), 0)
+    : 0;
+  const resturlaub = Math.max(0, URLAUB_TAGE - usedUrlaub);
 
   const ns = nextShift(now, rot);
   const diff = ns.start.getTime() - now.getTime();
@@ -1157,7 +1180,7 @@ export default function App(){
         <div className="card">
           <div className="eyebrow" style={{marginBottom:12}}>{t.urlaubKonto}</div>
           <div style={{display:"flex",alignItems:"baseline",gap:8}}>
-            <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{URLAUB_TAGE}</span>
+            <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{resturlaub}</span>
             <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
           </div>
         </div>
@@ -1226,9 +1249,15 @@ export default function App(){
                   </div>
                 </div>
                 {adminIsBL
-                  ? <select className="lang-select" value={e.role} onChange={ev=>changeEmpRole(e.id,ev.target.value)}>
-                      {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
-                    </select>
+                  ? <>
+                      <select className="lang-select" value={e.role} onChange={ev=>changeEmpRole(e.id,ev.target.value)}>
+                        {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                      </select>
+                      <select className="lang-select" value={e.team_id||""} onChange={ev=>changeEmpTeam(e.id,ev.target.value)}>
+                        <option value="">{t.noTeamCat}</option>
+                        {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                      </select>
+                    </>
                   : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
                 {e.id!==dbProfile?.id && (adminIsBL || e.role==="mitarbeiter") &&
                   <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
@@ -1642,7 +1671,7 @@ export default function App(){
 
               <div className="stat" style={{marginTop:16}}>
                 <div className="k"><Plane size={13}/>{t.urlaubKonto}</div>
-                <div className="v amber num">{URLAUB_TAGE} {t.daysWord}</div>
+                <div className="v amber num">{resturlaub} {t.daysWord}</div>
               </div>
 
               <div className="foot">PROTOTYP · OMBERA STUDIOS</div>
@@ -1667,7 +1696,7 @@ export default function App(){
               <div className="card">
                 <div className="eyebrow" style={{marginBottom:12}}>{t.urlaubKonto}</div>
                 <div style={{display:"flex",alignItems:"baseline",gap:8}}>
-                  <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{URLAUB_TAGE}</span>
+                  <span className="num" style={{fontSize:28,fontWeight:700,color:"var(--plus)"}}>{resturlaub}</span>
                   <span style={{color:"var(--muted)",fontSize:14}}>{t.daysWord}</span>
                 </div>
               </div>
