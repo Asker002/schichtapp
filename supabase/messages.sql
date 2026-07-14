@@ -48,3 +48,19 @@ drop policy if exists reads_select on message_reads;
 create policy reads_select on message_reads for select using (profile_id = auth.uid());
 drop policy if exists reads_insert on message_reads;
 create policy reads_insert on message_reads for insert with check (profile_id = auth.uid());
+
+-- ---------- ANHÄNGE (Fotos/Dateien) ----------
+-- Metadaten je Nachricht: [{ path, name, type, size }]
+alter table messages add column if not exists attachments jsonb not null default '[]'::jsonb;
+
+-- Privater Storage-Bucket für die Datei-Inhalte.
+insert into storage.buckets (id, name, public) values ('message-files','message-files', false)
+  on conflict (id) do nothing;
+
+-- Angemeldete Nutzer dürfen hochladen und (per signierter URL) lesen. Pfade sind UUID-basiert.
+drop policy if exists msgfiles_read on storage.objects;
+create policy msgfiles_read on storage.objects for select
+  using (bucket_id = 'message-files' and auth.uid() is not null);
+drop policy if exists msgfiles_write on storage.objects;
+create policy msgfiles_write on storage.objects for insert
+  with check (bucket_id = 'message-files' and auth.uid() is not null);

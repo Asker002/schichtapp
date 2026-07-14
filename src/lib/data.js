@@ -71,17 +71,34 @@ export async function sendPasswordReset(email) {
 export async function listMessages() {
   const { data, error } = await supabase
     .from('messages')
-    .select('id, subject, body, team_id, created_at, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
+    .select('id, subject, body, team_id, created_at, attachments, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
     .order('created_at', { ascending: false })
   if (error) throw error
   return data
 }
-export async function sendMessage({ subject, body, team_id, betrieb_id }) {
+export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
-    betrieb_id, sender_id: u.user.id, team_id: team_id || null, subject, body,
+    betrieb_id, sender_id: u.user.id, team_id: team_id || null, subject, body, attachments,
   })
   if (error) throw error
+}
+// Datei/Foto in den privaten Bucket laden -> gibt Metadaten für die Nachricht zurück.
+export async function uploadMessageFile(file) {
+  const { data: u } = await supabase.auth.getUser()
+  const safe = file.name.replace(/[^\w.\-]+/g, '_')
+  const path = `${u.user.id}/${crypto.randomUUID()}-${safe}`
+  const { error } = await supabase.storage.from('message-files').upload(path, file, {
+    contentType: file.type || undefined, upsert: false,
+  })
+  if (error) throw error
+  return { path, name: file.name, type: file.type || '', size: file.size }
+}
+// Kurzlebige signierte URL für einen Anhang (1 Std).
+export async function messageFileUrl(path) {
+  const { data, error } = await supabase.storage.from('message-files').createSignedUrl(path, 3600)
+  if (error) throw error
+  return data.signedUrl
 }
 export async function markMessageRead(id) {
   const { data: u } = await supabase.auth.getUser()
