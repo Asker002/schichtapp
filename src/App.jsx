@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   Home, CalendarDays, Wallet, LayoutGrid, Sun, Moon,
   FileText, Plane, HeartPulse, Languages, ChevronRight, ChevronLeft,
-  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound
+  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
-  listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset } from "./lib/data";
+  listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
+  listMessages, sendMessage, markMessageRead } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -271,6 +272,7 @@ const I18N = {
     manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
+    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
@@ -333,6 +335,7 @@ const I18N = {
     manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
+    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
@@ -395,6 +398,7 @@ const I18N = {
     manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
+    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
@@ -457,6 +461,7 @@ const I18N = {
     manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
+    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
@@ -519,6 +524,7 @@ const I18N = {
     manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
+    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
@@ -694,6 +700,9 @@ export default function App(){
   const [recovery,setRecovery] = useState(false);   // Passwort-Reset-Link geöffnet -> neues PW setzen
   const [forgotOpen,setForgotOpen] = useState(false); const [forgotEmail,setForgotEmail] = useState("");
   const [forgotSent,setForgotSent] = useState(false); const [forgotErr,setForgotErr] = useState(""); const [forgotBusy,setForgotBusy] = useState(false);
+  const [showPostfach,setShowPostfach] = useState(false); const [messages,setMessages] = useState([]); const [msgOpen,setMsgOpen] = useState(null);
+  const [composing,setComposing] = useState(false); const [mSubject,setMSubject] = useState(""); const [mBody,setMBody] = useState(""); const [mScope,setMScope] = useState("all");
+  const [postErr,setPostErr] = useState(""); const [postBusy,setPostBusy] = useState(false);
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
   const [authErr,setAuthErr] = useState("");
   const [busy,setBusy] = useState(false);
@@ -714,6 +723,32 @@ export default function App(){
     if(!hasSupabaseConfig) return;
     try{ const rows = await listRequests(); setDbRequests(rows.map(mapReq)); }
     catch(e){ console.warn("[requests]", e.message); }
+  }
+  const mapMsg = (m)=>({ id:m.id, subject:m.subject, body:m.body, teamId:m.team_id, created_at:m.created_at,
+    senderName:m.sender?.full_name || "—", read:(m.reads?.length||0)>0 });
+  async function loadMessages(){
+    if(!hasSupabaseConfig) return;
+    try{ const rows = await listMessages(); setMessages(rows.map(mapMsg)); }
+    catch(e){ console.warn("[messages]", e.message); }
+  }
+  const unreadCount = messages.filter(m=>!m.read).length;
+  const openPostfach = ()=>{ setShowPostfach(true); setComposing(false); setMsgOpen(null); setPostErr(""); loadMessages(); };
+  async function openMsg(m){
+    setMsgOpen(o=>o===m.id?null:m.id);
+    if(!m.read){
+      try{ await markMessageRead(m.id); setMessages(ms=>ms.map(x=>x.id===m.id?{...x,read:true}:x)); }
+      catch(e){ console.warn("[read]", e.message); }
+    }
+  }
+  async function doSendMessage(){
+    setPostErr(""); setPostBusy(true);
+    const team_id = role==="meister" ? dbProfile?.team?.id : (mScope==="all" ? null : mScope);
+    try{
+      await sendMessage({ subject:mSubject.trim(), body:mBody.trim(), team_id, betrieb_id:dbProfile?.betrieb_id });
+      setMSubject(""); setMBody(""); setComposing(false);
+      await loadMessages();
+    }catch(err){ setPostErr(err.message); }
+    setPostBusy(false);
   }
   // DB-Status -> App-Entscheidungscode (approved/rejected/acked) oder null (offen)
   const decOf = (r)=>{
@@ -749,6 +784,7 @@ export default function App(){
     // Team-Mitglieder + Schichten gleich mitladen (RLS: Meister -> eigenes Team, BL -> Betrieb).
     try{ const [e,tm] = await Promise.all([listEmployees(), listTeams()]); setEmps(e); setTeamOpts(tm); }
     catch(e){ console.warn("[team]", e.message); }
+    await loadMessages();
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -1164,6 +1200,53 @@ export default function App(){
     </div>
   );
 
+  const teamNameOf = (id)=> teamOpts.find(x=>x.id===id)?.name || "—";
+  const canSend = role==="meister" || role==="bl" || role==="hr";
+  const fmtMsgDate = (iso)=>{ const d=new Date(iso); const p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}.${p(d.getMonth()+1)}. ${p(d.getHours())}:${p(d.getMinutes())}`; };
+  const postfachSheet = showPostfach && (
+    <div className="sheet">
+      <div className="sheet-hd">
+        <button className="navbtn" onClick={()=> composing ? setComposing(false) : setShowPostfach(false)}><ChevronLeft size={18}/></button>
+        <span className="disp">{composing ? t.newMsg : t.postfach}</span>
+        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope("all");}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
+      </div>
+      <div className="sheet-body">
+        {composing ? (
+          <div className="card" style={{marginTop:0}}>
+            {role==="meister"
+              ? <div className="field"><label>{t.toLabel}</label><span className="tg mut" style={{alignSelf:"flex-start"}}>{t.myShift} {crew}</span></div>
+              : <div className="field"><label>{t.toLabel}</label>
+                  <select className="lang-select" style={selStyle} value={mScope} onChange={e=>setMScope(e.target.value)}>
+                    <option value="all">{t.plantWide}</option>
+                    {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                  </select>
+                </div>}
+            <div className="field"><label>{t.subjectLabel}</label><input value={mSubject} onChange={e=>setMSubject(e.target.value)} /></div>
+            <div className="field"><label>{t.msgBody}</label><textarea rows={6} value={mBody} onChange={e=>setMBody(e.target.value)} /></div>
+            <button className="submit" disabled={postBusy || !mSubject || !mBody} onClick={doSendMessage}>{postBusy?"…":t.sendMsg}</button>
+            {postErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{postErr}</div>}
+          </div>
+        ) : (
+          <>
+            {messages.length===0 && <div className="card" style={{marginTop:0}}><div style={{color:"var(--faint)",fontSize:14,textAlign:"center",padding:"20px 0"}}>{t.noMsg}</div></div>}
+            {messages.map(m=>(
+              <div className="card" key={m.id} style={{marginTop:0,marginBottom:12,cursor:"pointer"}} onClick={()=>openMsg(m)}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  {!m.read && <span style={{width:8,height:8,borderRadius:"50%",background:"var(--accent)",flexShrink:0}}/>}
+                  <div style={{fontWeight:m.read?600:700,flex:1}}>{m.subject}</div>
+                  <span style={{fontSize:11,color:"var(--faint)",whiteSpace:"nowrap"}}>{fmtMsgDate(m.created_at)}</span>
+                </div>
+                <div style={{fontSize:12,color:"var(--muted)",marginTop:4}}>{m.senderName} · {m.teamId?teamNameOf(m.teamId):t.plantWide}</div>
+                {msgOpen===m.id && <div style={{fontSize:14,color:"var(--text)",marginTop:12,lineHeight:1.55,whiteSpace:"pre-wrap"}}>{m.body}</div>}
+              </div>
+            ))}
+          </>
+        )}
+        <div className="foot" style={{marginTop:24}}>PROTOTYP · OMBERA STUDIOS</div>
+      </div>
+    </div>
+  );
+
   const myReqList = hasSupabaseConfig ? dbRequests.filter(r=>r.profileId===dbProfile?.id) : submitted;
   const myRequestsCard = myReqList.length>0 && (
     <div className="card">
@@ -1373,6 +1456,12 @@ export default function App(){
         <div className="hdr">
           <div className="hdr-top">
             <img src="/setylose-logo.svg" className="brand-logo" alt="SE Tylose" />
+            {hasSupabaseConfig && (
+              <button className="navbtn" style={{position:"relative"}} onClick={openPostfach} aria-label={t.postfach}>
+                <Inbox size={18}/>
+                {unreadCount>0 && <span style={{position:"absolute",top:-5,right:-5,minWidth:16,height:16,padding:"0 4px",borderRadius:8,background:"var(--red)",color:"#fff",fontSize:10,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{unreadCount}</span>}
+              </button>
+            )}
           </div>
           {!hasSupabaseConfig && (
           <div className="roleseg">
@@ -1927,6 +2016,7 @@ export default function App(){
         {payslipSheet}
         {adminSheet}
         {pwSheet}
+        {postfachSheet}
 
         {/* TABBAR */}
         <div className="tabs">

@@ -65,6 +65,32 @@ export async function sendPasswordReset(email) {
   if (error) throw error
 }
 
+// ---------- POSTFACH (interne Nachrichten) ----------
+// RLS liefert nur erlaubte Nachrichten (werksweit + eigene Schicht).
+// reads = eigene Lese-Markierung (RLS zeigt nur den eigenen Read) -> gelesen wenn vorhanden.
+export async function listMessages() {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('id, subject, body, team_id, created_at, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+export async function sendMessage({ subject, body, team_id, betrieb_id }) {
+  const { data: u } = await supabase.auth.getUser()
+  const { error } = await supabase.from('messages').insert({
+    betrieb_id, sender_id: u.user.id, team_id: team_id || null, subject, body,
+  })
+  if (error) throw error
+}
+export async function markMessageRead(id) {
+  const { data: u } = await supabase.auth.getUser()
+  const { error } = await supabase
+    .from('message_reads')
+    .upsert({ message_id: id, profile_id: u.user.id }, { onConflict: 'message_id,profile_id', ignoreDuplicates: true })
+  if (error) throw error
+}
+
 // ---------- AUTH ----------
 export function signIn(email, password) {
   return supabase.auth.signInWithPassword({ email, password })
