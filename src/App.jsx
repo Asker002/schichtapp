@@ -280,7 +280,7 @@ const I18N = {
     einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
-    blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
+    blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
     hrTabs:["Lohnlauf","Zeit","Personal","Mehr"],
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
@@ -345,7 +345,7 @@ const I18N = {
     einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
-    blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
+    blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
     hrTabs:["Bordro","Zaman","Personel","Diğer"],
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
@@ -410,7 +410,7 @@ const I18N = {
     einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
-    blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
+    blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
     hrTabs:["Payroll","Time","People","More"],
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
@@ -475,7 +475,7 @@ const I18N = {
     einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
-    blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
+    blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
     hrTabs:["Зарплата","Время","Персонал","Ещё"],
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
@@ -540,7 +540,7 @@ const I18N = {
     einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
-    blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
+    blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
     hrTabs:["Płace","Czas","Kadry","Więcej"],
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
@@ -1651,7 +1651,7 @@ export default function App(){
             <div className="avatar">{dbProfile ? initials(dbProfile.full_name) : ({ma:"DS",meister:"KW",bl:"MB",hr:"SB"})[role]}</div>
             <div>
               <div className="who-name">{t.hi}, {dbProfile ? dbProfile.full_name.split(" ")[0] : ({ma:"Daniel",meister:"Kai",bl:"Martina",hr:"Susanne"})[role]}</div>
-              <span className="chip">{role==="ma"?`${t.crewLabel} ${crew}`:role==="meister"?`${leadTitle} · ${t.crewLabel} ${crew}`:role==="bl"?`${t.roleBL} · Werk 2`:t.roleHR}</span>
+              <span className="chip">{role==="ma"?`${t.crewLabel} ${crew}`:role==="meister"?`${leadTitle} · ${t.crewLabel} ${crew}`:role==="bl"?`${t.roleBL} · GLUTOLIN Betrieb`:t.roleHR}</span>
             </div>
           </div>
           {role==="meister" && !hasSupabaseConfig && (
