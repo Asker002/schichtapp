@@ -56,6 +56,15 @@ export async function changePassword(newPassword) {
   if (error) throw error
 }
 
+// Passwort-Reset-Link per E-Mail anfordern. Der Link führt zurück auf die App
+// (redirectTo = aktuelle Origin), wo dann das neue Passwort gesetzt wird.
+export async function sendPasswordReset(email) {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin,
+  })
+  if (error) throw error
+}
+
 // ---------- AUTH ----------
 export function signIn(email, password) {
   return supabase.auth.signInWithPassword({ email, password })

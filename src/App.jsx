@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
-  listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword } from "./lib/data";
+  listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -270,6 +270,7 @@ const I18N = {
     roleBL:"Betriebsleiter", roleHR:"Personalabteilung", change:"Ändern", withdraw:"Zurückziehen", save:"Speichern",
     manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
+    forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"Werk 2 · Alle Schichten",
@@ -331,6 +332,7 @@ const I18N = {
     roleBL:"İşletme müdürü", roleHR:"Personel dairesi", change:"Değiştir", withdraw:"Geri çek", save:"Kaydet",
     manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
+    forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"Tesis 2 · Tüm vardiyalar",
@@ -392,6 +394,7 @@ const I18N = {
     roleBL:"Plant manager", roleHR:"HR department", change:"Change", withdraw:"Withdraw", save:"Save",
     manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
+    forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"Plant 2 · All crews",
@@ -453,6 +456,7 @@ const I18N = {
     roleBL:"Начальник завода", roleHR:"Отдел кадров", change:"Изменить", withdraw:"Отозвать", save:"Сохранить",
     manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
+    forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"Завод 2 · Все смены",
@@ -514,6 +518,7 @@ const I18N = {
     roleBL:"Kierownik zakładu", roleHR:"Dział kadr", change:"Zmień", withdraw:"Wycofaj", save:"Zapisz",
     manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
+    forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"Zakład 2 · Wszystkie zmiany",
@@ -686,6 +691,9 @@ export default function App(){
   const [adminErr,setAdminErr] = useState(""); const [adminOk,setAdminOk] = useState(false); const [aBusy,setABusy] = useState(false);
   const [showPw,setShowPw] = useState(false); const [pwNew,setPwNew] = useState(""); const [pwNew2,setPwNew2] = useState("");
   const [pwErr,setPwErr] = useState(""); const [pwOk,setPwOk] = useState(false); const [pwBusy,setPwBusy] = useState(false);
+  const [recovery,setRecovery] = useState(false);   // Passwort-Reset-Link geöffnet -> neues PW setzen
+  const [forgotOpen,setForgotOpen] = useState(false); const [forgotEmail,setForgotEmail] = useState("");
+  const [forgotSent,setForgotSent] = useState(false); const [forgotErr,setForgotErr] = useState(""); const [forgotBusy,setForgotBusy] = useState(false);
   const [dbProfile,setDbProfile] = useState(null);  // aus Supabase geladenes Profil
   const [authErr,setAuthErr] = useState("");
   const [busy,setBusy] = useState(false);
@@ -796,11 +804,34 @@ export default function App(){
     catch(err){ setPwErr(err.message); }
     setPwBusy(false);
   }
+  async function doForgot(){
+    setForgotErr(""); setForgotSent(false); setForgotBusy(true);
+    try{ await sendPasswordReset(forgotEmail.trim()); setForgotSent(true); }
+    catch(err){ setForgotErr(err.message); }
+    setForgotBusy(false);
+  }
+  async function doRecoverySet(){
+    setPwErr("");
+    if(pwNew.length < 6){ setPwErr(t.pwTooShort); return; }
+    if(pwNew !== pwNew2){ setPwErr(t.pwMismatch); return; }
+    setPwBusy(true);
+    try{
+      await changePassword(pwNew);
+      try{ window.history.replaceState(null,"",window.location.pathname); }catch(e){}
+      setRecovery(false); setPwNew(""); setPwNew2("");
+      await applyProfile();   // direkt anmelden
+    }catch(err){ setPwErr(err.message); }
+    setPwBusy(false);
+  }
 
   // Bestehende Anmeldung beim Start laden (nur mit Supabase-Config).
   useEffect(()=>{
     if(!hasSupabaseConfig) return;
     (async()=>{
+      // Kam der Nutzer über einen Passwort-Reset-Link? -> neues Passwort setzen.
+      if(typeof window!=="undefined" && window.location.hash.includes("type=recovery")){
+        setRecovery(true); setDbReady(true); return;
+      }
       try{ const s = await getSession(); if(s) await applyProfile(); }
       catch(e){ /* nicht eingeloggt */ }
       setDbReady(true);
@@ -1115,6 +1146,24 @@ export default function App(){
     </div>
   );
 
+  const forgotSheet = forgotOpen && (
+    <div className="sheet">
+      <div className="sheet-hd">
+        <button className="navbtn" onClick={()=>setForgotOpen(false)}><ChevronLeft size={18}/></button>
+        <span className="disp">{t.forgotTitle}</span>
+      </div>
+      <div className="sheet-body">
+        <div className="card" style={{marginTop:0}}>
+          <p style={{fontSize:13,color:"var(--muted)",marginBottom:14,lineHeight:1.5}}>{t.forgotSub}</p>
+          <div className="field"><label>{t.email}</label><input type="email" value={forgotEmail} onChange={e=>setForgotEmail(e.target.value)} placeholder="name@firma.de" autoComplete="username" /></div>
+          <button className="submit" disabled={forgotBusy || !forgotEmail} onClick={doForgot}>{forgotBusy?"…":t.sendResetBtn}</button>
+          {forgotSent && <div className="login-note" style={{color:"var(--plus)",marginTop:10}}>{t.resetSent}</div>}
+          {forgotErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{forgotErr}</div>}
+        </div>
+      </div>
+    </div>
+  );
+
   const myReqList = hasSupabaseConfig ? dbRequests.filter(r=>r.profileId===dbProfile?.id) : submitted;
   const myRequestsCard = myReqList.length>0 && (
     <div className="card">
@@ -1245,6 +1294,31 @@ export default function App(){
     );
   }
 
+  // Passwort-Reset-Link geöffnet -> neues Passwort setzen.
+  if (recovery) {
+    return (
+      <div className="app-root">
+        <style>{CSS}</style>
+        <div className="phone">
+          <div className="login">
+            <div className="login-top">
+              <img src="/setylose-logo.svg" className="brand-logo" alt="SE Tylose" />
+              {langPicker}
+            </div>
+            <div className="login-mid">
+              <h1 className="disp">{t.setNewPw}</h1>
+              <p className="login-sub">{t.setNewPwSub}</p>
+              <div className="field"><label>{t.newPw}</label><input type="password" value={pwNew} onChange={e=>setPwNew(e.target.value)} autoComplete="new-password" /></div>
+              <div className="field"><label>{t.repeatPw}</label><input type="password" value={pwNew2} onChange={e=>setPwNew2(e.target.value)} autoComplete="new-password" /></div>
+              <button className="submit" disabled={pwBusy || !pwNew || !pwNew2} onClick={doRecoverySet}>{pwBusy?"…":t.save}</button>
+              {pwErr && <div className="login-note" style={{color:"var(--red)",marginTop:12}}>{pwErr}</div>}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!authed) {
     return (
       <div className="app-root">
@@ -1276,10 +1350,16 @@ export default function App(){
                 {busy ? "…" : t.signin}
               </button>
               {authErr && <div className="login-note" style={{color:"var(--red)"}}>{authErr}</div>}
-              {!hasSupabaseConfig && <div className="login-note">{t.loginDemo}</div>}
+              {hasSupabaseConfig
+                ? <div style={{textAlign:"center",marginTop:16}}>
+                    <a onClick={()=>{setForgotOpen(true); setForgotEmail(loginId); setForgotSent(false); setForgotErr("");}}
+                       style={{color:"var(--accent)",fontSize:13,fontWeight:600,cursor:"pointer"}}>{t.forgotLink}</a>
+                  </div>
+                : <div className="login-note">{t.loginDemo}</div>}
             </div>
           </div>
           {legalSheet}
+          {forgotSheet}
         </div>
       </div>
     );
