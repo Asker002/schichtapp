@@ -985,6 +985,24 @@ export default function App(){
     })();
   }, []);
 
+  // Demo-Deeplink für Screenshots/Vorschau (nur ohne Backend):
+  //   #demo=<rolle>[:<tab>]   z.B. #demo=bl:0  -> direkt angemeldet in dieser Ansicht.
+  useEffect(()=>{
+    if(hasSupabaseConfig) return;
+    const h = window.location.hash||"";
+    const m = /#demo=([a-z]+)(?::(\d+))?/.exec(h);
+    if(!m) return;
+    setRole(m[1]); if(m[2]!==undefined) setTab(Number(m[2]));
+    setConsent(true); setAuthed(true);
+    const open = /open=(\w+)/.exec(h);
+    if(open){ const o=open[1];
+      if(o==="admin") setShowAdmin(true);
+      else if(o==="postfach") setShowPostfach(true);
+      else if(o==="compose"){ setShowPostfach(true); setComposing(true); }
+      else if(o==="payslips") setShowPayslips(true);
+    }
+  }, []);
+
   // Der eingeloggte Mitarbeiter (Demo): Daniel Schäfer, Schichtgruppe C.
   const EMP_NAME = "Daniel Schäfer", EMP_CREW = "C";
   const fmtDay = (iso)=>{ if(!iso) return "—"; const [,m,d] = iso.split("-"); return `${d}.${m}.`; };

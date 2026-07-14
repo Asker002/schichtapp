@@ -30,3 +30,6 @@ supabase/reset_demo_users.sql
 *.njsproj
 *.sln
 *.sw?
+
+# Präsentation (Screenshots/PDF) – lokal, nicht ins Repo
+presentation/
