@@ -139,6 +139,13 @@ export async function markMessageRead(id) {
 }
 
 // ---------- AUTH ----------
+// Personalnummer -> hinterlegte Login-E-Mail (per SECURITY-DEFINER-Funktion).
+// Gibt null zurück, wenn keine aktive Person mit dieser Nummer existiert.
+export async function emailForPnr(pnr) {
+  const { data, error } = await supabase.rpc('login_email', { pnr })
+  if (error) throw error
+  return data || null
+}
 export function signIn(email, password) {
   return supabase.auth.signInWithPassword({ email, password })
 }

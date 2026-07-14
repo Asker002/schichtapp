@@ -5,7 +5,7 @@ import {
   Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
-import { signIn, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
+import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
   listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments } from "./lib/data";
@@ -287,8 +287,8 @@ const I18N = {
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
     previewNote:"Phase 3 · Vorschau – im Pilotbetrieb noch nicht aktiv.",
-    signin:"Anmelden", loginSub:"Melde dich mit deiner Personalnummer an.",
-    loginId:"Personalnummer", email:"E-Mail", password:"Passwort",
+    signin:"Anmelden", loginSub:"Melde dich mit Personalnummer oder E-Mail an.",
+    loginId:"Personalnummer", loginIdEmail:"Personalnummer oder E-Mail", pnrNotFound:"Personalnummer nicht gefunden.", email:"E-Mail", password:"Passwort",
     consentText:"Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.",
     privacyLink:"Datenschutzerklärung", loginDemo:"Prototyp – jede Eingabe öffnet den Demo-Account.",
     logout:"Abmelden",
@@ -352,8 +352,8 @@ const I18N = {
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
     previewNote:"3. Faz · Önizleme – pilot işletmede henüz aktif değil.",
-    signin:"Giriş", loginSub:"Personel numaranla giriş yap.",
-    loginId:"Personel numarası", email:"E-posta", password:"Şifre",
+    signin:"Giriş", loginSub:"Personel numarası veya e-posta ile giriş yap.",
+    loginId:"Personel numarası", loginIdEmail:"Personel numarası veya e-posta", pnrNotFound:"Personel numarası bulunamadı.", email:"E-posta", password:"Şifre",
     consentText:"Gizlilik politikasını okudum ve verilerimin işlenmesini kabul ediyorum.",
     privacyLink:"Gizlilik politikası", loginDemo:"Prototip – her giriş demo hesabını açar.",
     logout:"Çıkış",
@@ -417,8 +417,8 @@ const I18N = {
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
     previewNote:"Phase 3 · Preview – not active in the pilot.",
-    signin:"Sign in", loginSub:"Sign in with your personnel number.",
-    loginId:"Personnel number", email:"Email", password:"Password",
+    signin:"Sign in", loginSub:"Sign in with your personnel number or email.",
+    loginId:"Personnel number", loginIdEmail:"Personnel number or email", pnrNotFound:"Personnel number not found.", email:"Email", password:"Password",
     consentText:"I have read the privacy policy and consent to the processing of my data.",
     privacyLink:"Privacy policy", loginDemo:"Prototype – any input opens the demo account.",
     logout:"Sign out",
@@ -482,8 +482,8 @@ const I18N = {
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
     previewNote:"Фаза 3 · Предпросмотр – в пилоте пока не активно.",
-    signin:"Войти", loginSub:"Войди по своему табельному номеру.",
-    loginId:"Табельный номер", email:"Эл. почта", password:"Пароль",
+    signin:"Войти", loginSub:"Войди по табельному номеру или эл. почте.",
+    loginId:"Табельный номер", loginIdEmail:"Табельный номер или эл. почта", pnrNotFound:"Табельный номер не найден.", email:"Эл. почта", password:"Пароль",
     consentText:"Я прочитал(а) политику конфиденциальности и согласен(на) на обработку моих данных.",
     privacyLink:"Политика конфиденциальности", loginDemo:"Прототип – любой ввод открывает демо-аккаунт.",
     logout:"Выйти",
@@ -547,8 +547,8 @@ const I18N = {
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
     previewNote:"Faza 3 · Podgląd – nieaktywne w pilotażu.",
-    signin:"Zaloguj się", loginSub:"Zaloguj się swoim numerem personalnym.",
-    loginId:"Numer personalny", email:"E-mail", password:"Hasło",
+    signin:"Zaloguj się", loginSub:"Zaloguj się numerem personalnym lub e-mailem.",
+    loginId:"Numer personalny", loginIdEmail:"Numer personalny lub e-mail", pnrNotFound:"Nie znaleziono numeru personalnego.", email:"E-mail", password:"Hasło",
     consentText:"Przeczytałem(am) politykę prywatności i zgadzam się na przetwarzanie moich danych.",
     privacyLink:"Polityka prywatności", loginDemo:"Prototyp – każde dane otwierają konto demo.",
     logout:"Wyloguj",
@@ -896,7 +896,16 @@ export default function App(){
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
     setBusy(true); setAuthErr("");
-    const { error } = await signIn(loginId.trim(), loginPw);
+    // Eingabe kann E-Mail ODER Personalnummer sein: ohne '@' -> Nummer zur E-Mail auflösen.
+    let ident = loginId.trim();
+    if (!ident.includes("@")) {
+      try {
+        const mail = await emailForPnr(ident);
+        if (!mail) { setBusy(false); setAuthErr(t.pnrNotFound); return; }
+        ident = mail;
+      } catch(e) { setBusy(false); setAuthErr(e.message); return; }
+    }
+    const { error } = await signIn(ident, loginPw);
     if (error) { setBusy(false); setAuthErr(error.message); return; }
     try { await applyProfile(); }
     catch(e){ setAuthErr("Profil nicht gefunden – ist für diesen Login ein Profil angelegt?"); await signOut(); }
@@ -1612,9 +1621,9 @@ export default function App(){
               <h1 className="disp">{t.signin}</h1>
               <p className="login-sub">{t.loginSub}</p>
               <div className="field">
-                <label>{hasSupabaseConfig ? t.email : t.loginId}</label>
-                <input type={hasSupabaseConfig?"email":"text"} value={loginId} onChange={e=>setLoginId(e.target.value)}
-                  placeholder={hasSupabaseConfig?"name@firma.de":"10432"} inputMode={hasSupabaseConfig?"email":"numeric"} autoComplete="username" />
+                <label>{hasSupabaseConfig ? t.loginIdEmail : t.loginId}</label>
+                <input type="text" value={loginId} onChange={e=>setLoginId(e.target.value)}
+                  placeholder={hasSupabaseConfig?"10432 · name@firma.de":"10432"} inputMode="text" autoComplete="username" />
               </div>
               <div className="field">
                 <label>{t.password}</label>
