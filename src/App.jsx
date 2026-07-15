@@ -298,7 +298,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -363,7 +363,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -428,7 +428,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -493,7 +493,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -558,7 +558,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -958,6 +958,8 @@ export default function App(){
       catch(e){ console.warn("[directory]", e.message); }
       try{ setCoTeams(await companyTeams()); }
       catch(e){ console.warn("[coteams]", e.message); }
+      try{ setCoRequests(await companyRequests()); }catch(e){ console.warn("[coreq]", e.message); }
+      try{ setCoOverview(await companyOverview(isoOf(new Date()))); }catch(e){ console.warn("[coovw]", e.message); }
     }
   }
   async function doLogin(){
@@ -1399,17 +1401,12 @@ export default function App(){
     </div>
   );
   // HR-Übersicht: Anträge + Präsenz heute über alle Werke.
-  const hrOverviewSheet = showHrOverview && (()=>{
+  const hrOverviewContent = (()=>{
     const duty = coOverview.filter(x=>x.status==="duty").length;
     const absent = coOverview.filter(x=>x.status==="sick"||x.status==="vac");
     const reqBadge = (s)=> s==="offen" ? {c:"s",label:t.stPending} : s==="abgelehnt" ? {c:"h",label:t.rejected} : {c:"g",label:t.approved};
     return (
-    <div className="sheet">
-      <div className="sheet-hd">
-        <button className="navbtn" onClick={()=>setShowHrOverview(false)}><ChevronLeft size={18}/></button>
-        <span className="disp">{t.hrOverview}</span>
-      </div>
-      <div className="sheet-body">
+      <>
         <div className="eyebrow" style={{marginBottom:8}}>{t.presenceToday}</div>
         <div className="stats" style={{marginTop:0}}>
           <div className="stat"><div className="k">{t.statusDuty}</div><div className="v plus num">{duty}</div></div>
@@ -1442,8 +1439,7 @@ export default function App(){
           ); })}
         </div>
         <div className="foot">PROTOTYP · U. Kebeli</div>
-      </div>
-    </div>
+      </>
     );
   })();
   const adminSheet = showAdmin && (
@@ -2599,11 +2595,14 @@ export default function App(){
 
           {role==="hr" && tab===2 && (
             <>
+              <div className="eyebrow">{t.hrOverview}</div>
+              {hrOverviewContent}
+            </>
+          )}
+
+          {role==="hr" && tab===3 && (
+            <>
               <div className="card" style={{marginTop:0}}>
-                <div className="row" onClick={openHrOverview}>
-                  <span className="row-l"><span className="row-ic"><Inbox size={16}/></span>{t.hrOverview}</span>
-                  <ChevronRight size={16} color="var(--faint)"/>
-                </div>
                 <div className="row" onClick={()=>openAdmin("hrteam")}>
                   <span className="row-l"><span className="row-ic"><Users size={16}/></span>{t.hrTeam}</span>
                   <ChevronRight size={16} color="var(--faint)"/>
@@ -2649,7 +2648,6 @@ export default function App(){
         {pwSheet}
         {settingsSheet}
         {dirActionSheet}
-        {hrOverviewSheet}
         {postfachSheet}
 
         {/* TABBAR */}
@@ -2659,7 +2657,7 @@ export default function App(){
               ma:      {icons:[<Home size={20}/>,<CalendarDays size={20}/>,<Wallet size={20}/>,<LayoutGrid size={20}/>], labels:t.tabs},
               meister: {icons:[<Inbox size={20}/>,<Users size={20}/>,<CalendarDays size={20}/>,<LayoutGrid size={20}/>], labels:t.mTabs},
               bl:      {icons:[<LayoutGrid size={20}/>,<Plane size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.blTabs},
-              hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
+              hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
             }[role];
             return cfg.icons.map((ic,i)=>(
               <button key={i} className={"tab"+(tab===i?" on":"")} onClick={()=>setTab(i)}>
