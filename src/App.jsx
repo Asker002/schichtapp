@@ -1348,10 +1348,11 @@ export default function App(){
   // HR-Liste (Leitung bzw. Personalabteilung) aus dem Firmen-Verzeichnis.
   const hrList = directory.filter(r=>r.profile_id && (scopeHRteam ? r.role==="personal" : ["betriebsleiter","assistent"].includes(r.role)));
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
-  // Belegschaft nach Schichten gruppieren (Schichtführung inklusive); Teamlose separat.
+  // Belegschaft nach Schichten gruppieren (nur Mitarbeiter + Schichtführung; Leitung/HR erscheinen hier nicht).
   const empGroups = (()=>{
-    const gs = teamOpts.map(tm=>({ key:tm.id, title:tm.name, members: emps.filter(e=>e.team_id===tm.id) }));
-    const noTeam = emps.filter(e=>!e.team_id);
+    const mEmps = emps.filter(e=>BL_MANAGED.includes(e.role));
+    const gs = teamOpts.map(tm=>({ key:tm.id, title:tm.name, members: mEmps.filter(e=>e.team_id===tm.id) }));
+    const noTeam = mEmps.filter(e=>!e.team_id);
     if(noTeam.length) gs.push({ key:"__none", title:t.noTeamCat, members:noTeam });
     return gs;
   })();
@@ -1413,7 +1414,7 @@ export default function App(){
           <div className="login-note" style={{marginTop:12}}>{t.adminHint}</div>
         </div>
 
-        {!adminIsHR && <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {emps.length}</div>}
+        {!adminIsHR && <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {empGroups.reduce((n,g)=>n+g.members.length,0)}</div>}
         {!adminIsHR && emps.length>0 && (
           <div className="field" style={{marginBottom:12}}><input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} /></div>
         )}
