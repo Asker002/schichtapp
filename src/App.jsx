@@ -1165,6 +1165,15 @@ export default function App(){
   // heute genehmigt-abwesende Personen-IDs (für Dienst-/Abwesenheitszählung)
   const absentTodayIds = new Set(dbRequests.filter(r=>(r.status==="genehmigt"||r.status==="geaendert") && absCoversDay(r,now)).map(r=>r.profileId));
 
+  // Personal (HR): echte werksweite Belegschaft mit Status heute (krank/Urlaub/im Dienst/frei).
+  const allEmpsReal = emps.map(e=>{
+    const tm = teamOpts.find(x=>x.id===e.team_id);
+    const abs = dbRequests.find(r=>r.profileId===e.id && (r.status==="genehmigt"||r.status==="geaendert") && absCoversDay(r, now));
+    const st = abs ? (abs.type==="krank"?"sick":"vac")
+      : (tm ? (shiftType(now,{offset:tm.rotation_offset||0, anchorMs:anchorToMs(tm.anchor_date)})!=="F" ? "duty" : "off") : "off");
+    return { id:e.id, name:e.full_name, pnr:e.personalnummer, crew: tm ? tm.name.trim().slice(-1).toUpperCase() : "—", st };
+  }).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+
   const crewStats = hasSupabaseConfig
     ? teamOpts.map(tm=>{
         const members = emps.filter(e=>e.team_id===tm.id);
@@ -1707,7 +1716,7 @@ export default function App(){
 
         {/* BODY */}
         <div className="body" key={tab+lang}>
-          {role==="hr" && tab!==0 && <div className="preview-note">{t.previewNote}</div>}
+          {role==="hr" && tab===1 && <div className="preview-note">{t.previewNote}</div>}
           {role==="ma" && tab===0 && (
             <>
               <div className={"hero "+heroType}>
@@ -2230,19 +2239,24 @@ export default function App(){
             </>
           )}
 
-          {role==="hr" && tab===2 && (
+          {role==="hr" && tab===2 && (()=>{
+            const list = hasSupabaseConfig ? allEmpsReal : allTeam;
+            return (
             <>
-              <div className="eyebrow">{t.hrEmpTitle} · {plantTotal} {t.empLbl}</div>
+              <div className="eyebrow">{t.hrEmpTitle} · {list.length} {t.empLbl}</div>
               <div className="card" style={{marginTop:0}}>
-                {allTeam.map((m,i)=>{
+                {list.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div>}
+                {list.map((m,i)=>{
                   const s = statusMap[m.st];
                   return (
-                    <div className="row" key={i} style={{cursor:"default"}}>
+                    <div className="row" key={m.id||i} style={{cursor:"default"}}>
                       <div className="row-l">
                         <span className="row-ic">{initials(m.name)}</span>
                         <div>
                           <div style={{fontWeight:600}}>{m.name}</div>
-                          <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{t.crewLabel} {m.crew}</div>
+                          <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>
+                            {m.crew && m.crew!=="—" ? `${t.crewLabel} ${m.crew}` : t.noTeamCat}{m.pnr?` · ${m.pnr}`:""}
+                          </div>
                         </div>
                       </div>
                       <span className={"tg "+s.c}>{t[s.k]}</span>
@@ -2252,7 +2266,8 @@ export default function App(){
               </div>
               <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
-          )}
+            );
+          })()}
 
           {role==="hr" && tab===3 && (
             <><div style={{marginBottom:14}}>{settingsCard}</div><div className="foot">PROTOTYP · U. Kebeli</div></>
