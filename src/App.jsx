@@ -35,6 +35,16 @@ const CSS = `
   font-family:'Inter',system-ui,sans-serif;
   display:flex; justify-content:center; background:#e9edf1; height:100%; overflow:hidden; overscroll-behavior:none; padding:0;
 }
+/* Dunkelmodus: nur die Farb-Variablen überschreiben – Layout bleibt gleich. */
+.app-root.theme-dark{
+  --bg:#12161B; --surface:#1B222A; --surface2:#232C35; --line:#2C3742;
+  --text:#E9EEF3; --muted:#9BA7B2; --faint:#6C7883;
+  --tag:#E0902E; --tag-soft:rgba(224,144,46,.16); --tag-glow:rgba(224,144,46,.20);
+  --nacht:#57A8DE; --nacht-soft:rgba(87,168,222,.16); --nacht-glow:rgba(87,168,222,.20);
+  --frei:#3B4650; --plus:#43BE77; --plus-soft:rgba(67,190,119,.16);
+  --accent:#2BB4C9; --red:#E86063; --red-soft:rgba(232,96,99,.16);
+  background:#0B0E12; color-scheme:dark;
+}
 .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;}
 .disp{font-family:'Space Grotesk',system-ui,sans-serif;}
 
@@ -262,7 +272,7 @@ const I18N = {
     dFrom:"Von", dTo:"Bis", optional:"optional", send:"Antrag senden", sent:"Antrag gesendet ✓",
     myReq:"Meine Anträge", reqSummaryUrlaub:"Urlaubsantrag geht an deinen Schichtmeister zur Freigabe.",
     reqSummaryKrank:"Krankmeldung geht an deinen Schichtmeister. Die eAU kommt separat von der Krankenkasse.",
-    sprache:"Sprache", settings:"Einstellungen",
+    sprache:"Sprache", settings:"Einstellungen", appearance:"Darstellung", light:"Hell", dark:"Dunkel", searchEmp:"Mitarbeiter suchen",
     cd:(d,h,m)=> d>0 ? `in ${d} Tg ${h} Std` : `in ${h} Std ${m} Min`,
     unitStd:"Std",
     roleMA:"Mitarbeiter", roleMeister:"Schichtmeister", roleVorarbeiter:"Vorarbeiter", roleGruppenfuehrer:"Gruppenführer", crewLabel:"Schicht",
@@ -327,7 +337,7 @@ const I18N = {
     dFrom:"Başlangıç", dTo:"Bitiş", optional:"opsiyonel", send:"Talep gönder", sent:"Talep gönderildi ✓",
     myReq:"Taleplerim", reqSummaryUrlaub:"İzin talebi onay için vardiya amirine gider.",
     reqSummaryKrank:"Hastalık bildirimi vardiya amirine gider. eAU ayrıca sigortadan gelir.",
-    sprache:"Dil", settings:"Ayarlar",
+    sprache:"Dil", settings:"Ayarlar", appearance:"Görünüm", light:"Açık", dark:"Koyu", searchEmp:"Personel ara",
     cd:(d,h,m)=> d>0 ? `${d} gün ${h} sa sonra` : `${h} sa ${m} dk sonra`,
     unitStd:"sa",
     roleMA:"Çalışan", roleMeister:"Vardiya amiri", roleVorarbeiter:"Kısım başı", roleGruppenfuehrer:"Grup lideri", crewLabel:"Vardiya",
@@ -392,7 +402,7 @@ const I18N = {
     dFrom:"From", dTo:"To", optional:"optional", send:"Send request", sent:"Request sent ✓",
     myReq:"My requests", reqSummaryUrlaub:"Your leave request goes to your shift supervisor for approval.",
     reqSummaryKrank:"Your sick note goes to your shift supervisor. The eAU arrives separately from your health insurer.",
-    sprache:"Language", settings:"Settings",
+    sprache:"Language", settings:"Settings", appearance:"Appearance", light:"Light", dark:"Dark", searchEmp:"Search employee",
     cd:(d,h,m)=> d>0 ? `in ${d}d ${h}h` : `in ${h}h ${m}min`,
     unitStd:"h",
     roleMA:"Employee", roleMeister:"Shift supervisor", roleVorarbeiter:"Foreman", roleGruppenfuehrer:"Group leader", crewLabel:"Crew",
@@ -457,7 +467,7 @@ const I18N = {
     dFrom:"С", dTo:"По", optional:"необязательно", send:"Отправить заявку", sent:"Заявка отправлена ✓",
     myReq:"Мои заявки", reqSummaryUrlaub:"Заявка на отпуск отправляется бригадиру на согласование.",
     reqSummaryKrank:"Больничный отправляется бригадиру. eAU приходит отдельно из больничной кассы.",
-    sprache:"Язык", settings:"Настройки",
+    sprache:"Язык", settings:"Настройки", appearance:"Оформление", light:"Светлая", dark:"Тёмная", searchEmp:"Поиск сотрудника",
     cd:(d,h,m)=> d>0 ? `через ${d} дн ${h} ч` : `через ${h} ч ${m} мин`,
     unitStd:"ч",
     roleMA:"Сотрудник", roleMeister:"Сменный мастер", roleVorarbeiter:"Старший рабочий", roleGruppenfuehrer:"Руководитель группы", crewLabel:"Смена",
@@ -522,7 +532,7 @@ const I18N = {
     dFrom:"Od", dTo:"Do", optional:"opcjonalnie", send:"Wyślij wniosek", sent:"Wniosek wysłany ✓",
     myReq:"Moje wnioski", reqSummaryUrlaub:"Wniosek o urlop trafia do mistrza zmiany do zatwierdzenia.",
     reqSummaryKrank:"Zgłoszenie choroby trafia do mistrza zmiany. eAU przychodzi osobno z kasy chorych.",
-    sprache:"Język", settings:"Ustawienia",
+    sprache:"Język", settings:"Ustawienia", appearance:"Wygląd", light:"Jasny", dark:"Ciemny", searchEmp:"Szukaj pracownika",
     cd:(d,h,m)=> d>0 ? `za ${d} dni ${h} godz` : `za ${h} godz ${m} min`,
     unitStd:"godz",
     roleMA:"Pracownik", roleMeister:"Mistrz zmiany", roleVorarbeiter:"Brygadzista", roleGruppenfuehrer:"Lider grupy", crewLabel:"Zmiana",
@@ -713,6 +723,9 @@ export default function App(){
   const [loginId,setLoginId] = useState("");
   const [loginPw,setLoginPw] = useState("");
   const [showLoginPw,setShowLoginPw] = useState(false);   // Passwort im Login sichtbar?
+  const [theme,setTheme] = useState(()=>{ try{ return localStorage.getItem("theme")||"light"; }catch(e){ return "light"; } });
+  const [showSettings,setShowSettings] = useState(false); // Einstellungen-Overlay
+  const [empQuery,setEmpQuery] = useState("");            // Suchfeld für Mitarbeiterlisten
   const [reminderOn,setReminderOn] = useState(false);   // Schicht-Erinnerung aktiv?
   const [lead,setLead] = useState("eve");               // Vorlauf: "eve" | "hours"
   const [leadHours,setLeadHours] = useState(2);         // 0,5–4 Std in 0,5er-Schritten
@@ -951,7 +964,7 @@ export default function App(){
   const logout = ()=>{ if(hasSupabaseConfig) signOut(); setAuthed(false); setConsent(false); setLoginPw(""); setDbProfile(null); setTab(0); };
 
   async function openAdmin(){
-    setShowAdmin(true); setAdminErr(""); setAdminOk(false);
+    setShowAdmin(true); setAdminErr(""); setAdminOk(false); setEmpQuery("");
     setAName(""); setAEmail(""); setAPw(""); setAPnr("");
     setARole(role==="hr" ? "betriebsleiter" : "mitarbeiter");
     setABetrieb(dbProfile?.betrieb_id || betriebeOpts[0]?.id || "");
@@ -1033,6 +1046,12 @@ export default function App(){
       setDbReady(true);
     })();
   }, []);
+
+  // Theme (hell/dunkel) merken + auf Dokument anwenden.
+  useEffect(()=>{
+    try{ localStorage.setItem("theme", theme); }catch(e){}
+    try{ document.documentElement.style.colorScheme = theme==="dark" ? "dark" : "light"; }catch(e){}
+  }, [theme]);
 
   // Demo-Deeplink für Screenshots/Vorschau (nur ohne Backend):
   //   #demo=<rolle>[:<tab>]   z.B. #demo=bl:0  -> direkt angemeldet in dieser Ansicht.
@@ -1304,6 +1323,9 @@ export default function App(){
   const ROLE_OPTS = [["mitarbeiter",t.roleMA],["assistent",t.roleAssistent],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
   // HR legt nur Leitung an: Betriebsleiter + Assistent (gleiche Rechte).
   const ROLE_OPTS_LEIT = [["betriebsleiter",t.roleBL],["assistent",t.roleAssistent]];
+  // Mitarbeiter-Suche (Name oder Personalnummer).
+  const empMatch = (e,q)=>{ const s=(q||"").trim().toLowerCase(); if(!s) return true;
+    return (e.full_name||"").toLowerCase().includes(s) || String(e.personalnummer||"").toLowerCase().includes(s); };
   // Betriebsleiter/Assistent dürfen NUR Mitarbeiter + Schichtführung anlegen/ändern (keine Personalabteilung, keine Leitung).
   const BL_MANAGED = ["mitarbeiter","schichtmeister","vorarbeiter","gruppenfuehrer"];
   const ROLE_OPTS_BL = ROLE_OPTS.filter(([v])=>BL_MANAGED.includes(v));
@@ -1369,8 +1391,11 @@ export default function App(){
         </div>
 
         {!adminIsHR && <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {emps.length}</div>}
+        {!adminIsHR && emps.length>0 && (
+          <div className="field" style={{marginBottom:12}}><input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} /></div>
+        )}
         {!adminIsHR && emps.length===0 && <div className="card"><div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div></div>}
-        {!adminIsHR && empGroups.map(g=>(
+        {!adminIsHR && empGroups.map(g=>({ ...g, members:g.members.filter(e=>empMatch(e,empQuery)) })).filter(g=>g.members.length>0).map(g=>(
           <div className="card" key={g.key}>
             <div className="eyebrow" style={{marginBottom:12}}>{g.title} · {g.members.length}</div>
             {g.members.length===0 && <div style={{color:"var(--faint)",fontSize:13}}>—</div>}
@@ -1449,7 +1474,7 @@ export default function App(){
       <div className="sheet-hd">
         <button className="navbtn" onClick={()=> composing ? setComposing(false) : setShowPostfach(false)}><ChevronLeft size={18}/></button>
         <span className="disp">{composing ? t.newMsg : t.postfach}</span>
-        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope(role==="meister"?"shift":"all"); setMRecipient(""); setMFiles([]);}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
+        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope(role==="meister"?"shift":"all"); setMRecipient(""); setMFiles([]); setEmpQuery("");}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
       </div>
       <div className="sheet-body">
         {composing ? (
@@ -1467,9 +1492,10 @@ export default function App(){
             </div>
             {mScope==="person" && (
               <div className="field"><label>{t.recipientLbl}</label>
+                <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
                 <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
                   <option value="">—</option>
-                  {emps.filter(e=>e.id!==dbProfile?.id).map(e=>(
+                  {emps.filter(e=>e.id!==dbProfile?.id).filter(e=>empMatch(e,empQuery)).map(e=>(
                     <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
                   ))}
                 </select>
@@ -1573,18 +1599,46 @@ export default function App(){
     </div>
   );
 
+  const themeToggle = (
+    <div style={{display:"inline-flex",border:"1px solid var(--line)",borderRadius:9,overflow:"hidden"}}>
+      {[["light",t.light,<Sun size={14}/>],["dark",t.dark,<Moon size={14}/>]].map(([v,l,ic])=>(
+        <button key={v} onClick={()=>setTheme(v)} style={{display:"inline-flex",alignItems:"center",gap:5,padding:"6px 11px",fontSize:12,fontWeight:600,cursor:"pointer",border:"none",fontFamily:"inherit",
+          background: theme===v ? "var(--accent)" : "transparent", color: theme===v ? "#fff" : "var(--muted)"}}>{ic}{l}</button>
+      ))}
+    </div>
+  );
+  const settingsSheet = showSettings && (
+    <div className="sheet">
+      <div className="sheet-hd">
+        <button className="navbtn" onClick={()=>setShowSettings(false)}><ChevronLeft size={18}/></button>
+        <span className="disp">{t.settings}</span>
+      </div>
+      <div className="sheet-body">
+        <div className="card" style={{marginTop:0}}>
+          <div className="row" style={{cursor:"default"}}>
+            <span className="row-l"><span className="row-ic"><Languages size={16}/></span>{t.sprache}</span>
+            {langPicker}
+          </div>
+          <div className="row" style={{cursor:"default"}}>
+            <span className="row-l"><span className="row-ic"><Sun size={16}/></span>{t.appearance}</span>
+            {themeToggle}
+          </div>
+          {hasSupabaseConfig && (
+            <div className="row" onClick={()=>{ setShowSettings(false); openPw(); }}>
+              <span className="row-l"><span className="row-ic"><KeyRound size={16}/></span>{t.changePw}</span>
+              <ChevronRight size={16} color="var(--faint)"/>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
   const settingsCard = (
     <div className="card" style={{marginTop:0}}>
-      <div className="row" style={{cursor:"default"}}>
-        <span className="row-l"><span className="row-ic"><Languages size={16}/></span>{t.sprache}</span>
-        {langPicker}
+      <div className="row" onClick={()=>setShowSettings(true)}>
+        <span className="row-l"><span className="row-ic"><Settings size={16}/></span>{t.settings}</span>
+        <ChevronRight size={16} color="var(--faint)"/>
       </div>
-      {hasSupabaseConfig && (
-        <div className="row" onClick={openPw}>
-          <span className="row-l"><span className="row-ic"><KeyRound size={16}/></span>{t.changePw}</span>
-          <ChevronRight size={16} color="var(--faint)"/>
-        </div>
-      )}
       <div className="row" onClick={()=>setLegal("datenschutz")}>
         <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.datenschutz}</span>
         <ChevronRight size={16} color="var(--faint)"/>
@@ -1656,7 +1710,7 @@ export default function App(){
   // Sitzung wird geprüft (nur Supabase) -> kurzer Ladezustand
   if (hasSupabaseConfig && !dbReady) {
     return (
-      <div className="app-root">
+      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
         <style>{CSS}</style>
         <div className="phone">
           <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -1670,7 +1724,7 @@ export default function App(){
   // Passwort-Reset-Link geöffnet -> neues Passwort setzen.
   if (recovery) {
     return (
-      <div className="app-root">
+      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
         <style>{CSS}</style>
         <div className="phone">
           <div className="login">
@@ -1694,7 +1748,7 @@ export default function App(){
 
   if (!authed) {
     return (
-      <div className="app-root">
+      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
         <style>{CSS}</style>
         <div className="phone">
           <div className="login">
@@ -1745,7 +1799,7 @@ export default function App(){
   }
 
   return (
-    <div className="app-root">
+    <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
       <style>{CSS}</style>
       <div className="phone">
         {/* HEADER */}
@@ -1928,16 +1982,10 @@ export default function App(){
               {myRequestsCard}
 
               <div className="card">
-                <div className="row" style={{cursor:"default"}}>
-                  <span className="row-l"><span className="row-ic"><Languages size={16}/></span>{t.sprache}</span>
-                  {langPicker}
+                <div className="row" onClick={()=>setShowSettings(true)}>
+                  <span className="row-l"><span className="row-ic"><Settings size={16}/></span>{t.settings}</span>
+                  <ChevronRight size={16} color="var(--faint)"/>
                 </div>
-                {hasSupabaseConfig && (
-                  <div className="row" onClick={openPw}>
-                    <span className="row-l"><span className="row-ic"><KeyRound size={16}/></span>{t.changePw}</span>
-                    <ChevronRight size={16} color="var(--faint)"/>
-                  </div>
-                )}
                 <div className="row" onClick={()=>setLegal("datenschutz")}>
                   <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.datenschutz}</span>
                   <ChevronRight size={16} color="var(--faint)"/>
@@ -2286,9 +2334,10 @@ export default function App(){
               <div className="eyebrow" style={{marginTop:20}}>{t.uploadTitle}</div>
               <div className="card" style={{marginTop:0}}>
                 <div className="field"><label>{t.empLbl}</label>
+                  <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
                   <select className="lang-select" style={selStyle} value={psEmp} onChange={e=>{ setPsEmp(e.target.value); setPsOk(false); setPsErr(""); loadPsList(e.target.value); }}>
                     <option value="">—</option>
-                    {emps.map(e=><option key={e.id} value={e.id}>{e.full_name}</option>)}
+                    {emps.filter(e=>empMatch(e,empQuery)).map(e=><option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>)}
                   </select>
                 </div>
                 <div className="field"><label>{t.periodLabel}</label>
@@ -2454,6 +2503,7 @@ export default function App(){
         {payslipSheet}
         {adminSheet}
         {pwSheet}
+        {settingsSheet}
         {postfachSheet}
 
         {/* TABBAR */}
