@@ -114,6 +114,12 @@ export async function companyDirectory() {
   if (error) throw error
   return data
 }
+// Alle Schichten aller Betriebe (für die HR-Nachrichten-Empfängerauswahl).
+export async function companyTeams() {
+  const { data, error } = await supabase.rpc('company_teams')
+  if (error) throw error
+  return data
+}
 export async function sendMessage({ subject, body, team_id, betrieb_id, recipient_id = null, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
