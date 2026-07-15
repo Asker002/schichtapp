@@ -173,7 +173,7 @@ export async function getMyProfile() {
   const { data: { user } } = await supabase.auth.getUser()
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, role, full_name, personalnummer, entgeltgruppe, language, betrieb_id, team:teams(id, name, rotation_offset, anchor_date)')
+    .select('id, role, full_name, personalnummer, entgeltgruppe, language, active, betrieb_id, team:teams(id, name, rotation_offset, anchor_date)')
     .eq('id', user.id)   // gezielt das EIGENE Profil (Meister sieht sonst sein ganzes Team)
     .single()
   if (error) throw error

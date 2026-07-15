@@ -298,13 +298,13 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
     previewNote:"Phase 3 · Vorschau – im Pilotbetrieb noch nicht aktiv.",
     signin:"Anmelden", loginSub:"Melde dich mit Personalnummer oder E-Mail an.",
-    loginId:"Personalnummer", loginIdEmail:"Personalnummer oder E-Mail", pnrNotFound:"Personalnummer nicht gefunden.", email:"E-Mail", password:"Passwort", pwShow:"Passwort anzeigen", pwHide:"Passwort verbergen",
+    loginId:"Personalnummer", loginIdEmail:"Personalnummer oder E-Mail", pnrNotFound:"Personalnummer nicht gefunden.", accountDisabled:"Konto deaktiviert – bitte an die Personalabteilung wenden.", email:"E-Mail", password:"Passwort", pwShow:"Passwort anzeigen", pwHide:"Passwort verbergen",
     consentText:"Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.",
     privacyLink:"Datenschutzerklärung", loginDemo:"Prototyp – jede Eingabe öffnet den Demo-Account.",
     logout:"Abmelden",
@@ -363,13 +363,13 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
     previewNote:"3. Faz · Önizleme – pilot işletmede henüz aktif değil.",
     signin:"Giriş", loginSub:"Personel numarası veya e-posta ile giriş yap.",
-    loginId:"Personel numarası", loginIdEmail:"Personel numarası veya e-posta", pnrNotFound:"Personel numarası bulunamadı.", email:"E-posta", password:"Şifre", pwShow:"Şifreyi göster", pwHide:"Şifreyi gizle",
+    loginId:"Personel numarası", loginIdEmail:"Personel numarası veya e-posta", pnrNotFound:"Personel numarası bulunamadı.", accountDisabled:"Hesap devre dışı – lütfen İK ile iletişime geçin.", email:"E-posta", password:"Şifre", pwShow:"Şifreyi göster", pwHide:"Şifreyi gizle",
     consentText:"Gizlilik politikasını okudum ve verilerimin işlenmesini kabul ediyorum.",
     privacyLink:"Gizlilik politikası", loginDemo:"Prototip – her giriş demo hesabını açar.",
     logout:"Çıkış",
@@ -428,13 +428,13 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
     previewNote:"Phase 3 · Preview – not active in the pilot.",
     signin:"Sign in", loginSub:"Sign in with your personnel number or email.",
-    loginId:"Personnel number", loginIdEmail:"Personnel number or email", pnrNotFound:"Personnel number not found.", email:"Email", password:"Password", pwShow:"Show password", pwHide:"Hide password",
+    loginId:"Personnel number", loginIdEmail:"Personnel number or email", pnrNotFound:"Personnel number not found.", accountDisabled:"Account disabled – please contact HR.", email:"Email", password:"Password", pwShow:"Show password", pwHide:"Hide password",
     consentText:"I have read the privacy policy and consent to the processing of my data.",
     privacyLink:"Privacy policy", loginDemo:"Prototype – any input opens the demo account.",
     logout:"Sign out",
@@ -493,13 +493,13 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
     previewNote:"Фаза 3 · Предпросмотр – в пилоте пока не активно.",
     signin:"Войти", loginSub:"Войди по табельному номеру или эл. почте.",
-    loginId:"Табельный номер", loginIdEmail:"Табельный номер или эл. почта", pnrNotFound:"Табельный номер не найден.", email:"Эл. почта", password:"Пароль", pwShow:"Показать пароль", pwHide:"Скрыть пароль",
+    loginId:"Табельный номер", loginIdEmail:"Табельный номер или эл. почта", pnrNotFound:"Табельный номер не найден.", accountDisabled:"Аккаунт отключён – обратитесь в отдел кадров.", email:"Эл. почта", password:"Пароль", pwShow:"Показать пароль", pwHide:"Скрыть пароль",
     consentText:"Я прочитал(а) политику конфиденциальности и согласен(на) на обработку моих данных.",
     privacyLink:"Политика конфиденциальности", loginDemo:"Прототип – любой ввод открывает демо-аккаунт.",
     logout:"Выйти",
@@ -558,13 +558,13 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
     previewNote:"Faza 3 · Podgląd – nieaktywne w pilotażu.",
     signin:"Zaloguj się", loginSub:"Zaloguj się numerem personalnym lub e-mailem.",
-    loginId:"Numer personalny", loginIdEmail:"Numer personalny lub e-mail", pnrNotFound:"Nie znaleziono numeru personalnego.", email:"E-mail", password:"Hasło", pwShow:"Pokaż hasło", pwHide:"Ukryj hasło",
+    loginId:"Numer personalny", loginIdEmail:"Numer personalny lub e-mail", pnrNotFound:"Nie znaleziono numeru personalnego.", accountDisabled:"Konto wyłączone – skontaktuj się z HR.", email:"E-mail", password:"Hasło", pwShow:"Pokaż hasło", pwHide:"Ukryj hasło",
     consentText:"Przeczytałem(am) politykę prywatności i zgadzam się na przetwarzanie moich danych.",
     privacyLink:"Polityka prywatności", loginDemo:"Prototyp – każde dane otwierają konto demo.",
     logout:"Wyloguj",
@@ -738,6 +738,8 @@ export default function App(){
   const [aName,setAName] = useState(""); const [aEmail,setAEmail] = useState("");
   const [aPw,setAPw] = useState(""); const [aPnr,setAPnr] = useState("");
   const [aTeam,setATeam] = useState(""); const [aRole,setARole] = useState("mitarbeiter"); const [aBetrieb,setABetrieb] = useState("");
+  const [adminScope,setAdminScope] = useState("mit"); // "mit" (BL) | "leitung" | "hrteam"
+  const [rmConfirm,setRmConfirm] = useState(null);     // Profil-ID mit Entfernen-Bestätigung
   const [adminErr,setAdminErr] = useState(""); const [adminOk,setAdminOk] = useState(false); const [aBusy,setABusy] = useState(false);
   const [showPw,setShowPw] = useState(false); const [pwNew,setPwNew] = useState(""); const [pwNew2,setPwNew2] = useState("");
   const [pwErr,setPwErr] = useState(""); const [pwOk,setPwOk] = useState(false); const [pwBusy,setPwBusy] = useState(false);
@@ -925,6 +927,7 @@ export default function App(){
   const leadTitle = (dbProfile && {schichtmeister:t.roleMeister, vorarbeiter:t.roleVorarbeiter, gruppenfuehrer:t.roleGruppenfuehrer}[dbProfile.role]) || t.roleMeister;
   async function applyProfile(){
     const p = await getMyProfile();
+    if(p.active===false){ const err=new Error("inactive"); err.code="inactive"; throw err; }
     setDbProfile(p);
     setRole(ROLE_MAP[p.role] || "ma");
     const c = p.team?.name ? p.team.name.trim().slice(-1).toUpperCase() : null;
@@ -958,37 +961,44 @@ export default function App(){
     const { error } = await signIn(ident, loginPw);
     if (error) { setBusy(false); setAuthErr(error.message); return; }
     try { await applyProfile(); }
-    catch(e){ setAuthErr("Profil nicht gefunden – ist für diesen Login ein Profil angelegt?"); await signOut(); }
+    catch(e){ setAuthErr(e.code==="inactive" ? t.accountDisabled : "Profil nicht gefunden – ist für diesen Login ein Profil angelegt?"); await signOut(); }
     setBusy(false);
   }
   const logout = ()=>{ if(hasSupabaseConfig) signOut(); setAuthed(false); setConsent(false); setLoginPw(""); setDbProfile(null); setTab(0); };
 
-  async function openAdmin(){
-    setShowAdmin(true); setAdminErr(""); setAdminOk(false); setEmpQuery("");
+  async function openAdmin(scope="mit"){
+    setShowAdmin(true); setAdminScope(scope); setAdminErr(""); setAdminOk(false); setEmpQuery(""); setRmConfirm(null);
     setAName(""); setAEmail(""); setAPw(""); setAPnr("");
-    setARole(role==="hr" ? "betriebsleiter" : "mitarbeiter");
+    setARole(scope==="hrteam" ? "personal" : scope==="leitung" ? "betriebsleiter" : "mitarbeiter");
     setABetrieb(dbProfile?.betrieb_id || betriebeOpts[0]?.id || "");
     try{
       const [e,tm] = await Promise.all([listEmployees(), listTeams()]);
       setEmps(e); setTeamOpts(tm);
       setATeam(dbProfile?.team?.id || tm[0]?.id || "");
+      if(scope!=="mit"){ try{ setDirectory(await companyDirectory()); }catch(e){} }
     }catch(err){ setAdminErr(err.message); }
   }
   async function doCreateEmployee(){
     setABusy(true); setAdminErr(""); setAdminOk(false);
-    const isBL = role==="bl", isHR = role==="hr";
+    const isHRmode = adminScope==="leitung" || adminScope==="hrteam";
     try{
       await createEmployee({
         email:aEmail.trim(), password:aPw, full_name:aName.trim(), personalnummer:aPnr.trim(),
-        team_id: isHR ? null : (isBL ? aTeam : dbProfile?.team?.id),
-        role: isHR ? aRole : (isBL ? aRole : "mitarbeiter"),
-        betrieb_id: isHR ? aBetrieb : dbProfile?.betrieb_id,
+        team_id: isHRmode ? null : (role==="bl" ? aTeam : dbProfile?.team?.id),
+        role: adminScope==="hrteam" ? "personal" : (adminScope==="leitung" ? aRole : (role==="bl" ? aRole : "mitarbeiter")),
+        betrieb_id: isHRmode ? aBetrieb : dbProfile?.betrieb_id,
       });
       setAName(""); setAEmail(""); setAPw(""); setAPnr(""); setAdminOk(true);
-      if(isHR){ try{ setDirectory(await companyDirectory()); }catch(e){} }
+      if(isHRmode){ try{ setDirectory(await companyDirectory()); }catch(e){} }
       else setEmps(await listEmployees());
     }catch(err){ setAdminErr(err.message); }
     setABusy(false);
+  }
+  // HR entfernt HR/Leitung: Konto deaktivieren (reversibel) – mit Sicherheitsabfrage.
+  async function doDeactivate(id){
+    setAdminErr("");
+    try{ await updateEmployee(id,{active:false}); setRmConfirm(null); try{ setDirectory(await companyDirectory()); }catch(e){} }
+    catch(err){ setAdminErr(err.message); }
   }
   async function changeEmpRole(id, newRole){
     try{ await updateEmployee(id,{role:newRole}); setEmps(es=>es.map(e=>e.id===id?{...e,role:newRole}:e)); }
@@ -1333,6 +1343,10 @@ export default function App(){
   const betriebeOpts = [...new Map(directory.map(r=>[r.betrieb_id, r.betrieb_name])).entries()].map(([id,name])=>({id,name}));
   const adminIsBL = role==="bl";
   const adminIsHR = role==="hr";
+  const scopeLeitung = adminScope==="leitung";  // HR legt Betriebsleitung/Assistent an
+  const scopeHRteam  = adminScope==="hrteam";   // HR legt HR-Kollegen (Personalabteilung) an
+  // HR-Liste (Leitung bzw. Personalabteilung) aus dem Firmen-Verzeichnis.
+  const hrList = directory.filter(r=>r.profile_id && (scopeHRteam ? r.role==="personal" : ["betriebsleiter","assistent"].includes(r.role)));
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
   // Belegschaft nach Schichten gruppieren (Schichtführung inklusive); Teamlose separat.
   const empGroups = (()=>{
@@ -1345,11 +1359,11 @@ export default function App(){
     <div className="sheet">
       <div className="sheet-hd">
         <button className="navbtn" onClick={()=>setShowAdmin(false)}><ChevronLeft size={18}/></button>
-        <span className="disp">{adminIsHR ? t.newLeitung : t.manageEmp}</span>
+        <span className="disp">{scopeHRteam ? t.hrTeam : scopeLeitung ? t.newLeitung : t.manageEmp}</span>
       </div>
       <div className="sheet-body">
         <div className="card" style={{marginTop:0}}>
-          <div className="eyebrow" style={{marginBottom:12}}>{adminIsHR ? t.newLeitung : t.newEmp}</div>
+          <div className="eyebrow" style={{marginBottom:12}}>{scopeHRteam ? t.hrTeam : scopeLeitung ? t.newLeitung : t.newEmp}</div>
           <div className="field"><label>{t.fName}</label><input value={aName} onChange={e=>setAName(e.target.value)} /></div>
           <div className="field"><label>{t.email}</label><input type="email" value={aEmail} onChange={e=>setAEmail(e.target.value)} placeholder="name@firma.de" /></div>
           <div className="field"><label>{t.password}</label><input value={aPw} onChange={e=>setAPw(e.target.value)} /></div>
@@ -1376,12 +1390,21 @@ export default function App(){
                   {betriebeOpts.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
               </div>
-              <div className="field"><label>{t.roleLbl}</label>
-                <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
-                  {ROLE_OPTS_LEIT.map(([v,l])=><option key={v} value={v}>{l}</option>)}
-                </select>
-              </div>
-              <div style={{fontSize:11,color:"var(--faint)",marginBottom:12,lineHeight:1.5}}>{t.leitungHint}</div>
+              {scopeLeitung && (
+                <>
+                  <div className="field"><label>{t.roleLbl}</label>
+                    <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
+                      {ROLE_OPTS_LEIT.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                    </select>
+                  </div>
+                  <div style={{fontSize:11,color:"var(--faint)",marginBottom:12,lineHeight:1.5}}>{t.leitungHint}</div>
+                </>
+              )}
+              {scopeHRteam && (
+                <div className="field"><label>{t.roleLbl}</label>
+                  <span className="tg mut" style={{alignSelf:"flex-start"}}>{t.roleHR}</span>
+                </div>
+              )}
             </>
           )}
           <button className="submit" disabled={aBusy || !aName || !aEmail || !aPw || (adminIsHR && !aBetrieb)} onClick={doCreateEmployee}>{aBusy?"…":t.createBtn}</button>
@@ -1425,6 +1448,38 @@ export default function App(){
             ))}
           </div>
         ))}
+
+        {adminIsHR && (
+          <>
+            <div className="eyebrow" style={{margin:"4px 2px 0"}}>{(scopeHRteam ? t.hrTeam : t.newLeitung)} · {hrList.length}</div>
+            {hrList.length>0 && (
+              <div className="field" style={{marginBottom:12}}><input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} /></div>
+            )}
+            <div className="card" style={{marginTop:0}}>
+              {hrList.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div>}
+              {hrList.filter(p=>empMatch({full_name:p.full_name,personalnummer:p.personalnummer},empQuery)).map(p=>(
+                <div key={p.profile_id} style={{padding:"11px 0",borderBottom:"1px solid var(--line)",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                  <div className="row-l" style={{flex:"1 1 120px"}}>
+                    <span className="row-ic">{initials(p.full_name||"—")}</span>
+                    <div>
+                      <div style={{fontWeight:600}}>{p.full_name}</div>
+                      <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{p.betrieb_name}{p.personalnummer?` · ${p.personalnummer}`:""}</div>
+                    </div>
+                  </div>
+                  {p.profile_id!==dbProfile?.id && (
+                    rmConfirm===p.profile_id
+                      ? <span style={{display:"inline-flex",gap:6,alignItems:"center"}}>
+                          <span style={{fontSize:12,color:"var(--red)"}}>{t.reallyRemove}</span>
+                          <button className="mini-btn danger" onClick={()=>doDeactivate(p.profile_id)}>{t.yes}</button>
+                          <button className="mini-btn" onClick={()=>setRmConfirm(null)}>{t.no}</button>
+                        </span>
+                      : <button className="mini-btn danger" onClick={()=>setRmConfirm(p.profile_id)}>{t.remove}</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
         <div className="foot" style={{marginTop:24}}>PROTOTYP · U. Kebeli</div>
       </div>
     </div>
@@ -2179,7 +2234,7 @@ export default function App(){
               {myRequestsCard}
               <div style={{fontSize:11,color:"var(--faint)",marginTop:12,lineHeight:1.5}}>{t.selfApproveNote}</div>
               <div className="card">
-                <div className="row" onClick={openAdmin}>
+                <div className="row" onClick={()=>openAdmin()}>
                   <span className="row-l"><span className="row-ic"><Users size={16}/></span>{t.manageEmp}</span>
                   <ChevronRight size={16} color="var(--faint)"/>
                 </div>
@@ -2294,7 +2349,7 @@ export default function App(){
           {role==="bl" && tab===3 && (
             <>
               <div className="card" style={{marginTop:0}}>
-                <div className="row" onClick={openAdmin}>
+                <div className="row" onClick={()=>openAdmin()}>
                   <span className="row-l"><span className="row-ic"><Users size={16}/></span>{t.manageEmp}</span>
                   <ChevronRight size={16} color="var(--faint)"/>
                 </div>
@@ -2392,7 +2447,7 @@ export default function App(){
               <>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:12}}>
                   <div className="eyebrow" style={{margin:0}}>{t.hrTabs[1]} · {byB.length}</div>
-                  <button className="mini-btn" onClick={openAdmin} style={{display:"inline-flex",alignItems:"center",gap:6}}>
+                  <button className="mini-btn" onClick={()=>openAdmin("leitung")} style={{display:"inline-flex",alignItems:"center",gap:6}}>
                     <Users size={14}/>{t.newLeitung}
                   </button>
                 </div>
@@ -2467,7 +2522,16 @@ export default function App(){
           })()}
 
           {role==="hr" && tab===3 && (
-            <><div style={{marginBottom:14}}>{settingsCard}</div><div className="foot">PROTOTYP · U. Kebeli</div></>
+            <>
+              <div className="card" style={{marginTop:0}}>
+                <div className="row" onClick={()=>openAdmin("hrteam")}>
+                  <span className="row-l"><span className="row-ic"><Users size={16}/></span>{t.hrTeam}</span>
+                  <ChevronRight size={16} color="var(--faint)"/>
+                </div>
+              </div>
+              <div style={{marginTop:14}}>{settingsCard}</div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
+            </>
           )}
         </div>
 
