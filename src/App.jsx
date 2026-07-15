@@ -298,7 +298,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -363,7 +363,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -428,7 +428,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", writeMsg:"Write message", sendPayslip:"Send payslip", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -493,7 +493,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -558,7 +558,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -758,6 +758,7 @@ export default function App(){
   const [selCrew,setSelCrew] = useState(null);         // BL-Übersicht: aufgeklappte Schicht (team_id)
   const [directory,setDirectory] = useState([]);       // HR Betriebe-Verzeichnis (ganze Firma)
   const [openBetrieb,setOpenBetrieb] = useState(null); // aufgeklappter Betrieb im Betriebe-Tab
+  const [dirAction,setDirAction] = useState(null);     // im Betriebe-Verzeichnis angetippte Person (Aktionsmenü)
   const [psEmp,setPsEmp] = useState(""); const [psPeriod,setPsPeriod] = useState(""); const [psFile,setPsFile] = useState(null);
   const [psBulkFiles,setPsBulkFiles] = useState([]); const [psBulkBusy,setPsBulkBusy] = useState(false); const [psBulkRes,setPsBulkRes] = useState(null);
   const [psList,setPsList] = useState([]); const [psBusy,setPsBusy] = useState(false); const [psErr,setPsErr] = useState(""); const [psOk,setPsOk] = useState(false);
@@ -1356,6 +1357,28 @@ export default function App(){
     if(noTeam.length) gs.push({ key:"__none", title:t.noTeamCat, members:noTeam });
     return gs;
   })();
+  // HR: Aktionsmenü, wenn im Betriebe-Verzeichnis ein Name angetippt wird.
+  const dirActionSheet = dirAction && (
+    <div className="sheet">
+      <div className="sheet-hd">
+        <button className="navbtn" onClick={()=>setDirAction(null)}><ChevronLeft size={18}/></button>
+        <span className="disp">{dirAction.full_name}</span>
+      </div>
+      <div className="sheet-body">
+        <div className="card" style={{marginTop:0}}>
+          <div className="row" onClick={()=>{ const p=dirAction; setDirAction(null); setShowPostfach(true); setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope("person"); setMRecipient(p.profile_id); setMFiles([]); setEmpQuery(""); }}>
+            <span className="row-l"><span className="row-ic"><PenSquare size={16}/></span>{t.writeMsg}</span>
+            <ChevronRight size={16} color="var(--faint)"/>
+          </div>
+          <div className="row" onClick={()=>{ const p=dirAction; setDirAction(null); setTab(0); setPsEmp(p.profile_id); setPsOk(false); setPsErr(""); setEmpQuery(""); loadPsList(p.profile_id); }}>
+            <span className="row-l"><span className="row-ic"><Wallet size={16}/></span>{t.sendPayslip}</span>
+            <ChevronRight size={16} color="var(--faint)"/>
+          </div>
+        </div>
+        <div style={{fontSize:11,color:"var(--faint)",marginTop:10,lineHeight:1.5}}>{dirAction.betrieb_name}</div>
+      </div>
+    </div>
+  );
   const adminSheet = showAdmin && (
     <div className="sheet">
       <div className="sheet-hd">
@@ -2437,10 +2460,11 @@ export default function App(){
             });
             const roleLabel = { betriebsleiter:t.roleBL, assistent:t.roleAssistent, schichtmeister:t.roleMeister, vorarbeiter:t.roleVorarbeiter, gruppenfuehrer:t.roleGruppenfuehrer, personal:t.roleHR, mitarbeiter:t.roleMA };
             const person = (p, withRole)=>(
-              <div className="row" key={p.profile_id} style={{cursor:"default"}}>
+              <div className="row" key={p.profile_id} onClick={()=>setDirAction(p)}>
                 <span className="row-l"><span className="row-ic">{initials(p.full_name)}</span>{p.full_name}</span>
-                <span style={{fontSize:11,color:"var(--muted)",whiteSpace:"nowrap"}}>
+                <span style={{fontSize:11,color:"var(--muted)",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:6}}>
                   {withRole ? (roleLabel[p.role]+(p.team_name?` · ${p.team_name}`:"")) : (p.personalnummer||"")}
+                  <ChevronRight size={14} color="var(--faint)"/>
                 </span>
               </div>
             );
@@ -2492,37 +2516,7 @@ export default function App(){
             );
           })()}
 
-          {role==="hr" && tab===2 && (()=>{
-            const list = hasSupabaseConfig ? allEmpsReal : allTeam;
-            return (
-            <>
-              <div className="eyebrow">{t.hrEmpTitle} · {list.length} {t.empLbl}</div>
-              <div className="card" style={{marginTop:0}}>
-                {list.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div>}
-                {list.map((m,i)=>{
-                  const s = statusMap[m.st];
-                  return (
-                    <div className="row" key={m.id||i} style={{cursor:"default"}}>
-                      <div className="row-l">
-                        <span className="row-ic">{initials(m.name)}</span>
-                        <div>
-                          <div style={{fontWeight:600}}>{m.name}</div>
-                          <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>
-                            {m.crew && m.crew!=="—" ? `${t.crewLabel} ${m.crew}` : t.noTeamCat}{m.pnr?` · ${m.pnr}`:""}
-                          </div>
-                        </div>
-                      </div>
-                      <span className={"tg "+s.c}>{t[s.k]}</span>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="foot">PROTOTYP · U. Kebeli</div>
-            </>
-            );
-          })()}
-
-          {role==="hr" && tab===3 && (
+          {role==="hr" && tab===2 && (
             <>
               <div className="card" style={{marginTop:0}}>
                 <div className="row" onClick={()=>openAdmin("hrteam")}>
@@ -2569,6 +2563,7 @@ export default function App(){
         {adminSheet}
         {pwSheet}
         {settingsSheet}
+        {dirActionSheet}
         {postfachSheet}
 
         {/* TABBAR */}
@@ -2578,7 +2573,7 @@ export default function App(){
               ma:      {icons:[<Home size={20}/>,<CalendarDays size={20}/>,<Wallet size={20}/>,<LayoutGrid size={20}/>], labels:t.tabs},
               meister: {icons:[<Inbox size={20}/>,<Users size={20}/>,<CalendarDays size={20}/>,<LayoutGrid size={20}/>], labels:t.mTabs},
               bl:      {icons:[<LayoutGrid size={20}/>,<Plane size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.blTabs},
-              hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Users size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
+              hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
             }[role];
             return cfg.icons.map((ic,i)=>(
               <button key={i} className={"tab"+(tab===i?" on":"")} onClick={()=>setTab(i)}>
