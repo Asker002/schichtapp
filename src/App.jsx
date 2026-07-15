@@ -33,7 +33,7 @@ const CSS = `
   --frei:#C4CCD3; --plus:#2E9E5B; --plus-soft:rgba(46,158,91,.12);
   --accent:#00869A; --red:#C92A2E; --red-soft:rgba(201,42,46,.10);
   font-family:'Inter',system-ui,sans-serif;
-  display:flex; justify-content:center; background:#e9edf1; height:100vh; height:100dvh; overflow:hidden; padding:0;
+  display:flex; justify-content:center; background:#e9edf1; height:100%; overflow:hidden; overscroll-behavior:none; padding:0;
 }
 .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;}
 .disp{font-family:'Space Grotesk',system-ui,sans-serif;}

@@ -6,15 +6,21 @@
 
 * { box-sizing: border-box; }
 
-html, body {
+html { height: 100%; }
+body {
   margin: 0;
-  height: 100dvh;
+  /* Body FEST an den Bildschirm nageln: auf iOS kann so weder das Dokument
+     scrollen noch die ganze Seite „gummibanden" (Rubber-Band). Nur die
+     App-Mitte (.body) scrollt. */
+  position: fixed;
+  inset: 0;
+  height: 100%;
   overflow: hidden;                 /* Dokument scrollt NIE – nur die App-Mitte */
   overscroll-behavior: none;        /* kein Rubber-Band/Bounce */
   background: #e9edf1;
   color: #181716;
 }
 
-#root { height: 100dvh; }
+#root { height: 100%; }
 
 button { font: inherit; }
