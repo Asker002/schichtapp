@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Home, CalendarDays, Wallet, LayoutGrid, Sun, Moon,
   FileText, Plane, HeartPulse, Languages, ChevronRight, ChevronLeft,
-  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download
+  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
@@ -194,6 +194,11 @@ const CSS = `
 .field input, .field textarea{background:var(--surface); border:1px solid var(--line); color:var(--text);
   border-radius:10px; padding:12px; font-size:15px; font-family:inherit; width:100%;}
 .field input::-webkit-calendar-picker-indicator{opacity:.55;}
+.pw-wrap{position:relative; display:flex;}
+.pw-wrap input{padding-right:46px;}
+.pw-toggle{position:absolute; right:6px; top:50%; transform:translateY(-50%); background:none; border:none;
+  color:var(--muted); cursor:pointer; padding:8px; display:flex; align-items:center; border-radius:8px;}
+.pw-toggle:hover{color:var(--text);}
 .summary{background:var(--surface2); border:1px solid var(--line); border-radius:12px; padding:14px; font-size:13px; color:var(--muted); margin-bottom:16px;}
 .summary b{color:var(--text); font-weight:600;}
 .submit{width:100%; background:var(--plus); color:#06231a; border:none; border-radius:12px; padding:14px; font-size:15px; font-weight:700; cursor:pointer;}
@@ -288,7 +293,7 @@ const I18N = {
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
     previewNote:"Phase 3 · Vorschau – im Pilotbetrieb noch nicht aktiv.",
     signin:"Anmelden", loginSub:"Melde dich mit Personalnummer oder E-Mail an.",
-    loginId:"Personalnummer", loginIdEmail:"Personalnummer oder E-Mail", pnrNotFound:"Personalnummer nicht gefunden.", email:"E-Mail", password:"Passwort",
+    loginId:"Personalnummer", loginIdEmail:"Personalnummer oder E-Mail", pnrNotFound:"Personalnummer nicht gefunden.", email:"E-Mail", password:"Passwort", pwShow:"Passwort anzeigen", pwHide:"Passwort verbergen",
     consentText:"Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.",
     privacyLink:"Datenschutzerklärung", loginDemo:"Prototyp – jede Eingabe öffnet den Demo-Account.",
     logout:"Abmelden",
@@ -353,7 +358,7 @@ const I18N = {
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
     previewNote:"3. Faz · Önizleme – pilot işletmede henüz aktif değil.",
     signin:"Giriş", loginSub:"Personel numarası veya e-posta ile giriş yap.",
-    loginId:"Personel numarası", loginIdEmail:"Personel numarası veya e-posta", pnrNotFound:"Personel numarası bulunamadı.", email:"E-posta", password:"Şifre",
+    loginId:"Personel numarası", loginIdEmail:"Personel numarası veya e-posta", pnrNotFound:"Personel numarası bulunamadı.", email:"E-posta", password:"Şifre", pwShow:"Şifreyi göster", pwHide:"Şifreyi gizle",
     consentText:"Gizlilik politikasını okudum ve verilerimin işlenmesini kabul ediyorum.",
     privacyLink:"Gizlilik politikası", loginDemo:"Prototip – her giriş demo hesabını açar.",
     logout:"Çıkış",
@@ -418,7 +423,7 @@ const I18N = {
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
     previewNote:"Phase 3 · Preview – not active in the pilot.",
     signin:"Sign in", loginSub:"Sign in with your personnel number or email.",
-    loginId:"Personnel number", loginIdEmail:"Personnel number or email", pnrNotFound:"Personnel number not found.", email:"Email", password:"Password",
+    loginId:"Personnel number", loginIdEmail:"Personnel number or email", pnrNotFound:"Personnel number not found.", email:"Email", password:"Password", pwShow:"Show password", pwHide:"Hide password",
     consentText:"I have read the privacy policy and consent to the processing of my data.",
     privacyLink:"Privacy policy", loginDemo:"Prototype – any input opens the demo account.",
     logout:"Sign out",
@@ -483,7 +488,7 @@ const I18N = {
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
     previewNote:"Фаза 3 · Предпросмотр – в пилоте пока не активно.",
     signin:"Войти", loginSub:"Войди по табельному номеру или эл. почте.",
-    loginId:"Табельный номер", loginIdEmail:"Табельный номер или эл. почта", pnrNotFound:"Табельный номер не найден.", email:"Эл. почта", password:"Пароль",
+    loginId:"Табельный номер", loginIdEmail:"Табельный номер или эл. почта", pnrNotFound:"Табельный номер не найден.", email:"Эл. почта", password:"Пароль", pwShow:"Показать пароль", pwHide:"Скрыть пароль",
     consentText:"Я прочитал(а) политику конфиденциальности и согласен(на) на обработку моих данных.",
     privacyLink:"Политика конфиденциальности", loginDemo:"Прототип – любой ввод открывает демо-аккаунт.",
     logout:"Выйти",
@@ -548,7 +553,7 @@ const I18N = {
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
     previewNote:"Faza 3 · Podgląd – nieaktywne w pilotażu.",
     signin:"Zaloguj się", loginSub:"Zaloguj się numerem personalnym lub e-mailem.",
-    loginId:"Numer personalny", loginIdEmail:"Numer personalny lub e-mail", pnrNotFound:"Nie znaleziono numeru personalnego.", email:"E-mail", password:"Hasło",
+    loginId:"Numer personalny", loginIdEmail:"Numer personalny lub e-mail", pnrNotFound:"Nie znaleziono numeru personalnego.", email:"E-mail", password:"Hasło", pwShow:"Pokaż hasło", pwHide:"Ukryj hasło",
     consentText:"Przeczytałem(am) politykę prywatności i zgadzam się na przetwarzanie moich danych.",
     privacyLink:"Polityka prywatności", loginDemo:"Prototyp – każde dane otwierają konto demo.",
     logout:"Wyloguj",
@@ -706,6 +711,7 @@ export default function App(){
   const [consent,setConsent] = useState(false);
   const [loginId,setLoginId] = useState("");
   const [loginPw,setLoginPw] = useState("");
+  const [showLoginPw,setShowLoginPw] = useState(false);   // Passwort im Login sichtbar?
   const [reminderOn,setReminderOn] = useState(false);   // Schicht-Erinnerung aktiv?
   const [lead,setLead] = useState("eve");               // Vorlauf: "eve" | "hours"
   const [leadHours,setLeadHours] = useState(2);         // 0,5–4 Std in 0,5er-Schritten
@@ -1627,7 +1633,13 @@ export default function App(){
               </div>
               <div className="field">
                 <label>{t.password}</label>
-                <input type="password" value={loginPw} onChange={e=>setLoginPw(e.target.value)} autoComplete="current-password" />
+                <div className="pw-wrap">
+                  <input type={showLoginPw?"text":"password"} value={loginPw} onChange={e=>setLoginPw(e.target.value)} autoComplete="current-password" />
+                  <button type="button" className="pw-toggle" onClick={()=>setShowLoginPw(v=>!v)}
+                    aria-label={showLoginPw?t.pwHide:t.pwShow} title={showLoginPw?t.pwHide:t.pwShow}>
+                    {showLoginPw ? <EyeOff size={18}/> : <Eye size={18}/>}
+                  </button>
+                </div>
               </div>
               <label className="consent">
                 <input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)} />
