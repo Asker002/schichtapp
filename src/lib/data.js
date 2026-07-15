@@ -106,6 +106,14 @@ export async function teamAssignments(date) {
   if (error) throw error
   return data
 }
+
+// Firmen-Verzeichnis für HR: alle Betriebe + Belegschaft (nach Hierarchie sortiert).
+// Nur Rolle 'personal' bekommt Daten (SECURITY DEFINER prüft das).
+export async function companyDirectory() {
+  const { data, error } = await supabase.rpc('company_directory')
+  if (error) throw error
+  return data
+}
 export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({

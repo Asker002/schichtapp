@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import {
   Home, CalendarDays, Wallet, LayoutGrid, Sun, Moon,
   FileText, Plane, HeartPulse, Languages, ChevronRight, ChevronLeft,
-  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff
+  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
-  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments } from "./lib/data";
+  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments, companyDirectory } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -169,6 +169,7 @@ const CSS = `
 
 .preview-note{background:var(--tag-soft); border:1px solid rgba(199,122,10,.25); color:var(--tag);
   border-radius:10px; padding:9px 12px; margin-bottom:14px; font-size:11.5px; font-weight:600; letter-spacing:.01em;}
+.cat-h{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); font-weight:700; margin:12px 2px 3px;}
 
 .roleseg{display:flex; background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:3px; margin-top:14px;}
 .rolebtn{flex:1; padding:8px 2px; border:none; background:none; color:var(--muted); font-size:11px; font-weight:600; border-radius:8px; cursor:pointer; transition:.15s; letter-spacing:-.01em;}
@@ -287,7 +288,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Zeit","Personal","Mehr"],
+    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Assistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -352,7 +353,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","Zaman","Personel","Diğer"],
+    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"Asistan", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -417,7 +418,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Time","People","More"],
+    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -482,7 +483,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Время","Персонал","Ещё"],
+    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -547,7 +548,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Czas","Kadry","Więcej"],
+    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -740,6 +741,8 @@ export default function App(){
   const [assignDate,setAssignDate] = useState("");     // Datum der Einteilung (Führung; Historie)
   const [teamToday,setTeamToday] = useState([]);       // Kollegen-Sicht heute: [{profile_id, full_name, station}]
   const [selCrew,setSelCrew] = useState(null);         // BL-Übersicht: aufgeklappte Schicht (team_id)
+  const [directory,setDirectory] = useState([]);       // HR Betriebe-Verzeichnis (ganze Firma)
+  const [openBetrieb,setOpenBetrieb] = useState(null); // aufgeklappter Betrieb im Betriebe-Tab
   const [psEmp,setPsEmp] = useState(""); const [psPeriod,setPsPeriod] = useState(""); const [psFile,setPsFile] = useState(null);
   const [psBulkFiles,setPsBulkFiles] = useState([]); const [psBulkBusy,setPsBulkBusy] = useState(false); const [psBulkRes,setPsBulkRes] = useState(null);
   const [psList,setPsList] = useState([]); const [psBusy,setPsBusy] = useState(false); const [psErr,setPsErr] = useState(""); const [psOk,setPsOk] = useState(false);
@@ -901,7 +904,7 @@ export default function App(){
 
   // Rolle aus DB (schema) -> App-Rollencode. Schichtführung (Meister/Vorarbeiter/
   // Gruppenführer) teilt sich dieselbe "meister"-Ansicht.
-  const ROLE_MAP = { mitarbeiter:"ma", schichtmeister:"meister", vorarbeiter:"meister", gruppenfuehrer:"meister", betriebsleiter:"bl", personal:"hr" };
+  const ROLE_MAP = { mitarbeiter:"ma", assistent:"ma", schichtmeister:"meister", vorarbeiter:"meister", gruppenfuehrer:"meister", betriebsleiter:"bl", personal:"hr" };
   const leadTitle = (dbProfile && {schichtmeister:t.roleMeister, vorarbeiter:t.roleVorarbeiter, gruppenfuehrer:t.roleGruppenfuehrer}[dbProfile.role]) || t.roleMeister;
   async function applyProfile(){
     const p = await getMyProfile();
@@ -918,6 +921,10 @@ export default function App(){
     await loadPayslips();
     await loadAssignments();
     await loadTeamToday();
+    if (p.role === "personal") {
+      try{ setDirectory(await companyDirectory()); }
+      catch(e){ console.warn("[directory]", e.message); }
+    }
   }
   async function doLogin(){
     if (!hasSupabaseConfig) { setAuthed(true); return; }   // Demo-Modus ohne Backend
@@ -1287,7 +1294,7 @@ export default function App(){
   );
 
   // Mitarbeiterverwaltung (Overlay). Betriebsleiter darf Rollen zuweisen, Meister nur Mitarbeiter anlegen.
-  const ROLE_OPTS = [["mitarbeiter",t.roleMA],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
+  const ROLE_OPTS = [["mitarbeiter",t.roleMA],["assistent",t.roleAssistent],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
   const adminIsBL = role==="bl";
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
   // Belegschaft nach Schichten gruppieren (Schichtführung inklusive); Teamlose separat.
@@ -1736,7 +1743,6 @@ export default function App(){
 
         {/* BODY */}
         <div className="body" key={tab+lang}>
-          {role==="hr" && tab===1 && <div className="preview-note">{t.previewNote}</div>}
           {role==="ma" && tab===0 && (
             <>
               <div className={"hero "+heroType}>
@@ -2262,26 +2268,70 @@ export default function App(){
             </>
           )}
 
-          {role==="hr" && tab===1 && (
-            <>
-              <div className="eyebrow">{t.timeTitle}</div>
-              <div className="card" style={{marginTop:0}}>
-                {TIME_ISSUES.map((ti,i)=>(
-                  <div className="row" key={i}>
-                    <div className="row-l">
-                      <span className="row-ic"><Clock size={15}/></span>
-                      <div>
-                        <div style={{fontWeight:600}}>{ti.name}</div>
-                        <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{ti.date} · {t[ti.key]}</div>
-                      </div>
-                    </div>
-                    <ChevronRight size={16} color="var(--faint)"/>
-                  </div>
-                ))}
+          {role==="hr" && tab===1 && (()=>{
+            if(!hasSupabaseConfig) return (
+              <><div className="eyebrow">{t.hrTabs[1]}</div>
+                <div className="card" style={{marginTop:0,color:"var(--faint)",fontSize:14}}>{t.previewNote}</div>
+                <div className="foot">PROTOTYP · U. Kebeli</div></>
+            );
+            // Verzeichnis nach Betrieb gruppieren (DB liefert bereits nach Hierarchie sortiert).
+            const byB = [];
+            directory.forEach(r=>{
+              let g = byB.find(x=>x.id===r.betrieb_id);
+              if(!g){ g={id:r.betrieb_id, name:r.betrieb_name, people:[]}; byB.push(g); }
+              if(r.profile_id) g.people.push(r);
+            });
+            const roleLabel = { betriebsleiter:t.roleBL, assistent:t.roleAssistent, schichtmeister:t.roleMeister, vorarbeiter:t.roleVorarbeiter, gruppenfuehrer:t.roleGruppenfuehrer, personal:t.roleHR, mitarbeiter:t.roleMA };
+            const person = (p, withRole)=>(
+              <div className="row" key={p.profile_id} style={{cursor:"default"}}>
+                <span className="row-l"><span className="row-ic">{initials(p.full_name)}</span>{p.full_name}</span>
+                <span style={{fontSize:11,color:"var(--muted)",whiteSpace:"nowrap"}}>
+                  {withRole ? (roleLabel[p.role]+(p.team_name?` · ${p.team_name}`:"")) : (p.personalnummer||"")}
+                </span>
               </div>
-              <div className="foot">PROTOTYP · U. Kebeli</div>
-            </>
-          )}
+            );
+            return (
+              <>
+                <div className="eyebrow">{t.hrTabs[1]} · {byB.length}</div>
+                {byB.map(b=>{
+                  const open = openBetrieb===b.id;
+                  const bl  = b.people.filter(p=>p.role==="betriebsleiter");
+                  const asi = b.people.filter(p=>p.role==="assistent");
+                  const fue = b.people.filter(p=>["schichtmeister","vorarbeiter","gruppenfuehrer"].includes(p.role));
+                  const shifts = [];
+                  b.people.filter(p=>p.role==="mitarbeiter").forEach(p=>{
+                    const key=p.team_name||t.noTeamCat; let s=shifts.find(x=>x.name===key);
+                    if(!s){ s={name:key,members:[]}; shifts.push(s); } s.members.push(p);
+                  });
+                  return (
+                    <div className="card" key={b.id} style={{marginTop:0,marginBottom:12}}>
+                      <div className="row" onClick={()=>setOpenBetrieb(open?null:b.id)} style={{cursor:"pointer"}}>
+                        <span className="row-l"><span className="row-ic"><Building2 size={16}/></span><b>{b.name}</b></span>
+                        <span style={{display:"flex",alignItems:"center",gap:8}}>
+                          <span style={{fontSize:12,color:"var(--muted)"}}>{b.people.length}</span>
+                          <ChevronRight size={16} color="var(--faint)" style={{transform:open?"rotate(90deg)":"none",transition:"transform .15s"}}/>
+                        </span>
+                      </div>
+                      {open && (b.people.length===0
+                        ? <div style={{color:"var(--faint)",fontSize:13,padding:"8px 2px 2px"}}>{t.noBetriebEmp}</div>
+                        : <div style={{marginTop:4}}>
+                            {bl.length>0  && <><div className="cat-h">{t.roleBL}</div>{bl.map(p=>person(p))}</>}
+                            {asi.length>0 && <><div className="cat-h">{t.roleAssistent}</div>{asi.map(p=>person(p))}</>}
+                            {fue.length>0 && <><div className="cat-h">{t.catFuehrung}</div>{fue.map(p=>person(p,true))}</>}
+                            {shifts.map(s=>(
+                              <React.Fragment key={s.name}>
+                                <div className="cat-h">{t.catBelegschaft} · {s.name}</div>
+                                {s.members.map(p=>person(p))}
+                              </React.Fragment>
+                            ))}
+                          </div>)}
+                    </div>
+                  );
+                })}
+                <div className="foot">PROTOTYP · U. Kebeli</div>
+              </>
+            );
+          })()}
 
           {role==="hr" && tab===2 && (()=>{
             const list = hasSupabaseConfig ? allEmpsReal : allTeam;
@@ -2359,7 +2409,7 @@ export default function App(){
               ma:      {icons:[<Home size={20}/>,<CalendarDays size={20}/>,<Wallet size={20}/>,<LayoutGrid size={20}/>], labels:t.tabs},
               meister: {icons:[<Inbox size={20}/>,<Users size={20}/>,<CalendarDays size={20}/>,<LayoutGrid size={20}/>], labels:t.mTabs},
               bl:      {icons:[<LayoutGrid size={20}/>,<Plane size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.blTabs},
-              hr:      {icons:[<Wallet size={20}/>,<Clock size={20}/>,<Users size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
+              hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Users size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
             }[role];
             return cfg.icons.map((ic,i)=>(
               <button key={i} className={"tab"+(tab===i?" on":"")} onClick={()=>setTab(i)}>
