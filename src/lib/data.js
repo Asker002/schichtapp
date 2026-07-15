@@ -120,6 +120,18 @@ export async function companyTeams() {
   if (error) throw error
   return data
 }
+// Alle Abwesenheits-Anträge aller Werke (HR-Übersicht).
+export async function companyRequests() {
+  const { data, error } = await supabase.rpc('company_requests')
+  if (error) throw error
+  return data
+}
+// Status pro Mitarbeiter heute (im Dienst/frei/krank/Urlaub) über alle Werke.
+export async function companyOverview(date) {
+  const { data, error } = await supabase.rpc('company_overview', { d: date })
+  if (error) throw error
+  return data
+}
 export async function sendMessage({ subject, body, team_id, betrieb_id, recipient_id = null, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
