@@ -1587,7 +1587,7 @@ export default function App(){
                 )}
                 {role==="bl" && (
                   <>
-                    <option value="all">{t.plantWide}</option>
+                    <option value="all">{t.wholePlant}{dbProfile?.betrieb?.name?` · ${dbProfile.betrieb.name}`:""}</option>
                     {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
                   </>
                 )}
