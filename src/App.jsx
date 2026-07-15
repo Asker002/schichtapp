@@ -288,7 +288,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Assistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung",
+    hrTabs:["Lohnlauf","Betriebe","Personal","Mehr"], roleAssistent:"Assistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Assistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -353,7 +353,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"Asistan", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok",
+    hrTabs:["Bordro","İşletmeler","Personel","Diğer"], roleAssistent:"Asistan", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -418,7 +418,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet",
+    hrTabs:["Payroll","Plants","People","More"], roleAssistent:"Assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -483,7 +483,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен",
+    hrTabs:["Зарплата","Заводы","Персонал","Ещё"], roleAssistent:"Ассистент", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -548,7 +548,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania",
+    hrTabs:["Płace","Zakłady","Kadry","Więcej"], roleAssistent:"Asystent", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -724,7 +724,7 @@ export default function App(){
   const [teamOpts,setTeamOpts] = useState([]);
   const [aName,setAName] = useState(""); const [aEmail,setAEmail] = useState("");
   const [aPw,setAPw] = useState(""); const [aPnr,setAPnr] = useState("");
-  const [aTeam,setATeam] = useState(""); const [aRole,setARole] = useState("mitarbeiter");
+  const [aTeam,setATeam] = useState(""); const [aRole,setARole] = useState("mitarbeiter"); const [aBetrieb,setABetrieb] = useState("");
   const [adminErr,setAdminErr] = useState(""); const [adminOk,setAdminOk] = useState(false); const [aBusy,setABusy] = useState(false);
   const [showPw,setShowPw] = useState(false); const [pwNew,setPwNew] = useState(""); const [pwNew2,setPwNew2] = useState("");
   const [pwErr,setPwErr] = useState(""); const [pwOk,setPwOk] = useState(false); const [pwBusy,setPwBusy] = useState(false);
@@ -904,7 +904,7 @@ export default function App(){
 
   // Rolle aus DB (schema) -> App-Rollencode. Schichtführung (Meister/Vorarbeiter/
   // Gruppenführer) teilt sich dieselbe "meister"-Ansicht.
-  const ROLE_MAP = { mitarbeiter:"ma", assistent:"ma", schichtmeister:"meister", vorarbeiter:"meister", gruppenfuehrer:"meister", betriebsleiter:"bl", personal:"hr" };
+  const ROLE_MAP = { mitarbeiter:"ma", schichtmeister:"meister", vorarbeiter:"meister", gruppenfuehrer:"meister", betriebsleiter:"bl", assistent:"bl", personal:"hr" };
   const leadTitle = (dbProfile && {schichtmeister:t.roleMeister, vorarbeiter:t.roleVorarbeiter, gruppenfuehrer:t.roleGruppenfuehrer}[dbProfile.role]) || t.roleMeister;
   async function applyProfile(){
     const p = await getMyProfile();
@@ -948,7 +948,9 @@ export default function App(){
 
   async function openAdmin(){
     setShowAdmin(true); setAdminErr(""); setAdminOk(false);
-    setAName(""); setAEmail(""); setAPw(""); setAPnr(""); setARole("mitarbeiter");
+    setAName(""); setAEmail(""); setAPw(""); setAPnr("");
+    setARole(role==="hr" ? "betriebsleiter" : "mitarbeiter");
+    setABetrieb(dbProfile?.betrieb_id || betriebeOpts[0]?.id || "");
     try{
       const [e,tm] = await Promise.all([listEmployees(), listTeams()]);
       setEmps(e); setTeamOpts(tm);
@@ -957,16 +959,17 @@ export default function App(){
   }
   async function doCreateEmployee(){
     setABusy(true); setAdminErr(""); setAdminOk(false);
-    const isBL = role==="bl";
+    const isBL = role==="bl", isHR = role==="hr";
     try{
       await createEmployee({
         email:aEmail.trim(), password:aPw, full_name:aName.trim(), personalnummer:aPnr.trim(),
-        team_id: isBL ? aTeam : (dbProfile?.team?.id),
-        role: isBL ? aRole : "mitarbeiter",
-        betrieb_id: dbProfile?.betrieb_id,
+        team_id: isHR ? null : (isBL ? aTeam : dbProfile?.team?.id),
+        role: isHR ? aRole : (isBL ? aRole : "mitarbeiter"),
+        betrieb_id: isHR ? aBetrieb : dbProfile?.betrieb_id,
       });
       setAName(""); setAEmail(""); setAPw(""); setAPnr(""); setAdminOk(true);
-      setEmps(await listEmployees());
+      if(isHR){ try{ setDirectory(await companyDirectory()); }catch(e){} }
+      else setEmps(await listEmployees());
     }catch(err){ setAdminErr(err.message); }
     setABusy(false);
   }
@@ -1295,7 +1298,12 @@ export default function App(){
 
   // Mitarbeiterverwaltung (Overlay). Betriebsleiter darf Rollen zuweisen, Meister nur Mitarbeiter anlegen.
   const ROLE_OPTS = [["mitarbeiter",t.roleMA],["assistent",t.roleAssistent],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
+  // HR legt nur Leitung an: Betriebsleiter + Assistent (gleiche Rechte).
+  const ROLE_OPTS_LEIT = [["betriebsleiter",t.roleBL],["assistent",t.roleAssistent]];
+  // Betriebe-Liste (für HR) aus dem Firmen-Verzeichnis ableiten.
+  const betriebeOpts = [...new Map(directory.map(r=>[r.betrieb_id, r.betrieb_name])).entries()].map(([id,name])=>({id,name}));
   const adminIsBL = role==="bl";
+  const adminIsHR = role==="hr";
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
   // Belegschaft nach Schichten gruppieren (Schichtführung inklusive); Teamlose separat.
   const empGroups = (()=>{
@@ -1308,11 +1316,11 @@ export default function App(){
     <div className="sheet">
       <div className="sheet-hd">
         <button className="navbtn" onClick={()=>setShowAdmin(false)}><ChevronLeft size={18}/></button>
-        <span className="disp">{t.manageEmp}</span>
+        <span className="disp">{adminIsHR ? t.newLeitung : t.manageEmp}</span>
       </div>
       <div className="sheet-body">
         <div className="card" style={{marginTop:0}}>
-          <div className="eyebrow" style={{marginBottom:12}}>{t.newEmp}</div>
+          <div className="eyebrow" style={{marginBottom:12}}>{adminIsHR ? t.newLeitung : t.newEmp}</div>
           <div className="field"><label>{t.fName}</label><input value={aName} onChange={e=>setAName(e.target.value)} /></div>
           <div className="field"><label>{t.email}</label><input type="email" value={aEmail} onChange={e=>setAEmail(e.target.value)} placeholder="name@firma.de" /></div>
           <div className="field"><label>{t.password}</label><input value={aPw} onChange={e=>setAPw(e.target.value)} /></div>
@@ -1331,15 +1339,31 @@ export default function App(){
               </div>
             </>
           )}
-          <button className="submit" disabled={aBusy || !aName || !aEmail || !aPw} onClick={doCreateEmployee}>{aBusy?"…":t.createBtn}</button>
+          {adminIsHR && (
+            <>
+              <div className="field"><label>{t.betriebLbl}</label>
+                <select className="lang-select" style={selStyle} value={aBetrieb} onChange={e=>setABetrieb(e.target.value)}>
+                  {betriebeOpts.length===0 && <option value={dbProfile?.betrieb_id||""}>—</option>}
+                  {betriebeOpts.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}
+                </select>
+              </div>
+              <div className="field"><label>{t.roleLbl}</label>
+                <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
+                  {ROLE_OPTS_LEIT.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                </select>
+              </div>
+              <div style={{fontSize:11,color:"var(--faint)",marginBottom:12,lineHeight:1.5}}>{t.leitungHint}</div>
+            </>
+          )}
+          <button className="submit" disabled={aBusy || !aName || !aEmail || !aPw || (adminIsHR && !aBetrieb)} onClick={doCreateEmployee}>{aBusy?"…":t.createBtn}</button>
           {adminOk && <div className="login-note" style={{color:"var(--plus)",marginTop:10}}>{t.empCreated}</div>}
           {adminErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{adminErr}</div>}
           <div className="login-note" style={{marginTop:12}}>{t.adminHint}</div>
         </div>
 
-        <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {emps.length}</div>
-        {emps.length===0 && <div className="card"><div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div></div>}
-        {empGroups.map(g=>(
+        {!adminIsHR && <div className="eyebrow" style={{margin:"4px 2px 0"}}>{t.manageEmp} · {emps.length}</div>}
+        {!adminIsHR && emps.length===0 && <div className="card"><div style={{color:"var(--faint)",fontSize:14}}>{t.noEmp}</div></div>}
+        {!adminIsHR && empGroups.map(g=>(
           <div className="card" key={g.key}>
             <div className="eyebrow" style={{marginBottom:12}}>{g.title} · {g.members.length}</div>
             {g.members.length===0 && <div style={{color:"var(--faint)",fontSize:13}}>—</div>}
@@ -2292,7 +2316,12 @@ export default function App(){
             );
             return (
               <>
-                <div className="eyebrow">{t.hrTabs[1]} · {byB.length}</div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:12}}>
+                  <div className="eyebrow" style={{margin:0}}>{t.hrTabs[1]} · {byB.length}</div>
+                  <button className="mini-btn" onClick={openAdmin} style={{display:"inline-flex",alignItems:"center",gap:6}}>
+                    <Users size={14}/>{t.newLeitung}
+                  </button>
+                </div>
                 {byB.map(b=>{
                   const open = openBetrieb===b.id;
                   const bl  = b.people.filter(p=>p.role==="betriebsleiter");
