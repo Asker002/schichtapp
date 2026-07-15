@@ -1094,12 +1094,50 @@ export default function App(){
     if(!m) return;
     setRole(m[1]); if(m[2]!==undefined) setTab(Number(m[2]));
     setConsent(true); setAuthed(true);
+    const th = /theme=(dark|light)/.exec(h); if(th) setTheme(th[1]);
     const open = /open=(\w+)/.exec(h);
     if(open){ const o=open[1];
       if(o==="admin") setShowAdmin(true);
       else if(o==="postfach") setShowPostfach(true);
       else if(o==="compose"){ setShowPostfach(true); setComposing(true); }
       else if(o==="payslips") setShowPayslips(true);
+    }
+    // Demo-Beispieldaten für die HR-Ansichten (Betriebe/Anträge), damit die Vorschau gefüllt ist.
+    if(m[1]==="hr"){
+      setOpenBetrieb("Glutolin");
+      const D=(bn,fn,role,tn,pnr)=>({betrieb_id:bn,betrieb_name:bn,profile_id:fn+pnr,full_name:fn,role,team_name:tn,personalnummer:pnr});
+      setDirectory([
+        D("Glutolin","Ingo Fricke","betriebsleiter",null,"10017"),
+        D("Glutolin","Loos","schichtmeister","Schicht D","10014"),
+        D("Glutolin","Bärenstrauch","vorarbeiter","Schicht D","10015"),
+        D("Glutolin","Süer","gruppenfuehrer","Schicht D","10016"),
+        D("Glutolin","Arar","mitarbeiter","Schicht D","10001"),
+        D("Glutolin","Baumann","mitarbeiter","Schicht D","10002"),
+        D("Glutolin","Bingert","mitarbeiter","Schicht D","10003"),
+        D("HEC","Paul Neumann","betriebsleiter",null,"20010"),
+        D("HEC","Weber","mitarbeiter","Schicht A","20011"),
+        D("HEC","Fischer","mitarbeiter","Schicht A","20012"),
+        D("Tyloshin 1","Koch","mitarbeiter","Schicht B","30001"),
+        {betrieb_id:"Tyloshin 2",betrieb_name:"Tyloshin 2",profile_id:null,full_name:null,role:null,team_name:null,personalnummer:null},
+      ]);
+      setCoTeams([
+        {team_id:"g-a",team_name:"Schicht A",betrieb_id:"b1",betrieb_name:"Glutolin"},
+        {team_id:"g-d",team_name:"Schicht D",betrieb_id:"b1",betrieb_name:"Glutolin"},
+        {team_id:"h-a",team_name:"Schicht A",betrieb_id:"b2",betrieb_name:"HEC"},
+        {team_id:"t-b",team_name:"Schicht B",betrieb_id:"b3",betrieb_name:"Tyloshin 1"},
+      ]);
+      setCoRequests([
+        {id:"r1",profile_id:"x1",full_name:"Arar",betrieb_name:"Glutolin",team_name:"Schicht D",type:"urlaub",start_date:"2026-07-20",end_date:"2026-07-31",status:"offen"},
+        {id:"r2",profile_id:"x2",full_name:"Weber",betrieb_name:"HEC",team_name:"Schicht A",type:"krank",start_date:"2026-07-15",end_date:"2026-07-17",status:"genehmigt"},
+        {id:"r3",profile_id:"x3",full_name:"Koch",betrieb_name:"Tyloshin 1",team_name:"Schicht B",type:"urlaub",start_date:"2026-08-03",end_date:"2026-08-14",status:"offen"},
+      ]);
+      setCoOverview([
+        {profile_id:"o1",full_name:"Baumann",betrieb_name:"Glutolin",team_name:"Schicht D",role:"mitarbeiter",status:"duty"},
+        {profile_id:"o2",full_name:"Bingert",betrieb_name:"Glutolin",team_name:"Schicht D",role:"mitarbeiter",status:"duty"},
+        {profile_id:"o3",full_name:"Weber",betrieb_name:"HEC",team_name:"Schicht A",role:"mitarbeiter",status:"sick"},
+        {profile_id:"o4",full_name:"Koch",betrieb_name:"Tyloshin 1",team_name:"Schicht B",role:"mitarbeiter",status:"vac"},
+        {profile_id:"o5",full_name:"Fischer",betrieb_name:"HEC",team_name:"Schicht A",role:"mitarbeiter",status:"duty"},
+      ]);
     }
   }, []);
 
@@ -2523,7 +2561,7 @@ export default function App(){
           )}
 
           {role==="hr" && tab===1 && (()=>{
-            if(!hasSupabaseConfig) return (
+            if(!hasSupabaseConfig && directory.length===0) return (
               <><div className="eyebrow">{t.hrTabs[1]}</div>
                 <div className="card" style={{marginTop:0,color:"var(--faint)",fontSize:14}}>{t.previewNote}</div>
                 <div className="foot">PROTOTYP · U. Kebeli</div></>
