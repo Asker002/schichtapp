@@ -18,7 +18,7 @@ import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, c
 
 const PATTERN = ["T", "N", "F", "F"]; // 4-Tage-Zyklus: 1 Tag · 1 Nacht · 2 frei
 const URLAUB_TAGE = 28;               // Standard-Jahresurlaub (Resturlaub-Anzeige)
-const STATIONS = ["Alkylierer","Messwarte","Absackung","Mischerei","Tylomix","Zellstoff","Neubau","ZBV"];
+const STATIONS = ["Alkylierer","Messwarte","Absackung","Mischerei","Tylomix","Zellstoff","Neubau","ZBV","Mahltrocknung"];
 // rot = { offset, anchorMs }: kommt aus dem Team (teams.rotation_offset / anchor_date).
 
 const CSS = `
