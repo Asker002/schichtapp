@@ -1304,6 +1304,9 @@ export default function App(){
   const ROLE_OPTS = [["mitarbeiter",t.roleMA],["assistent",t.roleAssistent],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
   // HR legt nur Leitung an: Betriebsleiter + Assistent (gleiche Rechte).
   const ROLE_OPTS_LEIT = [["betriebsleiter",t.roleBL],["assistent",t.roleAssistent]];
+  // Betriebsleiter/Assistent dürfen NUR Mitarbeiter + Schichtführung anlegen/ändern (keine Personalabteilung, keine Leitung).
+  const BL_MANAGED = ["mitarbeiter","schichtmeister","vorarbeiter","gruppenfuehrer"];
+  const ROLE_OPTS_BL = ROLE_OPTS.filter(([v])=>BL_MANAGED.includes(v));
   // Betriebe-Liste (für HR) aus dem Firmen-Verzeichnis ableiten.
   const betriebeOpts = [...new Map(directory.map(r=>[r.betrieb_id, r.betrieb_name])).entries()].map(([id,name])=>({id,name}));
   const adminIsBL = role==="bl";
@@ -1338,7 +1341,7 @@ export default function App(){
               </div>
               <div className="field"><label>{t.roleLbl}</label>
                 <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
-                  {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                  {ROLE_OPTS_BL.map(([v,l])=><option key={v} value={v}>{l}</option>)}
                 </select>
               </div>
             </>
@@ -1380,10 +1383,10 @@ export default function App(){
                     <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}{e.personalnummer?` · ${e.personalnummer}`:""}</div>
                   </div>
                 </div>
-                {adminIsBL
+                {adminIsBL && BL_MANAGED.includes(e.role)
                   ? <>
                       <select className="lang-select" value={e.role} onChange={ev=>changeEmpRole(e.id,ev.target.value)}>
-                        {ROLE_OPTS.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                        {ROLE_OPTS_BL.map(([v,l])=><option key={v} value={v}>{l}</option>)}
                       </select>
                       <select className="lang-select" value={e.team_id||""} onChange={ev=>changeEmpTeam(e.id,ev.target.value)}>
                         <option value="">{t.noTeamCat}</option>
@@ -1391,7 +1394,7 @@ export default function App(){
                       </select>
                     </>
                   : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
-                {e.id!==dbProfile?.id && (adminIsBL || e.role==="mitarbeiter") &&
+                {e.id!==dbProfile?.id && ((adminIsBL && BL_MANAGED.includes(e.role)) || (!adminIsBL && e.role==="mitarbeiter")) &&
                   <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
               </div>
             ))}
