@@ -71,7 +71,7 @@ export async function sendPasswordReset(email) {
 export async function listMessages() {
   const { data, error } = await supabase
     .from('messages')
-    .select('id, subject, body, team_id, sender_id, created_at, attachments, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
+    .select('id, subject, body, team_id, recipient_id, sender_id, created_at, attachments, sender:profiles!sender_id(full_name), reads:message_reads(profile_id)')
     .order('created_at', { ascending: false })
   if (error) throw error
   return data
@@ -114,10 +114,10 @@ export async function companyDirectory() {
   if (error) throw error
   return data
 }
-export async function sendMessage({ subject, body, team_id, betrieb_id, attachments = [] }) {
+export async function sendMessage({ subject, body, team_id, betrieb_id, recipient_id = null, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
-    betrieb_id, sender_id: u.user.id, team_id: team_id || null, subject, body, attachments,
+    betrieb_id, sender_id: u.user.id, team_id: team_id || null, recipient_id: recipient_id || null, subject, body, attachments,
   })
   if (error) throw error
 }

@@ -281,7 +281,7 @@ const I18N = {
     manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
-    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
+    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", toPerson:"Person", recipientLbl:"Empfänger", personalMsg:"Persönlich", pickRecipient:"Bitte Empfänger wählen.", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
     uploadTitle:"Lohnzettel hochladen", bulkTitle:"Sammel-Upload", bulkHint:"Mehrere PDFs auf einmal – die Personalnummer muss im Dateinamen stehen (z. B. 10007.pdf).", pickPdfs:"PDFs wählen", bulkBtn:"Alle hochladen", bulkDone:"zugeordnet", bulkNoMatch:"ohne Treffer", periodLabel:"Monat", pickPdf:"PDF wählen", uploadBtn:"Hochladen", uploadOk:"Hochgeladen ✓", noPayslips:"Noch keine Lohnzettel", pdfOnly:"Nur PDF-Dateien",
     einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute",
     absTitle:"Urlaubsplan & Abwesenheiten",
@@ -346,7 +346,7 @@ const I18N = {
     manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
-    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
+    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", toPerson:"Kişi", recipientLbl:"Alıcı", personalMsg:"Kişisel", pickRecipient:"Lütfen alıcı seçin.", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
     uploadTitle:"Maaş bordrosu yükle", bulkTitle:"Toplu yükleme", bulkHint:"Birden çok PDF – personel numarası dosya adında olmalı (örn. 10007.pdf).", pickPdfs:"PDF seç", bulkBtn:"Hepsini yükle", bulkDone:"atandı", bulkNoMatch:"eşleşme yok", periodLabel:"Ay", pickPdf:"PDF seç", uploadBtn:"Yükle", uploadOk:"Yüklendi ✓", noPayslips:"Henüz bordro yok", pdfOnly:"Sadece PDF dosyaları",
     einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip",
     absTitle:"İzin planı & devamsızlıklar",
@@ -411,7 +411,7 @@ const I18N = {
     manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
-    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
+    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", toPerson:"Person", recipientLbl:"Recipient", personalMsg:"Personal", pickRecipient:"Please choose a recipient.", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
     uploadTitle:"Upload payslip", bulkTitle:"Bulk upload", bulkHint:"Several PDFs at once – the personnel number must be in the file name (e.g. 10007.pdf).", pickPdfs:"Choose PDFs", bulkBtn:"Upload all", bulkDone:"assigned", bulkNoMatch:"no match", periodLabel:"Month", pickPdf:"Choose PDF", uploadBtn:"Upload", uploadOk:"Uploaded ✓", noPayslips:"No payslips yet", pdfOnly:"PDF files only",
     einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today",
     absTitle:"Leave plan & absences",
@@ -476,7 +476,7 @@ const I18N = {
     manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
-    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
+    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", toPerson:"Человек", recipientLbl:"Получатель", personalMsg:"Лично", pickRecipient:"Выберите получателя.", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
     uploadTitle:"Загрузить расчётный лист", bulkTitle:"Массовая загрузка", bulkHint:"Несколько PDF сразу – табельный номер должен быть в имени файла (напр. 10007.pdf).", pickPdfs:"Выбрать PDF", bulkBtn:"Загрузить все", bulkDone:"назначено", bulkNoMatch:"без совпадения", periodLabel:"Месяц", pickPdf:"Выбрать PDF", uploadBtn:"Загрузить", uploadOk:"Загружено ✓", noPayslips:"Пока нет расчётных листов", pdfOnly:"Только файлы PDF",
     einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня",
     absTitle:"План отпусков и отсутствия",
@@ -541,7 +541,7 @@ const I18N = {
     manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
-    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
+    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", toPerson:"Osoba", recipientLbl:"Odbiorca", personalMsg:"Osobiste", pickRecipient:"Wybierz odbiorcę.", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
     uploadTitle:"Wgraj pasek wypłaty", bulkTitle:"Zbiorcze przesyłanie", bulkHint:"Wiele PDF naraz – numer personalny musi być w nazwie pliku (np. 10007.pdf).", pickPdfs:"Wybierz PDF-y", bulkBtn:"Prześlij wszystko", bulkDone:"przypisano", bulkNoMatch:"brak dopasowania", periodLabel:"Miesiąc", pickPdf:"Wybierz PDF", uploadBtn:"Wgraj", uploadOk:"Wgrano ✓", noPayslips:"Brak pasków wypłat", pdfOnly:"Tylko pliki PDF",
     einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś",
     absTitle:"Plan urlopów i nieobecności",
@@ -732,7 +732,7 @@ export default function App(){
   const [forgotOpen,setForgotOpen] = useState(false); const [forgotEmail,setForgotEmail] = useState("");
   const [forgotSent,setForgotSent] = useState(false); const [forgotErr,setForgotErr] = useState(""); const [forgotBusy,setForgotBusy] = useState(false);
   const [showPostfach,setShowPostfach] = useState(false); const [messages,setMessages] = useState([]); const [msgOpen,setMsgOpen] = useState(null);
-  const [composing,setComposing] = useState(false); const [mSubject,setMSubject] = useState(""); const [mBody,setMBody] = useState(""); const [mScope,setMScope] = useState("all");
+  const [composing,setComposing] = useState(false); const [mSubject,setMSubject] = useState(""); const [mBody,setMBody] = useState(""); const [mScope,setMScope] = useState("all"); const [mRecipient,setMRecipient] = useState("");
   const [postErr,setPostErr] = useState(""); const [postBusy,setPostBusy] = useState(false);
   const [mFiles,setMFiles] = useState([]); const [upBusy,setUpBusy] = useState(false); const [attUrls,setAttUrls] = useState({});
   const [delConfirm,setDelConfirm] = useState(null);   // Nachricht-ID mit Lösch-Bestätigung
@@ -767,7 +767,7 @@ export default function App(){
     try{ const rows = await listRequests(); setDbRequests(rows.map(mapReq)); }
     catch(e){ console.warn("[requests]", e.message); }
   }
-  const mapMsg = (m)=>({ id:m.id, subject:m.subject, body:m.body, teamId:m.team_id, senderId:m.sender_id, created_at:m.created_at,
+  const mapMsg = (m)=>({ id:m.id, subject:m.subject, body:m.body, teamId:m.team_id, recipientId:m.recipient_id, senderId:m.sender_id, created_at:m.created_at,
     senderName:m.sender?.full_name || "—", read:(m.reads?.length||0)>0, attachments:m.attachments||[] });
   async function loadMessages(){
     if(!hasSupabaseConfig) return;
@@ -874,11 +874,15 @@ export default function App(){
     }catch(err){ setPostErr(err.message); }
   }
   async function doSendMessage(){
-    setPostErr(""); setPostBusy(true);
-    const team_id = role==="meister" ? dbProfile?.team?.id : (mScope==="all" ? null : mScope);
+    setPostErr("");
+    const isPerson = mScope==="person";
+    if(isPerson && !mRecipient){ setPostErr(t.pickRecipient); return; }
+    setPostBusy(true);
+    const team_id = isPerson ? null : (role==="meister" ? dbProfile?.team?.id : (mScope==="all" ? null : mScope));
+    const recipient_id = isPerson ? mRecipient : null;
     try{
-      await sendMessage({ subject:mSubject.trim(), body:mBody.trim(), team_id, betrieb_id:dbProfile?.betrieb_id, attachments:mFiles });
-      setMSubject(""); setMBody(""); setMFiles([]); setComposing(false);
+      await sendMessage({ subject:mSubject.trim(), body:mBody.trim(), team_id, recipient_id, betrieb_id:dbProfile?.betrieb_id, attachments:mFiles });
+      setMSubject(""); setMBody(""); setMFiles([]); setMRecipient(""); setComposing(false);
       await loadMessages();
     }catch(err){ setPostErr(err.message); }
     setPostBusy(false);
@@ -1182,7 +1186,7 @@ export default function App(){
     ? emps.filter(e=>e.team_id && e.team_id===dbProfile?.team?.id).map(e=>{
         const abs = dbRequests.find(r=>r.profileId===e.id && (r.status==="genehmigt"||r.status==="geaendert") && absCoversDay(r, now));
         const st = abs ? (abs.type==="krank"?"sick":"vac") : (shiftType(now, rot)!=="F" ? "duty" : "off");
-        return { id:e.id, name:e.full_name, st };
+        return { id:e.id, name:e.full_name, role:e.role, st };
       })
     : (TEAM[crew] || []);
   const onDutyCount = team.filter(m=>m.st==="duty").length;
@@ -1373,7 +1377,7 @@ export default function App(){
                   <span className="row-ic">{initials(e.full_name||"—")}</span>
                   <div>
                     <div style={{fontWeight:600}}>{e.full_name}</div>
-                    <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}{e.personalnummer?` · ${e.personalnummer}`:""}{assignments[e.id]?` · ${assignments[e.id]}`:""}</div>
+                    <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}{e.personalnummer?` · ${e.personalnummer}`:""}</div>
                   </div>
                 </div>
                 {adminIsBL
@@ -1442,19 +1446,32 @@ export default function App(){
       <div className="sheet-hd">
         <button className="navbtn" onClick={()=> composing ? setComposing(false) : setShowPostfach(false)}><ChevronLeft size={18}/></button>
         <span className="disp">{composing ? t.newMsg : t.postfach}</span>
-        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope("all"); setMFiles([]);}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
+        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope(role==="meister"?"shift":"all"); setMRecipient(""); setMFiles([]);}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
       </div>
       <div className="sheet-body">
         {composing ? (
           <div className="card" style={{marginTop:0}}>
-            {role==="meister"
-              ? <div className="field"><label>{t.toLabel}</label><span className="tg mut" style={{alignSelf:"flex-start"}}>{t.myShift} {crew}</span></div>
-              : <div className="field"><label>{t.toLabel}</label>
-                  <select className="lang-select" style={selStyle} value={mScope} onChange={e=>setMScope(e.target.value)}>
-                    <option value="all">{t.plantWide}</option>
-                    {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
-                  </select>
-                </div>}
+            <div className="field"><label>{t.toLabel}</label>
+              <select className="lang-select" style={selStyle} value={mScope} onChange={e=>setMScope(e.target.value)}>
+                <option value="person">{t.toPerson}</option>
+                {role==="meister"
+                  ? <option value="shift">{t.myShift} {crew}</option>
+                  : <>
+                      <option value="all">{t.plantWide}</option>
+                      {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                    </>}
+              </select>
+            </div>
+            {mScope==="person" && (
+              <div className="field"><label>{t.recipientLbl}</label>
+                <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
+                  <option value="">—</option>
+                  {emps.filter(e=>e.id!==dbProfile?.id).map(e=>(
+                    <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="field"><label>{t.subjectLabel}</label><input value={mSubject} onChange={e=>setMSubject(e.target.value)} /></div>
             <div className="field"><label>{t.msgBody}</label><textarea rows={6} value={mBody} onChange={e=>setMBody(e.target.value)} /></div>
             <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:12}}>
@@ -1484,7 +1501,7 @@ export default function App(){
                   {m.attachments?.length>0 && <Paperclip size={13} style={{color:"var(--muted)",flexShrink:0}}/>}
                   <span style={{fontSize:11,color:"var(--faint)",whiteSpace:"nowrap"}}>{fmtMsgDate(m.created_at)}</span>
                 </div>
-                <div style={{fontSize:12,color:"var(--muted)",marginTop:4}}>{m.senderName} · {m.teamId?teamNameOf(m.teamId):t.plantWide}</div>
+                <div style={{fontSize:12,color:"var(--muted)",marginTop:4}}>{m.senderName} · {m.recipientId?t.personalMsg:(m.teamId?teamNameOf(m.teamId):t.plantWide)}</div>
                 {msgOpen===m.id && (
                   <>
                     <div style={{fontSize:14,color:"var(--text)",marginTop:12,lineHeight:1.55,whiteSpace:"pre-wrap"}}>{m.body}</div>
@@ -1989,12 +2006,16 @@ export default function App(){
             </>
           )}
 
-          {role==="meister" && tab===1 && (
+          {role==="meister" && tab===1 && (()=>{
+            // Nur Mitarbeiter werden eingeteilt – Schichtführung erscheint hier nicht.
+            const workers = hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team;
+            const workersOnDuty = workers.filter(m=>m.st==="duty").length;
+            return (
             <>
               <div className="eyebrow">{t.teamTitle} · {t.crewLabel} {crew}</div>
               <div className="card" style={{marginTop:0,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <span style={{fontSize:13,color:"var(--muted)"}}>{t.onDuty}</span>
-                <span className="num" style={{fontSize:22,fontWeight:700,color:"var(--plus)"}}>{onDutyCount} / {team.length}</span>
+                <span className="num" style={{fontSize:22,fontWeight:700,color:"var(--plus)"}}>{workersOnDuty} / {workers.length}</span>
               </div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,margin:"14px 2px 6px"}}>
                 <span style={{fontSize:11,color:"var(--faint)"}}>{t.assignHint}</span>
@@ -2002,7 +2023,7 @@ export default function App(){
                   style={{background:"var(--surface)",border:"1px solid var(--line)",color:"var(--text)",borderRadius:8,padding:"6px 8px",fontSize:12,fontFamily:"inherit"}} />
               </div>
               <div className="card" style={{marginTop:0}}>
-                {team.map((m,i)=>{
+                {workers.map((m,i)=>{
                   const s = statusMap[m.st];
                   return (
                     <div key={i} style={{padding:"11px 0",borderBottom:"1px solid var(--line)",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
@@ -2020,7 +2041,8 @@ export default function App(){
               </div>
               <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
-          )}
+            );
+          })()}
 
           {role==="meister" && tab===2 && (() => {
             const absC = hasSupabaseConfig
@@ -2143,7 +2165,7 @@ export default function App(){
               </div>
               {selCrew!==null && (()=>{
                 const cs = crewStats.find(x=>x.id===selCrew); if(!cs) return null;
-                const mem = [...cs.members].sort((a,b)=>(a.full_name||"").localeCompare(b.full_name||""));
+                const mem = cs.members.filter(m=>m.role==="mitarbeiter").sort((a,b)=>(a.full_name||"").localeCompare(b.full_name||""));
                 return (
                   <div className="card">
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:4}}>

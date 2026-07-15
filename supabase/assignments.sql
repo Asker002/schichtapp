@@ -39,6 +39,6 @@ language sql stable security definer set search_path = public as $$
   select p.id, p.full_name, sa.station
   from profiles p
   left join station_assignments sa on sa.profile_id = p.id and sa.work_date = d
-  where p.team_id = auth_team() and p.active
+  where p.team_id = auth_team() and p.active and p.role = 'mitarbeiter'
   order by p.full_name
 $$;
