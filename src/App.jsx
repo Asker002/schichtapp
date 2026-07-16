@@ -251,6 +251,32 @@ const CSS = `
 .legal-b{font-size:13px; color:var(--muted); line-height:1.6; white-space:pre-line;}
 
 @media (prefers-reduced-motion: reduce){ .body{animation:none;} }
+
+/* ===== DESKTOP-ANSICHT für Führungsrollen (PC) – Seitenleiste + breiter Inhalt ===== */
+@media (min-width: 900px){
+  .app-root.mgmt{ padding:0; background:var(--surface); }
+  .app-root.mgmt .phone{
+    max-width:1180px; width:100%; height:100%; box-shadow:0 0 60px rgba(0,0,0,.10);
+    display:grid; grid-template-columns:236px 1fr; grid-template-rows:auto 1fr;
+    grid-template-areas:"side head" "side main";
+  }
+  .app-root.mgmt .hdr{ grid-area:head; }
+  .app-root.mgmt .body{ grid-area:main; padding:22px 30px 30px; }
+  .app-root.mgmt .body > *{ max-width:900px; }
+  /* Tab-Leiste -> vertikale Seitenleiste */
+  .app-root.mgmt .tabs{
+    grid-area:side; display:flex; flex-direction:column; align-items:stretch; gap:4px;
+    border-top:none; border-right:1px solid var(--line); background:var(--surface);
+    padding:16px 12px calc(16px + env(safe-area-inset-bottom)); height:100%;
+  }
+  .app-root.mgmt .tabs .tab{
+    flex-direction:row; justify-content:flex-start; gap:12px; width:100%;
+    padding:12px 14px; border-radius:11px; font-size:14px; font-weight:600; color:var(--muted);
+  }
+  .app-root.mgmt .tabs .tab.on{ background:var(--surface2); color:var(--accent); }
+  .app-root.mgmt .tabs .tab .tab-ic{ margin:0; }
+  .app-root.mgmt .tabs .tab .badge{ position:static; margin-left:auto; right:auto; top:auto; }
+}
 `;
 
 const I18N = {
@@ -1942,11 +1968,14 @@ export default function App(){
     </>
   );
 
+  // Desktop-Ansicht (Seitenleiste + breiter Inhalt) für Führungsrollen am PC; Mitarbeiter bleiben mobil.
+  const rootCls = "app-root"+(theme==="dark"?" theme-dark":"")+((authed && role!=="ma")?" mgmt":"");
+
   // Türsteher: ohne Anmeldung + DSGVO-Einwilligung kein Zugang.
   // Sitzung wird geprüft (nur Supabase) -> kurzer Ladezustand
   if (hasSupabaseConfig && !dbReady) {
     return (
-      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
+      <div className={rootCls}>
         <style>{CSS}</style>
         <div className="phone">
           <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -1960,7 +1989,7 @@ export default function App(){
   // Passwort-Reset-Link geöffnet -> neues Passwort setzen.
   if (recovery) {
     return (
-      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
+      <div className={rootCls}>
         <style>{CSS}</style>
         <div className="phone">
           <div className="login">
@@ -1984,7 +2013,7 @@ export default function App(){
 
   if (!authed) {
     return (
-      <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
+      <div className={rootCls}>
         <style>{CSS}</style>
         <div className="phone">
           <div className="login">
@@ -2035,7 +2064,7 @@ export default function App(){
   }
 
   return (
-    <div className={"app-root"+(theme==="dark"?" theme-dark":"")}>
+    <div className={rootCls}>
       <style>{CSS}</style>
       <div className="phone">
         {/* HEADER */}
