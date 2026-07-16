@@ -1055,7 +1055,7 @@ export default function App(){
     if (p.role === "mitarbeiter") {
       try{ setLeaders(await myLeadership()); }catch(e){ console.warn("[leaders]", e.message); }
     }
-    if (["schichtmeister","vorarbeiter","gruppenfuehrer"].includes(p.role)) {
+    if (["schichtmeister","vorarbeiter","gruppenfuehrer","betriebsleiter","assistent","personal"].includes(p.role)) {
       try{ setLeadContacts(await leadershipContacts()); }catch(e){ console.warn("[leadContacts]", e.message); }
     }
   }
@@ -1855,13 +1855,13 @@ export default function App(){
                       {emps.filter(e=>e.id!==dbProfile?.id).filter(e=>empMatch(e,empQuery)).map(e=>(
                         <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
                       ))}
-                      {role==="meister" && leadContacts.filter(l=>l.profile_id!==dbProfile?.id).filter(l=>empMatch({full_name:l.full_name},empQuery)).length>0 && (
-                        <optgroup label={t.leadershipLabel}>
-                          {leadContacts.filter(l=>l.profile_id!==dbProfile?.id).filter(l=>empMatch({full_name:l.full_name},empQuery)).map(l=>(
-                            <option key={l.profile_id} value={l.profile_id}>{l.full_name} · {leaderRole(l.role)}</option>
-                          ))}
-                        </optgroup>
-                      )}
+                      {(()=>{ const extra = leadContacts.filter(l=>l.profile_id!==dbProfile?.id && !emps.some(e=>e.id===l.profile_id) && empMatch({full_name:l.full_name},empQuery));
+                        return extra.length>0 ? (
+                          <optgroup label={t.leadershipLabel}>
+                            {extra.map(l=><option key={l.profile_id} value={l.profile_id}>{l.full_name} · {leaderRole(l.role)}</option>)}
+                          </optgroup>
+                        ) : null;
+                      })()}
                     </select>
                   </div>
                 )}
