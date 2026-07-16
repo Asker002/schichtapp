@@ -1590,6 +1590,8 @@ export default function App(){
     const duty = coOverview.filter(x=>x.status==="duty").length;
     const absent = coOverview.filter(x=>x.status==="sick"||x.status==="vac");
     const reqBadge = (s)=> s==="offen" ? {c:"s",label:t.stPending} : s==="abgelehnt" ? {c:"h",label:t.rejected} : {c:"g",label:t.approved};
+    const groupB = (arr)=>{ const g=[]; arr.forEach(x=>{ const b=x.betrieb_name||"—"; let e=g.find(y=>y.b===b); if(!e){ e={b,items:[]}; g.push(e); } e.items.push(x); }); return g; };
+    const absentG = groupB(absent), reqG = groupB(coRequests);
     return (
       <>
         <div className="eyebrow" style={{marginBottom:8}}>{t.presenceToday}</div>
@@ -1597,32 +1599,38 @@ export default function App(){
           <div className="stat"><div className="k">{t.statusDuty}</div><div className="v plus num">{duty}</div></div>
           <div className="stat"><div className="k">{t.absentLbl}</div><div className="v amber num">{absent.length}</div></div>
         </div>
-        <div className="card">
-          <div className="eyebrow" style={{marginBottom:12}}>{t.absentLbl} · {absent.length}</div>
-          {absent.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.noneAbsent}</div>}
-          {absent.map(x=>(
-            <div className="row" key={x.profile_id} style={{cursor:"default"}}>
-              <div className="row-l"><span className="row-ic">{initials(x.full_name)}</span>
-                <div><div style={{fontWeight:600}}>{x.full_name}</div>
-                  <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{x.betrieb_name}{x.team_name?` · ${x.team_name}`:""}</div></div>
+        <div className="eyebrow" style={{margin:"6px 2px 8px"}}>{t.absentLbl} · {absent.length}</div>
+        {absent.length===0 && <div className="card" style={{marginTop:0}}><div style={{color:"var(--faint)",fontSize:14}}>{t.noneAbsent}</div></div>}
+        {absentG.map(g=>(
+          <div className="card" key={g.b} style={{marginTop:0,marginBottom:10}}>
+            <div className="cat-h">{g.b} · {g.items.length}</div>
+            {g.items.map(x=>(
+              <div className="row" key={x.profile_id} style={{cursor:"default"}}>
+                <div className="row-l"><span className="row-ic">{initials(x.full_name)}</span>
+                  <div><div style={{fontWeight:600}}>{x.full_name}</div>
+                    <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{x.team_name||"—"}</div></div>
+                </div>
+                <span className={"tg "+(x.status==="sick"?"h":"s")}>{x.status==="sick"?t.statusSick:t.statusVac}</span>
               </div>
-              <span className={"tg "+(x.status==="sick"?"h":"s")}>{x.status==="sick"?t.statusSick:t.statusVac}</span>
-            </div>
-          ))}
-        </div>
-        <div className="eyebrow" style={{margin:"6px 2px 8px"}}>{t.approvalsTitle} · {coRequests.length}</div>
-        <div className="card" style={{marginTop:0}}>
-          {coRequests.length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.allClear}</div>}
-          {coRequests.map(r=>{ const st=reqBadge(r.status); return (
-            <div className="row" key={r.id} style={{cursor:"default"}}>
-              <div className="row-l"><span className="row-ic">{r.type==="krank"?<HeartPulse size={15}/>:<Plane size={15}/>}</span>
-                <div><div style={{fontWeight:600}}>{r.full_name}</div>
-                  <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{r.betrieb_name}{r.team_name?` · ${r.team_name}`:""} · {r.start_date}{r.end_date&&r.end_date!==r.start_date?` – ${r.end_date}`:""}</div></div>
+            ))}
+          </div>
+        ))}
+        <div className="eyebrow" style={{margin:"10px 2px 8px"}}>{t.approvalsTitle} · {coRequests.length}</div>
+        {coRequests.length===0 && <div className="card" style={{marginTop:0}}><div style={{color:"var(--faint)",fontSize:14}}>{t.allClear}</div></div>}
+        {reqG.map(g=>(
+          <div className="card" key={g.b} style={{marginTop:0,marginBottom:10}}>
+            <div className="cat-h">{g.b} · {g.items.length}</div>
+            {g.items.map(r=>{ const st=reqBadge(r.status); return (
+              <div className="row" key={r.id} style={{cursor:"default"}}>
+                <div className="row-l"><span className="row-ic">{r.type==="krank"?<HeartPulse size={15}/>:<Plane size={15}/>}</span>
+                  <div><div style={{fontWeight:600}}>{r.full_name}</div>
+                    <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{r.team_name?`${r.team_name} · `:""}{r.start_date}{r.end_date&&r.end_date!==r.start_date?` – ${r.end_date}`:""}</div></div>
+                </div>
+                <span className={"tg "+st.c}>{st.label}</span>
               </div>
-              <span className={"tg "+st.c}>{st.label}</span>
-            </div>
-          ); })}
-        </div>
+            ); })}
+          </div>
+        ))}
         <div className="foot">PROTOTYP · U. Kebeli</div>
       </>
     );
