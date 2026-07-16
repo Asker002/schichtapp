@@ -5,6 +5,7 @@ import {
   Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
+import { downloadAbsencePdf } from "./lib/absencePdf";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
@@ -330,7 +331,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -397,7 +398,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -464,7 +465,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -531,7 +532,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -598,7 +599,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -1499,6 +1500,14 @@ export default function App(){
           </div>
           <div className="row" onClick={()=>{ const p=dirAction; setDirAction(null); setTab(0); setPsEmp(p.profile_id); setPsOk(false); setPsErr(""); setEmpQuery(""); loadPsList(p.profile_id); }}>
             <span className="row-l"><span className="row-ic"><Wallet size={16}/></span>{t.sendPayslip}</span>
+            <ChevronRight size={16} color="var(--faint)"/>
+          </div>
+          <div className="row" onClick={async ()=>{ const p=dirAction; setDirAction(null);
+            let reqs=[];
+            if(hasSupabaseConfig){ try{ reqs=(await companyRequests()).filter(r=>r.profile_id===p.profile_id); }catch(e){ console.warn("[abs-pdf]", e.message); } }
+            else { reqs=coRequests; }
+            downloadAbsencePdf(p, reqs); }}>
+            <span className="row-l"><span className="row-ic"><Download size={16}/></span>{t.absenceSlip}</span>
             <ChevronRight size={16} color="var(--faint)"/>
           </div>
         </div>
