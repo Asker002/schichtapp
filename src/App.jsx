@@ -793,7 +793,7 @@ export default function App(){
   const isoToDM = (iso)=> iso ? `${iso.slice(8,10)}.${iso.slice(5,7)}.` : "—";
   // DB-Zeile -> von der UI erwartete Form
   const mapReq = (r)=>({
-    id:r.id, profileId:r.profile_id, teamId:r.profile?.team_id, name:r.profile?.full_name || "—", type:r.type,
+    id:r.id, profileId:r.profile_id, teamId:r.profile?.team_id, reqRole:r.profile?.role, name:r.profile?.full_name || "—", type:r.type,
     from:isoToDM(r.start_date), to:isoToDM(r.end_date), startISO:r.start_date, endISO:r.end_date,
     days:(r.start_date&&r.end_date)?Math.max(1,Math.round((Date.parse(r.end_date)-Date.parse(r.start_date))/DAY_MS)+1):1,
     status:r.status, eau:r.type==="krank"?false:undefined,
@@ -1308,6 +1308,9 @@ export default function App(){
   // Meister-Ableitungen (eigene Anträge des Mitarbeiters oben eingemischt)
   const reqs = hasSupabaseConfig ? dbRequests : [...submitted.filter(r=>r.crew===crew), ...(REQUESTS[crew] || [])];
   const pending = reqs.filter(r=>!decOf(r));
+  // Meister genehmigt Mitarbeiter + Vorarbeiter/Gruppenführer – NICHT Schichtmeister-Anträge (auch nicht den eigenen).
+  const meisterReqs = reqs.filter(r=> r.reqRole!=="schichtmeister" && r.profileId!==dbProfile?.id);
+  const meisterPending = meisterReqs.filter(r=>!decOf(r));
   // Team heute: echte Mitglieder aus der DB; Status aus genehmigter Abwesenheit
   // (Urlaub/Krank) bzw. der Team-Rotation (Schicht heute = Dienst, sonst frei).
   const team = hasSupabaseConfig
@@ -2240,12 +2243,12 @@ export default function App(){
           {role==="meister" && tab===0 && (
             <>
               <div className="eyebrow">{t.approvalsTitle} · {t.crewLabel} {crew}</div>
-              {pending.length===0 && (
+              {meisterPending.length===0 && (
                 <div className="card" style={{textAlign:"center",color:"var(--muted)",fontSize:14,padding:"30px 16px",marginTop:0}}>
                   <Check size={22} style={{color:"var(--plus)"}}/><div style={{marginTop:8}}>{t.allClear}</div>
                 </div>
               )}
-              {reqs.map((r,idx)=>{
+              {meisterReqs.map((r,idx)=>{
                 const dec = decOf(r);
                 return (
                   <div className="card" key={r.id} style={{marginTop: idx===0?0:12}}>
@@ -2506,16 +2509,31 @@ export default function App(){
                   const dec = decOf(r);
                   const label = !dec ? t.stPending : dec==="approved"?t.approved : dec==="rejected"?t.rejected : t.acked;
                   const cls = !dec ? "s" : dec==="rejected"?"h":"g";
+                  const canDecide = r.reqRole==="schichtmeister";  // BL/Assistent genehmigt Schichtmeister-Anträge
                   return (
-                    <div className="row" key={r.id} style={{cursor:"default"}}>
-                      <div className="row-l">
-                        <span className="row-ic">{r.type==="krank"?<HeartPulse size={15}/>:<Plane size={15}/>}</span>
-                        <div>
-                          <div style={{fontWeight:600}}>{r.name} <span style={{color:"var(--faint)",fontWeight:500,fontSize:12}}>· {t.crewLabel} {r.crew}</span></div>
-                          <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{r.type==="urlaub"?t.typeUrlaub:t.typeKrank} · {r.from}{r.to&&r.to!=="—"?" – "+r.to:""}</div>
+                    <div key={r.id} style={{padding:"11px 0",borderBottom:"1px solid var(--line)"}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                        <div className="row-l">
+                          <span className="row-ic">{r.type==="krank"?<HeartPulse size={15}/>:<Plane size={15}/>}</span>
+                          <div>
+                            <div style={{fontWeight:600}}>{r.name} <span style={{color:"var(--faint)",fontWeight:500,fontSize:12}}>· {t.crewLabel} {r.crew}{canDecide?` · ${t.roleMeister}`:""}</span></div>
+                            <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{r.type==="urlaub"?t.typeUrlaub:t.typeKrank} · {r.from}{r.to&&r.to!=="—"?" – "+r.to:""}</div>
+                          </div>
                         </div>
+                        <span className={"tg "+cls}>{label}</span>
                       </div>
-                      <span className={"tg "+cls}>{label}</span>
+                      {canDecide && (!dec ? (
+                        r.type==="urlaub" ? (
+                          <div style={{display:"flex",gap:8,marginTop:10}}>
+                            <button className="btn-approve" onClick={()=>decide(r.id,"approved")}><Check size={15}/>{t.approve}</button>
+                            <button className="btn-reject" onClick={()=>decide(r.id,"rejected")}><X size={15}/>{t.reject}</button>
+                          </div>
+                        ) : (
+                          <button className="btn-approve" style={{width:"100%",marginTop:10}} onClick={()=>decide(r.id,"acked")}><Check size={15}/>{t.ack}</button>
+                        )
+                      ) : (
+                        <button className="btn-reject" style={{marginTop:10,padding:"9px 16px"}} onClick={()=>decide(r.id,null)}>{t.change}</button>
+                      ))}
                     </div>
                   );
                 })}
@@ -2788,7 +2806,7 @@ export default function App(){
             return cfg.icons.map((ic,i)=>(
               <button key={i} className={"tab"+(tab===i?" on":"")} onClick={()=>setTab(i)}>
                 <span className="tab-ic">{ic}</span>
-                {role==="meister" && i===0 && pending.length>0 && <span className="badge">{pending.length}</span>}
+                {role==="meister" && i===0 && meisterPending.length>0 && <span className="badge">{meisterPending.length}</span>}
                 {role==="bl" && i===2 && plantOpen>0 && <span className="badge">{plantOpen}</span>}
                 {cfg.labels[i]}
               </button>

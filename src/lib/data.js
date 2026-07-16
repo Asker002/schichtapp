@@ -219,7 +219,7 @@ export async function listProfiles() {
 export async function listRequests() {
   const { data, error } = await supabase
     .from('absence_requests')
-    .select('id, profile_id, type, start_date, end_date, status, employee_note, approver_note, decided_at, profile:profiles!profile_id(full_name, team_id)')
+    .select('id, profile_id, type, start_date, end_date, status, employee_note, approver_note, decided_at, profile:profiles!profile_id(full_name, team_id, role)')
     .order('created_at', { ascending: false })
   if (error) throw error
   return data
