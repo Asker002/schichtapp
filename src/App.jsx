@@ -2754,7 +2754,7 @@ export default function App(){
                   const cnt=leaveCounts[isoOf(dt)]||0; if(cnt>0){ overlapDays++; if(cnt>maxCnt) maxCnt=cnt; } }
                 return (<>
                   <div className="summary" style={{textAlign:"center",marginTop:14}}>{total} {t.daysWord} · {shiftDays} {shiftDays===1?t.shiftDayWord:t.shiftDaysWord} ({tagN} {t.legTag}, {nachtN} {t.legNacht})</div>
-                  {overlapDays>0 && <div className="preview-note" style={{background:"var(--tag-soft)",borderColor:"rgba(199,122,10,.25)",color:"var(--tag)",display:"flex",gap:8,alignItems:"flex-start",marginBottom:0}}><span>⚠️</span><span>{t.overlapNote(overlapDays,maxCnt)}</span></div>}
+                  {maxCnt>=3 && <div className="preview-note" style={{background:"var(--tag-soft)",borderColor:"rgba(199,122,10,.25)",color:"var(--tag)",display:"flex",gap:8,alignItems:"flex-start",marginBottom:0}}><span>⚠️</span><span>{t.overlapNote(overlapDays,maxCnt)}</span></div>}
                 </>);
               })()}
               <button className="submit" style={{marginTop:14}} disabled={!fFrom || (form==="urlaub" && !fTo)} onClick={submitRequest}>
