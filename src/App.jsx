@@ -343,7 +343,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Einteilung","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", reallyWithdraw:"Wirklich zurückziehen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -410,7 +410,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Yerleşim","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", reallyWithdraw:"Gerçekten geri çek?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -477,7 +477,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","Assignment","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", reallyWithdraw:"Really withdraw?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -544,7 +544,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Расстановка","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", reallyWithdraw:"Точно отозвать?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -611,7 +611,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Przydział","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", reallyWithdraw:"Na pewno wycofać?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -795,6 +795,7 @@ export default function App(){
   const [aTeam,setATeam] = useState(""); const [aRole,setARole] = useState("mitarbeiter"); const [aBetrieb,setABetrieb] = useState("");
   const [adminScope,setAdminScope] = useState("mit"); // "mit" (BL) | "leitung" | "hrteam"
   const [rmConfirm,setRmConfirm] = useState(null);     // Profil-ID mit Entfernen-Bestätigung
+  const [wdConfirm,setWdConfirm] = useState(null);     // Antrags-ID mit Zurückziehen-Bestätigung
   const [adminErr,setAdminErr] = useState(""); const [adminOk,setAdminOk] = useState(false); const [aBusy,setABusy] = useState(false);
   const [showPw,setShowPw] = useState(false); const [pwNew,setPwNew] = useState(""); const [pwNew2,setPwNew2] = useState("");
   const [pwErr,setPwErr] = useState(""); const [pwOk,setPwOk] = useState(false); const [pwBusy,setPwBusy] = useState(false);
@@ -1703,8 +1704,15 @@ export default function App(){
                     </>
                   : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
                 <button className="mini-btn" title={t.absenceSlip} onClick={()=>downloadEmpAbsencePdf(e)} style={{display:"inline-flex",alignItems:"center",gap:5}}><Download size={13}/>PDF</button>
-                {e.id!==dbProfile?.id && ((adminIsBL && BL_MANAGED.includes(e.role)) || (!adminIsBL && e.role==="mitarbeiter")) &&
-                  <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
+                {e.id!==dbProfile?.id && ((adminIsBL && BL_MANAGED.includes(e.role)) || (!adminIsBL && e.role==="mitarbeiter")) && (
+                  rmConfirm===e.id
+                    ? <span style={{display:"inline-flex",gap:6,alignItems:"center"}}>
+                        <span style={{fontSize:12,color:"var(--red)"}}>{t.reallyRemove}</span>
+                        <button className="mini-btn danger" onClick={()=>{ doRemoveEmp(e.id); setRmConfirm(null); }}>{t.yes}</button>
+                        <button className="mini-btn" onClick={()=>setRmConfirm(null)}>{t.no}</button>
+                      </span>
+                    : <button className="mini-btn danger" onClick={()=>setRmConfirm(e.id)}>{t.remove}</button>
+                )}
               </div>
             ))}
           </div>
@@ -1918,9 +1926,17 @@ export default function App(){
               <span className={"tg "+cls}>{label}</span>
             </div>
             {!dec && (
-              <div style={{display:"flex",gap:8,marginTop:10}}>
+              <div style={{display:"flex",gap:8,marginTop:10,alignItems:"center",flexWrap:"wrap"}}>
                 <button className="mini-btn" onClick={()=>openEdit(r)}>{t.change}</button>
-                {r.type==="urlaub" && <button className="mini-btn danger" onClick={()=>withdrawRequest(r.id)}>{t.withdraw}</button>}
+                {r.type==="urlaub" && (
+                  wdConfirm===r.id
+                    ? <span style={{display:"inline-flex",gap:6,alignItems:"center"}}>
+                        <span style={{fontSize:12,color:"var(--red)"}}>{t.reallyWithdraw}</span>
+                        <button className="mini-btn danger" onClick={()=>{ withdrawRequest(r.id); setWdConfirm(null); }}>{t.yes}</button>
+                        <button className="mini-btn" onClick={()=>setWdConfirm(null)}>{t.no}</button>
+                      </span>
+                    : <button className="mini-btn danger" onClick={()=>setWdConfirm(r.id)}>{t.withdraw}</button>
+                )}
               </div>
             )}
           </div>
