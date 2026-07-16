@@ -10,11 +10,13 @@
 --  Voraussetzung: assistent_rights.sql. Einmal im SQL-Editor ausführen.
 -- ============================================================
 
+drop function if exists leadership_contacts();
 create or replace function leadership_contacts()
-returns table (profile_id uuid, full_name text, role text)
+returns table (profile_id uuid, full_name text, role text, betrieb_name text)
 language sql stable security definer set search_path = public as $$
-  select p.id, p.full_name, p.role::text
+  select p.id, p.full_name, p.role::text, b.name
   from profiles p
+  left join betriebe b on b.id = p.betrieb_id
   where p.active and p.id <> auth.uid() and (
     p.role = 'personal'
     or (p.role in ('betriebsleiter','assistent')

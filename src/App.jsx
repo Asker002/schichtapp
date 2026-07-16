@@ -1858,24 +1858,35 @@ export default function App(){
                     )}
                   </select>
                 </div>
-                {mScope==="person" && (
-                  <div className="field"><label>{t.recipientLbl}</label>
-                    <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
-                    <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
-                      <option value="">—</option>
-                      {emps.filter(e=>e.id!==dbProfile?.id).filter(e=>empMatch(e,empQuery)).map(e=>(
-                        <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
-                      ))}
-                      {(()=>{ const extra = leadContacts.filter(l=>l.profile_id!==dbProfile?.id && !emps.some(e=>e.id===l.profile_id) && empMatch({full_name:l.full_name},empQuery));
-                        return extra.length>0 ? (
+                {mScope==="person" && (()=>{
+                  const meId = dbProfile?.id;
+                  // Mitarbeiter (mit Nummer) und Führung/Leitung (mit Rolle) getrennt darstellen,
+                  // auch wenn HR/Führung in der Mitarbeiterliste auftaucht.
+                  const map = new Map();
+                  emps.filter(e=>e.id!==meId).forEach(e=> map.set(e.id, {id:e.id, name:e.full_name, role:e.role||"mitarbeiter", pnr:e.personalnummer||null, betrieb:e.betrieb?.name||null}));
+                  leadContacts.filter(l=>l.profile_id!==meId).forEach(l=>{ const ex=map.get(l.profile_id); if(ex){ ex.role=l.role; if(l.betrieb_name) ex.betrieb=l.betrieb_name; } else map.set(l.profile_id, {id:l.profile_id, name:l.full_name, role:l.role, pnr:null, betrieb:l.betrieb_name||null}); });
+                  const isLead = p => p.role && p.role!=="mitarbeiter";
+                  const all = [...map.values()].filter(p=>empMatch({full_name:p.name,personalnummer:p.pnr},empQuery));
+                  const mit = all.filter(p=>!isLead(p));
+                  const led = all.filter(isLead).sort((a,b)=>(a.role==="personal"?2:1)-(b.role==="personal"?2:1) || (a.name||"").localeCompare(b.name||""));
+                  const lbl = p => isLead(p)
+                    ? `${p.name} · ${leaderRole(p.role)}${(p.betrieb && p.role!=="personal")?` · ${p.betrieb}`:""}`
+                    : `${p.name}${p.pnr?` · ${p.pnr}`:""}`;
+                  return (
+                    <div className="field"><label>{t.recipientLbl}</label>
+                      <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
+                      <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
+                        <option value="">—</option>
+                        {mit.map(p=><option key={p.id} value={p.id}>{lbl(p)}</option>)}
+                        {led.length>0 && (
                           <optgroup label={t.leadershipLabel}>
-                            {extra.map(l=><option key={l.profile_id} value={l.profile_id}>{l.full_name} · {leaderRole(l.role)}</option>)}
+                            {led.map(p=><option key={p.id} value={p.id}>{lbl(p)}</option>)}
                           </optgroup>
-                        ) : null;
-                      })()}
-                    </select>
-                  </div>
-                )}
+                        )}
+                      </select>
+                    </div>
+                  );
+                })()}
               </>
             )}
             <div className="field"><label>{t.subjectLabel}</label><input value={mSubject} onChange={e=>setMSubject(e.target.value)} /></div>
