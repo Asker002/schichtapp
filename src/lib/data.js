@@ -76,6 +76,12 @@ export async function listMessages() {
   if (error) throw error
   return data
 }
+// Führungskräfte des Mitarbeiters (für die Empfängerauswahl beim Schreiben) – ohne Kollegen.
+export async function myLeadership() {
+  const { data, error } = await supabase.rpc('my_leadership')
+  if (error) throw error
+  return data
+}
 // Eigene Nachricht löschen (RLS: nur der Absender). Reads werden per Cascade entfernt.
 export async function deleteMessage(id) {
   const { error } = await supabase.from('messages').delete().eq('id', id)

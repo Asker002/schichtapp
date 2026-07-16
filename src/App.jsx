@@ -8,7 +8,7 @@ import { hasSupabaseConfig } from "./lib/supabase";
 import { downloadAbsencePdf } from "./lib/absencePdf";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
-  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
+  listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage, myLeadership,
   listPayslips, payslipUrl, uploadPayslip, listAssignments, listAssignmentsRange, setAssignment, teamAssignments, companyDirectory, companyTeams, companyRequests, companyOverview, teamLeaveCounts } from "./lib/data";
 
 /* ============================================================
@@ -336,7 +336,7 @@ const I18N = {
     manageEmp:"Mitarbeiter", newEmp:"Neuer Mitarbeiter", fName:"Name", roleLbl:"Rolle", createBtn:"Anlegen", empCreated:"Mitarbeiter angelegt ✓", noEmp:"Noch keine Mitarbeiter", noTeamCat:"Ohne Schicht", adminHint:"Anmeldung später mit E-Mail + Start-Passwort.",
     changePw:"Passwort ändern", newPw:"Neues Passwort", repeatPw:"Wiederholen", pwChanged:"Passwort geändert ✓", pwMismatch:"Passwörter stimmen nicht überein", pwTooShort:"Mindestens 6 Zeichen", remove:"Entfernen",
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
-    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", toPerson:"Person", allPlants:"Alle Betriebe", wholePlant:"Ganzer Betrieb", recipientLbl:"Empfänger", personalMsg:"Persönlich", pickRecipient:"Bitte Empfänger wählen.", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
+    postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", toPerson:"Person", allPlants:"Alle Betriebe", wholePlant:"Ganzer Betrieb", recipientLbl:"Empfänger", personalMsg:"Persönlich", pickRecipient:"Bitte Empfänger wählen.", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?", reply:"Antworten", maSendHint:"Nur an deine Schichtführung oder Betriebsleitung.",
     uploadTitle:"Lohnzettel hochladen", bulkTitle:"Sammel-Upload", bulkHint:"Mehrere PDFs auf einmal – die Personalnummer muss im Dateinamen stehen (z. B. 10007.pdf).", pickPdfs:"PDFs wählen", bulkBtn:"Alle hochladen", bulkDone:"zugeordnet", bulkNoMatch:"ohne Treffer", periodLabel:"Monat", pickPdf:"PDF wählen", uploadBtn:"Hochladen", uploadOk:"Hochgeladen ✓", noPayslips:"Noch keine Lohnzettel", pdfOnly:"Nur PDF-Dateien",
     einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute", workAssign:"Arbeitsplatzeinteilung", workHint1:"Arbeitsplatz:", workHint2:"– jetzt Felder antippen.", eraser:"Radierer", copyWeek:"Erste Spalte auf Woche übernehmen", clearAssign:"Einteilung löschen",
     absTitle:"Urlaubsplan & Abwesenheiten",
@@ -403,7 +403,7 @@ const I18N = {
     manageEmp:"Çalışanlar", newEmp:"Yeni çalışan", fName:"Ad", roleLbl:"Rol", createBtn:"Oluştur", empCreated:"Çalışan oluşturuldu ✓", noEmp:"Henüz çalışan yok", noTeamCat:"Vardiyasız", adminHint:"Giriş: e-posta + başlangıç şifresi.",
     changePw:"Şifre değiştir", newPw:"Yeni şifre", repeatPw:"Tekrar", pwChanged:"Şifre değiştirildi ✓", pwMismatch:"Şifreler eşleşmiyor", pwTooShort:"En az 6 karakter", remove:"Çıkar",
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
-    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", toPerson:"Kişi", allPlants:"Tüm işletmeler", wholePlant:"Tüm işletme", recipientLbl:"Alıcı", personalMsg:"Kişisel", pickRecipient:"Lütfen alıcı seçin.", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
+    postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", toPerson:"Kişi", allPlants:"Tüm işletmeler", wholePlant:"Tüm işletme", recipientLbl:"Alıcı", personalMsg:"Kişisel", pickRecipient:"Lütfen alıcı seçin.", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?", reply:"Yanıtla", maSendHint:"Sadece vardiya amirine veya işletme müdürüne.",
     uploadTitle:"Maaş bordrosu yükle", bulkTitle:"Toplu yükleme", bulkHint:"Birden çok PDF – personel numarası dosya adında olmalı (örn. 10007.pdf).", pickPdfs:"PDF seç", bulkBtn:"Hepsini yükle", bulkDone:"atandı", bulkNoMatch:"eşleşme yok", periodLabel:"Ay", pickPdf:"PDF seç", uploadBtn:"Yükle", uploadOk:"Yüklendi ✓", noPayslips:"Henüz bordro yok", pdfOnly:"Sadece PDF dosyaları",
     einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip", workAssign:"İş yeri planı", workHint1:"İş yeri:", workHint2:"– şimdi alanlara dokun.", eraser:"Silgi", copyWeek:"İlk sütunu haftaya uygula", clearAssign:"Planı sil",
     absTitle:"İzin planı & devamsızlıklar",
@@ -470,7 +470,7 @@ const I18N = {
     manageEmp:"Employees", newEmp:"New employee", fName:"Name", roleLbl:"Role", createBtn:"Create", empCreated:"Employee created ✓", noEmp:"No employees yet", noTeamCat:"No shift", adminHint:"Login later with email + starting password.",
     changePw:"Change password", newPw:"New password", repeatPw:"Repeat", pwChanged:"Password changed ✓", pwMismatch:"Passwords do not match", pwTooShort:"At least 6 characters", remove:"Remove",
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
-    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", toPerson:"Person", allPlants:"All plants", wholePlant:"Whole plant", recipientLbl:"Recipient", personalMsg:"Personal", pickRecipient:"Please choose a recipient.", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
+    postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", toPerson:"Person", allPlants:"All plants", wholePlant:"Whole plant", recipientLbl:"Recipient", personalMsg:"Personal", pickRecipient:"Please choose a recipient.", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?", reply:"Reply", maSendHint:"Only to your shift lead or plant manager.",
     uploadTitle:"Upload payslip", bulkTitle:"Bulk upload", bulkHint:"Several PDFs at once – the personnel number must be in the file name (e.g. 10007.pdf).", pickPdfs:"Choose PDFs", bulkBtn:"Upload all", bulkDone:"assigned", bulkNoMatch:"no match", periodLabel:"Month", pickPdf:"Choose PDF", uploadBtn:"Upload", uploadOk:"Uploaded ✓", noPayslips:"No payslips yet", pdfOnly:"PDF files only",
     einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today", workAssign:"Workplace assignment", workHint1:"Workplace:", workHint2:"– now tap the cells.", eraser:"Eraser", copyWeek:"Apply first column to week", clearAssign:"Clear assignment",
     absTitle:"Leave plan & absences",
@@ -537,7 +537,7 @@ const I18N = {
     manageEmp:"Сотрудники", newEmp:"Новый сотрудник", fName:"Имя", roleLbl:"Роль", createBtn:"Создать", empCreated:"Сотрудник создан ✓", noEmp:"Пока нет сотрудников", noTeamCat:"Без смены", adminHint:"Вход: эл. почта + стартовый пароль.",
     changePw:"Сменить пароль", newPw:"Новый пароль", repeatPw:"Повторите", pwChanged:"Пароль изменён ✓", pwMismatch:"Пароли не совпадают", pwTooShort:"Минимум 6 символов", remove:"Убрать",
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
-    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", toPerson:"Человек", allPlants:"Все заводы", wholePlant:"Весь завод", recipientLbl:"Получатель", personalMsg:"Лично", pickRecipient:"Выберите получателя.", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
+    postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", toPerson:"Человек", allPlants:"Все заводы", wholePlant:"Весь завод", recipientLbl:"Получатель", personalMsg:"Лично", pickRecipient:"Выберите получателя.", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?", reply:"Ответить", maSendHint:"Только руководству смены или завода.",
     uploadTitle:"Загрузить расчётный лист", bulkTitle:"Массовая загрузка", bulkHint:"Несколько PDF сразу – табельный номер должен быть в имени файла (напр. 10007.pdf).", pickPdfs:"Выбрать PDF", bulkBtn:"Загрузить все", bulkDone:"назначено", bulkNoMatch:"без совпадения", periodLabel:"Месяц", pickPdf:"Выбрать PDF", uploadBtn:"Загрузить", uploadOk:"Загружено ✓", noPayslips:"Пока нет расчётных листов", pdfOnly:"Только файлы PDF",
     einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня", workAssign:"Расстановка по местам", workHint1:"Место:", workHint2:"– нажимай ячейки.", eraser:"Ластик", copyWeek:"Первый столбец на неделю", clearAssign:"Очистить",
     absTitle:"План отпусков и отсутствия",
@@ -604,7 +604,7 @@ const I18N = {
     manageEmp:"Pracownicy", newEmp:"Nowy pracownik", fName:"Imię i nazwisko", roleLbl:"Rola", createBtn:"Utwórz", empCreated:"Pracownik utworzony ✓", noEmp:"Brak pracowników", noTeamCat:"Bez zmiany", adminHint:"Logowanie: e-mail + hasło startowe.",
     changePw:"Zmień hasło", newPw:"Nowe hasło", repeatPw:"Powtórz", pwChanged:"Hasło zmienione ✓", pwMismatch:"Hasła nie są zgodne", pwTooShort:"Minimum 6 znaków", remove:"Usuń",
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
-    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", toPerson:"Osoba", allPlants:"Wszystkie zakłady", wholePlant:"Cały zakład", recipientLbl:"Odbiorca", personalMsg:"Osobiste", pickRecipient:"Wybierz odbiorcę.", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
+    postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", toPerson:"Osoba", allPlants:"Wszystkie zakłady", wholePlant:"Cały zakład", recipientLbl:"Odbiorca", personalMsg:"Osobiste", pickRecipient:"Wybierz odbiorcę.", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?", reply:"Odpowiedz", maSendHint:"Tylko do kierownictwa zmiany lub zakładu.",
     uploadTitle:"Wgraj pasek wypłaty", bulkTitle:"Zbiorcze przesyłanie", bulkHint:"Wiele PDF naraz – numer personalny musi być w nazwie pliku (np. 10007.pdf).", pickPdfs:"Wybierz PDF-y", bulkBtn:"Prześlij wszystko", bulkDone:"przypisano", bulkNoMatch:"brak dopasowania", periodLabel:"Miesiąc", pickPdf:"Wybierz PDF", uploadBtn:"Wgraj", uploadOk:"Wgrano ✓", noPayslips:"Brak pasków wypłat", pdfOnly:"Tylko pliki PDF",
     einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś", workAssign:"Przydział stanowisk", workHint1:"Stanowisko:", workHint2:"– dotknij pola.", eraser:"Gumka", copyWeek:"Pierwsza kolumna na tydzień", clearAssign:"Wyczyść",
     absTitle:"Plan urlopów i nieobecności",
@@ -804,6 +804,7 @@ export default function App(){
   const [forgotSent,setForgotSent] = useState(false); const [forgotErr,setForgotErr] = useState(""); const [forgotBusy,setForgotBusy] = useState(false);
   const [showPostfach,setShowPostfach] = useState(false); const [messages,setMessages] = useState([]); const [msgOpen,setMsgOpen] = useState(null);
   const [composing,setComposing] = useState(false); const [mSubject,setMSubject] = useState(""); const [mBody,setMBody] = useState(""); const [mScope,setMScope] = useState("all"); const [mRecipient,setMRecipient] = useState("");
+  const [leaders,setLeaders] = useState([]);           // Führungskräfte des Mitarbeiters (Empfänger)
   const [postErr,setPostErr] = useState(""); const [postBusy,setPostBusy] = useState(false);
   const [mFiles,setMFiles] = useState([]); const [upBusy,setUpBusy] = useState(false); const [attUrls,setAttUrls] = useState({});
   const [delConfirm,setDelConfirm] = useState(null);   // Nachricht-ID mit Lösch-Bestätigung
@@ -1049,6 +1050,9 @@ export default function App(){
       catch(e){ console.warn("[coteams]", e.message); }
       try{ setCoRequests(await companyRequests()); }catch(e){ console.warn("[coreq]", e.message); }
       try{ setCoOverview(await companyOverview(isoOf(new Date()))); }catch(e){ console.warn("[coovw]", e.message); }
+    }
+    if (p.role === "mitarbeiter") {
+      try{ setLeaders(await myLeadership()); }catch(e){ console.warn("[leaders]", e.message); }
     }
   }
   async function doLogin(){
@@ -1791,53 +1795,66 @@ export default function App(){
   );
 
   const teamNameOf = (id)=> teamOpts.find(x=>x.id===id)?.name || "—";
-  const canSend = role==="meister" || role==="bl" || role==="hr";
+  const canSend = role==="meister" || role==="bl" || role==="hr" || role==="ma";
+  const leaderRole = (r)=> ({schichtmeister:t.roleMeister,vorarbeiter:t.roleVorarbeiter,gruppenfuehrer:t.roleGruppenfuehrer,betriebsleiter:t.roleBL,assistent:t.roleAssistent,personal:t.roleHR}[r] || r);
   const fmtMsgDate = (iso)=>{ const d=new Date(iso); const p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}.${p(d.getMonth()+1)}. ${p(d.getHours())}:${p(d.getMinutes())}`; };
   const postfachSheet = showPostfach && (
     <div className="sheet">
       <div className="sheet-hd">
         <button className="navbtn" onClick={()=> composing ? setComposing(false) : setShowPostfach(false)}><ChevronLeft size={18}/></button>
         <span className="disp">{composing ? t.newMsg : t.postfach}</span>
-        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope(role==="meister"?"shift":role==="hr"?"company":"all"); setMRecipient(""); setMFiles([]); setEmpQuery("");}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
+        {!composing && canSend && <button className="navbtn" style={{marginLeft:"auto"}} onClick={()=>{setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope(role==="meister"?"shift":role==="hr"?"company":role==="ma"?"person":"all"); setMRecipient(""); setMFiles([]); setEmpQuery("");}} aria-label={t.newMsg}><PenSquare size={18}/></button>}
       </div>
       <div className="sheet-body">
         {composing ? (
           <div className="card" style={{marginTop:0}}>
-            <div className="field"><label>{t.toLabel}</label>
-              <select className="lang-select" style={selStyle} value={mScope} onChange={e=>setMScope(e.target.value)}>
-                <option value="person">{t.toPerson}</option>
-                {role==="meister" && <option value="shift">{t.myShift} {crew}</option>}
-                {role==="hr" && (
-                  <>
-                    <option value="company">{t.allPlants}</option>
-                    {[...new Map(coTeams.map(x=>[x.betrieb_id,x.betrieb_name])).entries()].map(([bid,bname])=>(
-                      <optgroup key={bid} label={bname}>
-                        <option value={"b:"+bid}>{t.wholePlant}</option>
-                        {coTeams.filter(x=>x.betrieb_id===bid).map(x=>(
-                          <option key={x.team_id} value={"t:"+x.team_id}>{x.team_name}</option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </>
-                )}
-                {role==="bl" && (
-                  <>
-                    <option value="all">{t.wholePlant}{dbProfile?.betrieb?.name?` · ${dbProfile.betrieb.name}`:""}</option>
-                    {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
-                  </>
-                )}
-              </select>
-            </div>
-            {mScope==="person" && (
-              <div className="field"><label>{t.recipientLbl}</label>
-                <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
+            {role==="ma" ? (
+              <div className="field"><label>{t.toLabel}</label>
                 <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
                   <option value="">—</option>
-                  {emps.filter(e=>e.id!==dbProfile?.id).filter(e=>empMatch(e,empQuery)).map(e=>(
-                    <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
-                  ))}
+                  {leaders.map(l=><option key={l.profile_id} value={l.profile_id}>{l.full_name} · {leaderRole(l.role)}</option>)}
                 </select>
+                <div style={{fontSize:11,color:"var(--faint)",marginTop:6,lineHeight:1.5}}>{t.maSendHint}</div>
               </div>
+            ) : (
+              <>
+                <div className="field"><label>{t.toLabel}</label>
+                  <select className="lang-select" style={selStyle} value={mScope} onChange={e=>setMScope(e.target.value)}>
+                    <option value="person">{t.toPerson}</option>
+                    {role==="meister" && <option value="shift">{t.myShift} {crew}</option>}
+                    {role==="hr" && (
+                      <>
+                        <option value="company">{t.allPlants}</option>
+                        {[...new Map(coTeams.map(x=>[x.betrieb_id,x.betrieb_name])).entries()].map(([bid,bname])=>(
+                          <optgroup key={bid} label={bname}>
+                            <option value={"b:"+bid}>{t.wholePlant}</option>
+                            {coTeams.filter(x=>x.betrieb_id===bid).map(x=>(
+                              <option key={x.team_id} value={"t:"+x.team_id}>{x.team_name}</option>
+                            ))}
+                          </optgroup>
+                        ))}
+                      </>
+                    )}
+                    {role==="bl" && (
+                      <>
+                        <option value="all">{t.wholePlant}{dbProfile?.betrieb?.name?` · ${dbProfile.betrieb.name}`:""}</option>
+                        {teamOpts.map(tm=><option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                      </>
+                    )}
+                  </select>
+                </div>
+                {mScope==="person" && (
+                  <div className="field"><label>{t.recipientLbl}</label>
+                    <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
+                    <select className="lang-select" style={selStyle} value={mRecipient} onChange={e=>setMRecipient(e.target.value)}>
+                      <option value="">—</option>
+                      {emps.filter(e=>e.id!==dbProfile?.id).filter(e=>empMatch(e,empQuery)).map(e=>(
+                        <option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </>
             )}
             <div className="field"><label>{t.subjectLabel}</label><input value={mSubject} onChange={e=>setMSubject(e.target.value)} /></div>
             <div className="field"><label>{t.msgBody}</label><textarea rows={6} value={mBody} onChange={e=>setMBody(e.target.value)} /></div>
@@ -1885,6 +1902,11 @@ export default function App(){
                             </a>
                           );
                         })}
+                      </div>
+                    )}
+                    {m.senderId && m.senderId!==dbProfile?.id && (
+                      <div style={{marginTop:14}} onClick={ev=>ev.stopPropagation()}>
+                        <button className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6}} onClick={()=>{ setComposing(true); setPostErr(""); setMScope("person"); setMRecipient(m.senderId); setMSubject("Re: "+m.subject); setMBody(""); setMFiles([]); setEmpQuery(""); setMsgOpen(null); }}><PenSquare size={13}/>{t.reply}</button>
                       </div>
                     )}
                     {m.senderId===dbProfile?.id && (
