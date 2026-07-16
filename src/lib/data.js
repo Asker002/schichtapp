@@ -82,6 +82,12 @@ export async function myLeadership() {
   if (error) throw error
   return data
 }
+// Eskalations-Kontakte für die Schichtführung: Betriebsleitung/Assistent + Personalabteilung.
+export async function leadershipContacts() {
+  const { data, error } = await supabase.rpc('leadership_contacts')
+  if (error) throw error
+  return data
+}
 // Eigene Nachricht löschen (RLS: nur der Absender). Reads werden per Cascade entfernt.
 export async function deleteMessage(id) {
   const { error } = await supabase.from('messages').delete().eq('id', id)
