@@ -1078,6 +1078,16 @@ export default function App(){
     try{ await removeFromTeam(id); setEmps(await listEmployees()); }
     catch(err){ setAdminErr(err.message); }
   }
+  // Abwesenheitsnachweis-PDF für einen Mitarbeiter (Meister: eigene Schicht, BL: eigener Betrieb – RLS begrenzt).
+  async function downloadEmpAbsencePdf(e){
+    let reqs = [];
+    if(hasSupabaseConfig){ try{ reqs = (await listRequests()).filter(r=>r.profile_id===e.id); }catch(err){ setAdminErr(err.message); } }
+    downloadAbsencePdf({
+      full_name:e.full_name, personalnummer:e.personalnummer,
+      betrieb_name: dbProfile?.betrieb?.name || "",
+      team_name: teamOpts.find(tm=>tm.id===e.team_id)?.name || e.team?.name || "",
+    }, reqs);
+  }
   const openPw = ()=>{ setShowPw(true); setPwNew(""); setPwNew2(""); setPwErr(""); setPwOk(false); };
   async function doChangePassword(){
     setPwErr(""); setPwOk(false);
@@ -1644,6 +1654,7 @@ export default function App(){
                       </select>
                     </>
                   : <span className="tg mut">{(ROLE_OPTS.find(([v])=>v===e.role)||[])[1] || e.role}</span>}
+                <button className="mini-btn" title={t.absenceSlip} onClick={()=>downloadEmpAbsencePdf(e)} style={{display:"inline-flex",alignItems:"center",gap:5}}><Download size={13}/>PDF</button>
                 {e.id!==dbProfile?.id && ((adminIsBL && BL_MANAGED.includes(e.role)) || (!adminIsBL && e.role==="mitarbeiter")) &&
                   <button className="mini-btn danger" onClick={()=>doRemoveEmp(e.id)}>{t.remove}</button>}
               </div>
