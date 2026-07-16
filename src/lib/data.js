@@ -91,6 +91,13 @@ export async function listAssignments(date) {
   if (error) throw error
   return data
 }
+// Einteilung für einen Datumsbereich (für die Wochen-Rasteransicht).
+export async function listAssignmentsRange(d1, d2) {
+  const { data, error } = await supabase.from('station_assignments')
+    .select('profile_id, work_date, station').gte('work_date', d1).lte('work_date', d2)
+  if (error) throw error
+  return data
+}
 // Einteilen (nur Schichtführung fürs eigene Team, per RLS abgesichert).
 export async function setAssignment(profileId, date, station) {
   const { data: u } = await supabase.auth.getUser()

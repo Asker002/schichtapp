@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Home, CalendarDays, Wallet, LayoutGrid, Sun, Moon,
   FileText, Plane, HeartPulse, Languages, ChevronRight, ChevronLeft,
-  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2
+  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2, Eraser
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { downloadAbsencePdf } from "./lib/absencePdf";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
-  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments, companyDirectory, companyTeams, companyRequests, companyOverview, teamLeaveCounts } from "./lib/data";
+  listPayslips, payslipUrl, uploadPayslip, listAssignments, listAssignmentsRange, setAssignment, teamAssignments, companyDirectory, companyTeams, companyRequests, companyOverview, teamLeaveCounts } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -19,7 +19,11 @@ import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, c
 
 const PATTERN = ["T", "N", "F", "F"]; // 4-Tage-Zyklus: 1 Tag · 1 Nacht · 2 frei
 const URLAUB_TAGE = 28;               // Standard-Jahresurlaub (Resturlaub-Anzeige)
-const STATIONS = ["Alkylierer","Messwarte","Absackung","Mischerei","Tylomix","Zellstoff","Neubau","ZBV","Mahltrocknung"];
+const STATIONS = ["Messwarte","Mahltrocknung","Alkylierer","Zellstoff","Neubau","Absack","Mischerei","Tylomix","Sauber","ZBV"];
+const ABSENT = "Abwesend";
+const STATION_COLOR = { Messwarte:"#3358d4", Mahltrocknung:"#d99a6a", Alkylierer:"#d24b45", Zellstoff:"#57a94e", Neubau:"#dbd24a", Absack:"#54b7cb", Mischerei:"#c14fc0", Tylomix:"#5a221f", Sauber:"#9b9b9b", ZBV:"#d8b24c", [ABSENT]:"#e3ded3" };
+const stColor = (s)=> STATION_COLOR[s] || "#eef2f5";
+const stText = (s)=>{ const hex=STATION_COLOR[s]; if(!hex) return "#5b6b78"; const h=hex.replace("#",""); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return (0.299*r+0.587*g+0.114*b)>150 ? "#1a2733" : "#fff"; };
 // rot = { offset, anchorMs }: kommt aus dem Team (teams.rotation_offset / anchor_date).
 
 const CSS = `
@@ -253,6 +257,14 @@ const CSS = `
 
 @media (prefers-reduced-motion: reduce){ .body{animation:none;} }
 
+/* Arbeitsplatz-Einteilung: Raster */
+.agrid{width:100%; border-collapse:collapse; font-size:13px; min-width:520px;}
+.agrid th{background:var(--surface); color:var(--text); font-weight:700; font-size:12.5px; padding:11px 8px; border-bottom:1px solid var(--line); border-left:1px solid var(--line); text-align:center; white-space:nowrap;}
+.agrid th:first-child{border-left:none; position:sticky; left:0; z-index:2; text-align:left;}
+.agrid td{border-bottom:1px solid var(--line); border-left:1px solid var(--line); text-align:center;}
+.agrid td:first-child{border-left:none; padding:0 12px; color:var(--text); background:var(--bg); position:sticky; left:0; z-index:1; white-space:nowrap;}
+.agrid tr:last-child td{border-bottom:none;}
+
 /* ===== DESKTOP-ANSICHT für Führungsrollen (PC) – Seitenleiste + breiter Inhalt ===== */
 @media (min-width: 900px){
   .app-root.mgmt{ padding:0; background:var(--surface); }
@@ -326,7 +338,7 @@ const I18N = {
     forgotLink:"Passwort vergessen?", forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.", sendResetBtn:"Link senden", resetSent:"E-Mail gesendet – prüfe dein Postfach (auch Spam).", setNewPw:"Neues Passwort setzen", setNewPwSub:"Wähle ein neues Passwort für deinen Zugang.",
     postfach:"Postfach", newMsg:"Neue Nachricht", noMsg:"Keine Nachrichten", toLabel:"An", plantWide:"Werksweit (alle)", myShift:"Meine Schicht", toPerson:"Person", allPlants:"Alle Betriebe", wholePlant:"Ganzer Betrieb", recipientLbl:"Empfänger", personalMsg:"Persönlich", pickRecipient:"Bitte Empfänger wählen.", subjectLabel:"Betreff", msgBody:"Nachricht", sendMsg:"Senden", addFile:"Datei/Foto", fileTooBig:"Datei zu groß (max. 10 MB)", deleteMsg:"Löschen", reallyDelete:"Wirklich löschen?",
     uploadTitle:"Lohnzettel hochladen", bulkTitle:"Sammel-Upload", bulkHint:"Mehrere PDFs auf einmal – die Personalnummer muss im Dateinamen stehen (z. B. 10007.pdf).", pickPdfs:"PDFs wählen", bulkBtn:"Alle hochladen", bulkDone:"zugeordnet", bulkNoMatch:"ohne Treffer", periodLabel:"Monat", pickPdf:"PDF wählen", uploadBtn:"Hochladen", uploadOk:"Hochgeladen ✓", noPayslips:"Noch keine Lohnzettel", pdfOnly:"Nur PDF-Dateien",
-    einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute",
+    einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute", workAssign:"Arbeitsplatzeinteilung", workHint1:"Arbeitsplatz:", workHint2:"– jetzt Felder antippen.", eraser:"Radierer", copyWeek:"Erste Spalte auf Woche übernehmen", clearAssign:"Einteilung löschen",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
     blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
@@ -393,7 +405,7 @@ const I18N = {
     forgotLink:"Şifreni mi unuttun?", forgotTitle:"Şifre sıfırlama", forgotSub:"E-postanı gir – sıfırlama bağlantısı göndereceğiz.", sendResetBtn:"Bağlantı gönder", resetSent:"E-posta gönderildi – gelen kutunu kontrol et (spam de).", setNewPw:"Yeni şifre belirle", setNewPwSub:"Girişin için yeni bir şifre seç.",
     postfach:"Gelen kutusu", newMsg:"Yeni mesaj", noMsg:"Mesaj yok", toLabel:"Kime", plantWide:"Tüm işletme", myShift:"Vardiyam", toPerson:"Kişi", allPlants:"Tüm işletmeler", wholePlant:"Tüm işletme", recipientLbl:"Alıcı", personalMsg:"Kişisel", pickRecipient:"Lütfen alıcı seçin.", subjectLabel:"Konu", msgBody:"Mesaj", sendMsg:"Gönder", addFile:"Dosya/Foto", fileTooBig:"Dosya çok büyük (maks. 10 MB)", deleteMsg:"Sil", reallyDelete:"Gerçekten sil?",
     uploadTitle:"Maaş bordrosu yükle", bulkTitle:"Toplu yükleme", bulkHint:"Birden çok PDF – personel numarası dosya adında olmalı (örn. 10007.pdf).", pickPdfs:"PDF seç", bulkBtn:"Hepsini yükle", bulkDone:"atandı", bulkNoMatch:"eşleşme yok", periodLabel:"Ay", pickPdf:"PDF seç", uploadBtn:"Yükle", uploadOk:"Yüklendi ✓", noPayslips:"Henüz bordro yok", pdfOnly:"Sadece PDF dosyaları",
-    einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip",
+    einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip", workAssign:"İş yeri planı", workHint1:"İş yeri:", workHint2:"– şimdi alanlara dokun.", eraser:"Silgi", copyWeek:"İlk sütunu haftaya uygula", clearAssign:"Planı sil",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
     blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
@@ -460,7 +472,7 @@ const I18N = {
     forgotLink:"Forgot password?", forgotTitle:"Reset password", forgotSub:"Enter your email – we'll send you a reset link.", sendResetBtn:"Send link", resetSent:"Email sent – check your inbox (and spam).", setNewPw:"Set new password", setNewPwSub:"Choose a new password for your account.",
     postfach:"Inbox", newMsg:"New message", noMsg:"No messages", toLabel:"To", plantWide:"Plant-wide (all)", myShift:"My shift", toPerson:"Person", allPlants:"All plants", wholePlant:"Whole plant", recipientLbl:"Recipient", personalMsg:"Personal", pickRecipient:"Please choose a recipient.", subjectLabel:"Subject", msgBody:"Message", sendMsg:"Send", addFile:"File/Photo", fileTooBig:"File too large (max. 10 MB)", deleteMsg:"Delete", reallyDelete:"Really delete?",
     uploadTitle:"Upload payslip", bulkTitle:"Bulk upload", bulkHint:"Several PDFs at once – the personnel number must be in the file name (e.g. 10007.pdf).", pickPdfs:"Choose PDFs", bulkBtn:"Upload all", bulkDone:"assigned", bulkNoMatch:"no match", periodLabel:"Month", pickPdf:"Choose PDF", uploadBtn:"Upload", uploadOk:"Uploaded ✓", noPayslips:"No payslips yet", pdfOnly:"PDF files only",
-    einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today",
+    einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today", workAssign:"Workplace assignment", workHint1:"Workplace:", workHint2:"– now tap the cells.", eraser:"Eraser", copyWeek:"Apply first column to week", clearAssign:"Clear assignment",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
     blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
@@ -527,7 +539,7 @@ const I18N = {
     forgotLink:"Забыли пароль?", forgotTitle:"Сброс пароля", forgotSub:"Введите e-mail – мы отправим ссылку для сброса.", sendResetBtn:"Отправить ссылку", resetSent:"Письмо отправлено – проверьте почту (и спам).", setNewPw:"Задать новый пароль", setNewPwSub:"Выберите новый пароль для входа.",
     postfach:"Входящие", newMsg:"Новое сообщение", noMsg:"Нет сообщений", toLabel:"Кому", plantWide:"Весь завод", myShift:"Моя смена", toPerson:"Человек", allPlants:"Все заводы", wholePlant:"Весь завод", recipientLbl:"Получатель", personalMsg:"Лично", pickRecipient:"Выберите получателя.", subjectLabel:"Тема", msgBody:"Сообщение", sendMsg:"Отправить", addFile:"Файл/Фото", fileTooBig:"Файл слишком большой (макс. 10 МБ)", deleteMsg:"Удалить", reallyDelete:"Точно удалить?",
     uploadTitle:"Загрузить расчётный лист", bulkTitle:"Массовая загрузка", bulkHint:"Несколько PDF сразу – табельный номер должен быть в имени файла (напр. 10007.pdf).", pickPdfs:"Выбрать PDF", bulkBtn:"Загрузить все", bulkDone:"назначено", bulkNoMatch:"без совпадения", periodLabel:"Месяц", pickPdf:"Выбрать PDF", uploadBtn:"Загрузить", uploadOk:"Загружено ✓", noPayslips:"Пока нет расчётных листов", pdfOnly:"Только файлы PDF",
-    einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня",
+    einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня", workAssign:"Расстановка по местам", workHint1:"Место:", workHint2:"– нажимай ячейки.", eraser:"Ластик", copyWeek:"Первый столбец на неделю", clearAssign:"Очистить",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
     blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
@@ -594,7 +606,7 @@ const I18N = {
     forgotLink:"Nie pamiętasz hasła?", forgotTitle:"Reset hasła", forgotSub:"Podaj e-mail – wyślemy link do resetu.", sendResetBtn:"Wyślij link", resetSent:"E-mail wysłany – sprawdź skrzynkę (i spam).", setNewPw:"Ustaw nowe hasło", setNewPwSub:"Wybierz nowe hasło do swojego konta.",
     postfach:"Skrzynka", newMsg:"Nowa wiadomość", noMsg:"Brak wiadomości", toLabel:"Do", plantWide:"Cały zakład", myShift:"Moja zmiana", toPerson:"Osoba", allPlants:"Wszystkie zakłady", wholePlant:"Cały zakład", recipientLbl:"Odbiorca", personalMsg:"Osobiste", pickRecipient:"Wybierz odbiorcę.", subjectLabel:"Temat", msgBody:"Wiadomość", sendMsg:"Wyślij", addFile:"Plik/Zdjęcie", fileTooBig:"Plik za duży (maks. 10 MB)", deleteMsg:"Usuń", reallyDelete:"Na pewno usunąć?",
     uploadTitle:"Wgraj pasek wypłaty", bulkTitle:"Zbiorcze przesyłanie", bulkHint:"Wiele PDF naraz – numer personalny musi być w nazwie pliku (np. 10007.pdf).", pickPdfs:"Wybierz PDF-y", bulkBtn:"Prześlij wszystko", bulkDone:"przypisano", bulkNoMatch:"brak dopasowania", periodLabel:"Miesiąc", pickPdf:"Wybierz PDF", uploadBtn:"Wgraj", uploadOk:"Wgrano ✓", noPayslips:"Brak pasków wypłat", pdfOnly:"Tylko pliki PDF",
-    einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś",
+    einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś", workAssign:"Przydział stanowisk", workHint1:"Stanowisko:", workHint2:"– dotknij pola.", eraser:"Gumka", copyWeek:"Pierwsza kolumna na tydzień", clearAssign:"Wyczyść",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
     blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
@@ -798,6 +810,9 @@ export default function App(){
   const [assignments,setAssignments] = useState({});   // Einteilung des gewählten Tages: profileId -> Bereich
   const [assignDate,setAssignDate] = useState("");     // Datum der Einteilung (Führung; Historie)
   const [teamToday,setTeamToday] = useState([]);       // Kollegen-Sicht heute: [{profile_id, full_name, station}]
+  const [selStation,setSelStation] = useState(STATIONS[0]); // aktuell gewählter Arbeitsplatz (Palette) | ABSENT | "__erase"
+  const [weekOff,setWeekOff] = useState(0);            // Wochennavigation im Einteilungs-Raster
+  const [assignGrid,setAssignGrid] = useState({});     // {`${pid}__${iso}`: station} für den sichtbaren Bereich
   const [selCrew,setSelCrew] = useState(null);         // BL-Übersicht: aufgeklappte Schicht (team_id)
   const [directory,setDirectory] = useState([]);       // HR Betriebe-Verzeichnis (ganze Firma)
   const [openBetrieb,setOpenBetrieb] = useState(null); // aufgeklappter Betrieb im Betriebe-Tab
@@ -861,6 +876,33 @@ export default function App(){
     try{ await setAssignment(profileId, assignDate, station); }
     catch(e){ console.warn("[assign]", e.message); }
   }
+  // ---- Einteilungs-Raster (Wochen) ----
+  function gridColsFor(off){
+    const base=new Date(now.getFullYear(),now.getMonth(),now.getDate()+off*7);
+    const cols=[];
+    for(let i=0;i<10 && cols.length<6;i++){ const d=new Date(base); d.setDate(d.getDate()+i); const st=shiftType(d,rot); if(st!=="F") cols.push({date:new Date(d),iso:isoOf(d),st}); }
+    return cols;
+  }
+  async function loadGrid(off){
+    if(!hasSupabaseConfig) return;
+    const cols=gridColsFor(off); if(!cols.length){ setAssignGrid({}); return; }
+    try{ const rows=await listAssignmentsRange(cols[0].iso, cols[cols.length-1].iso);
+      setAssignGrid(Object.fromEntries(rows.map(a=>[a.profile_id+"__"+a.work_date, a.station]))); }
+    catch(e){ console.warn("[grid]", e.message); }
+  }
+  async function paintCell(pid, iso){
+    const val = selStation==="__erase" ? null : selStation;
+    setAssignGrid(g=>({ ...g, [pid+"__"+iso]: val }));
+    if(iso===isoOf(new Date())){ setAssignments(a=>({...a,[pid]:val})); setTeamToday(tt=>tt.map(x=>x.profile_id===pid?{...x,station:val}:x)); }
+    if(!hasSupabaseConfig) return;
+    try{ await setAssignment(pid, iso, val); }catch(e){ console.warn("[grid]", e.message); }
+  }
+  async function bulkAssign(list){
+    setAssignGrid(g=>{ const n={...g}; list.forEach(([pid,iso,val])=>{ if(val==null) delete n[pid+"__"+iso]; else n[pid+"__"+iso]=val; }); return n; });
+    if(!hasSupabaseConfig) return;
+    for(const [pid,iso,val] of list){ try{ await setAssignment(pid, iso, val); }catch(e){} }
+  }
+  const onLeaveDay = (pid, iso)=> hasSupabaseConfig && dbRequests.some(r=> r.profileId===pid && (r.status==="genehmigt"||r.status==="geaendert") && r.startISO<=iso && (r.endISO||r.startISO)>=iso);
   async function openPayslip(storagePath){
     try{ const url = await payslipUrl(storagePath); window.open(url, "_blank", "noopener"); }
     catch(e){ console.warn("[payslip]", e.message); }
@@ -1137,6 +1179,9 @@ export default function App(){
     try{ localStorage.setItem("theme", theme); }catch(e){}
     try{ document.documentElement.style.colorScheme = theme==="dark" ? "dark" : "light"; }catch(e){}
   }, [theme]);
+
+  // Einteilungs-Raster laden (Schichtführung), bei Wochenwechsel neu.
+  useEffect(()=>{ if(role==="meister" && hasSupabaseConfig) loadGrid(weekOff); }, [role, weekOff, dbProfile]);
 
   // Demo-Deeplink für Screenshots/Vorschau (nur ohne Backend):
   //   #demo=<rolle>[:<tab>]   z.B. #demo=bl:0  -> direkt angemeldet in dieser Ansicht.
@@ -2343,37 +2388,62 @@ export default function App(){
           )}
 
           {role==="meister" && tab===1 && (()=>{
-            // Nur Mitarbeiter werden eingeteilt – Schichtführung erscheint hier nicht.
-            const workers = hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team;
-            const workersOnDuty = workers.filter(m=>m.st==="duty").length;
+            const workers = (hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team).map(m=>({ ...m, pid:m.id||m.name }));
+            const cols = gridColsFor(weekOff);
+            const rng = cols.length ? `${cols[0].date.getDate()}.–${cols[cols.length-1].date.getDate()}. ${t.months[cols[cols.length-1].date.getMonth()].slice(0,3)}` : "";
+            const p2 = (n)=>String(n).padStart(2,"0");
             return (
             <>
-              <div className="eyebrow">{t.teamTitle} · {t.crewLabel} {crew}</div>
-              <div className="card" style={{marginTop:0,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <span style={{fontSize:13,color:"var(--muted)"}}>{t.onDuty}</span>
-                <span className="num" style={{fontSize:22,fontWeight:700,color:"var(--plus)"}}>{workersOnDuty} / {workers.length}</span>
+              <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+                <div>
+                  <div className="disp" style={{fontSize:19,fontWeight:700}}>{t.workAssign} · {t.crewLabel} {crew}</div>
+                  <div style={{fontSize:12,color:"var(--muted)",marginTop:3}}>{t.workHint1} <b style={{color:"var(--text)"}}>{selStation==="__erase"?t.eraser:selStation}</b> {t.workHint2}</div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <button className="navbtn" onClick={()=>setWeekOff(weekOff-1)}><ChevronLeft size={18}/></button>
+                  <span style={{fontSize:13,fontWeight:600,minWidth:92,textAlign:"center"}}>{rng}</span>
+                  <button className="navbtn" onClick={()=>setWeekOff(weekOff+1)}><ChevronRight size={18}/></button>
+                </div>
               </div>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,margin:"14px 2px 6px"}}>
-                <span style={{fontSize:11,color:"var(--faint)"}}>{t.assignHint}</span>
-                <input type="date" value={assignDate} onChange={e=>loadAssignments(e.target.value)}
-                  style={{background:"var(--surface)",border:"1px solid var(--line)",color:"var(--text)",borderRadius:8,padding:"6px 8px",fontSize:12,fontFamily:"inherit"}} />
+              <div style={{display:"flex",flexWrap:"wrap",gap:8,margin:"16px 0"}}>
+                {[...STATIONS, ABSENT].map(s=>(
+                  <button key={s} onClick={()=>setSelStation(s)} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    border: selStation===s?"2.5px solid var(--text)":"1px solid var(--line)", background:stColor(s), color:stText(s)}}>{s}</button>
+                ))}
+                <button onClick={()=>setSelStation("__erase")} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",display:"inline-flex",alignItems:"center",gap:6,
+                  border: selStation==="__erase"?"2.5px solid var(--text)":"1px solid var(--line)", background:"var(--surface)",color:"var(--muted)"}}><Eraser size={14}/>{t.eraser}</button>
               </div>
-              <div className="card" style={{marginTop:0}}>
-                {workers.map((m,i)=>{
-                  const s = statusMap[m.st];
-                  return (
-                    <div key={i} style={{padding:"11px 0",borderBottom:"1px solid var(--line)",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-                      <span className="row-l" style={{flex:"1 1 110px"}}><span className="row-ic">{initials(m.name)}</span>{m.name}</span>
-                      <span className={"tg "+s.c}>{t[s.k]}</span>
-                      {hasSupabaseConfig && m.id && (
-                        <select className="lang-select" value={assignments[m.id]||""} onChange={ev=>setStation(m.id, ev.target.value)}>
-                          <option value="">{t.notAssigned}</option>
-                          {STATIONS.map(st=><option key={st} value={st}>{st}</option>)}
-                        </select>
-                      )}
-                    </div>
-                  );
-                })}
+              <div style={{overflowX:"auto",border:"1px solid var(--line)",borderRadius:12}}>
+                <table className="agrid">
+                  <thead><tr>
+                    <th style={{textAlign:"left"}}>{t.empLbl}</th>
+                    {cols.map((c,ci)=>(
+                      <th key={c.iso} style={ci===0?{background:"rgba(47,143,91,.07)"}:undefined}>
+                        {c.date.getDate()}.{p2(c.date.getMonth()+1)}.
+                        <div style={{fontWeight:500,fontSize:11,color:"var(--muted)",marginTop:2}}>{c.st==="N"?"🌙 "+t.nacht:"☀ "+t.tag}</div>
+                      </th>
+                    ))}
+                  </tr></thead>
+                  <tbody>
+                    {workers.map(m=>(
+                      <tr key={m.pid}>
+                        <td style={{textAlign:"left",fontStyle:"italic",fontWeight:600}}>{m.name}</td>
+                        {cols.map((c,ci)=>{ const leave=onLeaveDay(m.id,c.iso); const v = leave?ABSENT:(assignGrid[m.pid+"__"+c.iso]||null);
+                          return (
+                            <td key={c.iso} onClick={()=>{ if(!leave) paintCell(m.pid, c.iso); }} style={{cursor:leave?"default":"pointer",padding:0, background: (!v && ci===0)?"rgba(47,143,91,.07)":undefined}}>
+                              {v ? <div style={{background:stColor(v),color:stText(v),padding:"15px 6px",fontWeight:700,fontSize:12.5}}>{v}</div>
+                                 : <div style={{padding:"15px 6px",color:"var(--faint)"}}>–</div>}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div style={{display:"flex",gap:10,marginTop:14,flexWrap:"wrap"}}>
+                <button className="mini-btn" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const first=cols[0]?.iso; if(!first) return; const list=[]; workers.forEach(m=>{ const val=assignGrid[m.pid+"__"+first]; if(val==null) return; cols.slice(1).forEach(c=>{ if(!onLeaveDay(m.id,c.iso)) list.push([m.pid,c.iso,val]); }); }); bulkAssign(list); }}>{t.copyWeek}</button>
+                <button className="mini-btn danger" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const list=[]; workers.forEach(m=>cols.forEach(c=>{ if(assignGrid[m.pid+"__"+c.iso]!=null) list.push([m.pid,c.iso,null]); })); bulkAssign(list); }}>{t.clearAssign}</button>
               </div>
               <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
