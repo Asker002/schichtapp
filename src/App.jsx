@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Home, CalendarDays, Wallet, LayoutGrid, Sun, Moon,
   FileText, Plane, HeartPulse, Languages, ChevronRight, ChevronLeft,
-  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2, Eraser
+  Clock, Settings, Coffee, Users, Inbox, Check, X, LogOut, Bell, KeyRound, PenSquare, Paperclip, Download, Eye, EyeOff, Building2, Eraser, Grid3x3
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { downloadAbsencePdf } from "./lib/absencePdf";
@@ -177,9 +177,9 @@ const CSS = `
 .note{font-size:11px; color:var(--faint); margin-top:12px; line-height:1.5; display:flex; gap:7px;}
 
 /* tabbar */
-.tabs{flex-shrink:0; display:grid; grid-template-columns:repeat(4,1fr);
+.tabs{flex-shrink:0; display:flex;
   background:var(--bg); border-top:1px solid var(--line); padding:8px 6px calc(12px + env(safe-area-inset-bottom));}
-.tab{display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none; cursor:pointer;
+.tab{flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none; cursor:pointer;
   color:var(--faint); font-size:10px; font-weight:600; transition:.15s;}
 .tab.on{color:var(--text);}
 .tab.on .tab-ic{color:var(--accent);}
@@ -322,7 +322,7 @@ const I18N = {
     unitStd:"Std",
     roleMA:"Mitarbeiter", roleMeister:"Schichtmeister", roleVorarbeiter:"Vorarbeiter", roleGruppenfuehrer:"Gruppenführer", crewLabel:"Schicht",
     crewScopeNote:"Prototyp – im 4-Schicht-System sieht jeder Meister nur sein eigenes Team.",
-    mTabs:["Anträge","Team","Kalender","Mehr"], approvalsTitle:"Offene Anträge",
+    mTabs:["Anträge","Team","Einteilung","Kalender","Mehr"], approvalsTitle:"Offene Anträge",
     absCalTitle:"Abwesenheits-Kalender", absentLbl:"abwesend", noneAbsent:"Niemand abwesend", warnMany:"Viele gleichzeitig abwesend – Urlaub sparsam genehmigen.", personalArea:"Persönlich", selfApproveNote:"Deinen eigenen Antrag genehmigst oder lehnst du im Tab „Anträge“ ab.",
     typeUrlaub:"Urlaub", typeKrank:"Krank", daysWord:"Tage",
     approve:"Genehmigen", reject:"Ablehnen", ack:"Zur Kenntnis",
@@ -341,7 +341,7 @@ const I18N = {
     einteilung:"Deine Einteilung", notAssigned:"Noch nicht eingeteilt", assignHint:"Bereich je Mitglied wählen (Einteilung)", teamTodayLabel:"Team heute", workAssign:"Arbeitsplatzeinteilung", workHint1:"Arbeitsplatz:", workHint2:"– jetzt Felder antippen.", eraser:"Radierer", copyWeek:"Erste Spalte auf Woche übernehmen", clearAssign:"Einteilung löschen",
     absTitle:"Urlaubsplan & Abwesenheiten",
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Aktiv",
-    blTabs:["Übersicht","Abwesend","Anträge","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
+    blTabs:["Übersicht","Abwesend","Anträge","Einteilung","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
     hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
@@ -389,7 +389,7 @@ const I18N = {
     unitStd:"sa",
     roleMA:"Çalışan", roleMeister:"Vardiya amiri", roleVorarbeiter:"Kısım başı", roleGruppenfuehrer:"Grup lideri", crewLabel:"Vardiya",
     crewScopeNote:"Prototip – 4 vardiyalı sistemde her ustabaşı yalnızca kendi ekibini görür.",
-    mTabs:["Talepler","Ekip","Takvim","Diğer"], approvalsTitle:"Bekleyen talepler",
+    mTabs:["Talepler","Ekip","Yerleşim","Takvim","Diğer"], approvalsTitle:"Bekleyen talepler",
     absCalTitle:"Devamsızlık takvimi", absentLbl:"yok", noneAbsent:"Kimse yok", warnMany:"Aynı anda çok kişi yok – izni dikkatli onayla.", personalArea:"Kişisel", selfApproveNote:"Kendi talebini „Talepler“ sekmesinde onaylar veya reddedersin.",
     typeUrlaub:"İzin", typeKrank:"Hastalık", daysWord:"gün",
     approve:"Onayla", reject:"Reddet", ack:"Bilgi alındı",
@@ -408,7 +408,7 @@ const I18N = {
     einteilung:"Görev yerin", notAssigned:"Henüz atanmadı", assignHint:"Her üye için bölüm seç", teamTodayLabel:"Bugün ekip", workAssign:"İş yeri planı", workHint1:"İş yeri:", workHint2:"– şimdi alanlara dokun.", eraser:"Silgi", copyWeek:"İlk sütunu haftaya uygula", clearAssign:"Planı sil",
     absTitle:"İzin planı & devamsızlıklar",
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Aktif",
-    blTabs:["Genel","Devamsız","Talepler","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
+    blTabs:["Genel","Devamsız","Talepler","Yerleşim","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
     hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
@@ -456,7 +456,7 @@ const I18N = {
     unitStd:"h",
     roleMA:"Employee", roleMeister:"Shift supervisor", roleVorarbeiter:"Foreman", roleGruppenfuehrer:"Group leader", crewLabel:"Crew",
     crewScopeNote:"Prototype – in a 4-crew system each supervisor sees only their own team.",
-    mTabs:["Requests","Team","Calendar","More"], approvalsTitle:"Open requests",
+    mTabs:["Requests","Team","Assignment","Calendar","More"], approvalsTitle:"Open requests",
     absCalTitle:"Absence calendar", absentLbl:"away", noneAbsent:"Nobody away", warnMany:"Many away at once – approve leave sparingly.", personalArea:"Personal", selfApproveNote:"You approve or reject your own request in the “Requests” tab.",
     typeUrlaub:"Leave", typeKrank:"Sick", daysWord:"days",
     approve:"Approve", reject:"Decline", ack:"Acknowledge",
@@ -475,7 +475,7 @@ const I18N = {
     einteilung:"Your assignment", notAssigned:"Not yet assigned", assignHint:"Choose a station per member", teamTodayLabel:"Team today", workAssign:"Workplace assignment", workHint1:"Workplace:", workHint2:"– now tap the cells.", eraser:"Eraser", copyWeek:"Apply first column to week", clearAssign:"Clear assignment",
     absTitle:"Leave plan & absences",
     stApproved:"Approved", stPending:"Pending", stActive:"Active",
-    blTabs:["Overview","Absences","Requests","More"], blTitle:"GLUTOLIN Betrieb · All crews",
+    blTabs:["Overview","Absences","Requests","Assignment","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
     hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
@@ -523,7 +523,7 @@ const I18N = {
     unitStd:"ч",
     roleMA:"Сотрудник", roleMeister:"Сменный мастер", roleVorarbeiter:"Старший рабочий", roleGruppenfuehrer:"Руководитель группы", crewLabel:"Смена",
     crewScopeNote:"Прототип – в системе из 4 смен каждый бригадир видит только свою бригаду.",
-    mTabs:["Заявки","Бригада","Календарь","Ещё"], approvalsTitle:"Открытые заявки",
+    mTabs:["Заявки","Бригада","Расстановка","Календарь","Ещё"], approvalsTitle:"Открытые заявки",
     absCalTitle:"Календарь отсутствий", absentLbl:"нет", noneAbsent:"Никто не отсутствует", warnMany:"Много отсутствующих одновременно – одобряйте отпуск осторожно.", personalArea:"Личное", selfApproveNote:"Свою заявку ты одобряешь или отклоняешь во вкладке «Заявки».",
     typeUrlaub:"Отпуск", typeKrank:"Больничный", daysWord:"дн.",
     approve:"Одобрить", reject:"Отклонить", ack:"Принять к сведению",
@@ -542,7 +542,7 @@ const I18N = {
     einteilung:"Твоё назначение", notAssigned:"Ещё не назначено", assignHint:"Выбери участок для каждого", teamTodayLabel:"Команда сегодня", workAssign:"Расстановка по местам", workHint1:"Место:", workHint2:"– нажимай ячейки.", eraser:"Ластик", copyWeek:"Первый столбец на неделю", clearAssign:"Очистить",
     absTitle:"План отпусков и отсутствия",
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Активно",
-    blTabs:["Обзор","Отсутствия","Заявки","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
+    blTabs:["Обзор","Отсутствия","Заявки","Расстановка","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
     hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
@@ -590,7 +590,7 @@ const I18N = {
     unitStd:"godz",
     roleMA:"Pracownik", roleMeister:"Mistrz zmiany", roleVorarbeiter:"Brygadzista", roleGruppenfuehrer:"Lider grupy", crewLabel:"Zmiana",
     crewScopeNote:"Prototyp – w systemie 4 zmian każdy mistrz widzi tylko swój zespół.",
-    mTabs:["Wnioski","Zespół","Kalendarz","Więcej"], approvalsTitle:"Otwarte wnioski",
+    mTabs:["Wnioski","Zespół","Przydział","Kalendarz","Więcej"], approvalsTitle:"Otwarte wnioski",
     absCalTitle:"Kalendarz nieobecności", absentLbl:"poza", noneAbsent:"Nikt nieobecny", warnMany:"Wielu naraz nieobecnych – zatwierdzaj urlop ostrożnie.", personalArea:"Osobiste", selfApproveNote:"Własny wniosek zatwierdzasz lub odrzucasz w zakładce „Wnioski“.",
     typeUrlaub:"Urlop", typeKrank:"Choroba", daysWord:"dni",
     approve:"Zatwierdź", reject:"Odrzuć", ack:"Do wiadomości",
@@ -609,7 +609,7 @@ const I18N = {
     einteilung:"Twój przydział", notAssigned:"Jeszcze nie przydzielono", assignHint:"Wybierz obszar dla każdego", teamTodayLabel:"Zespół dziś", workAssign:"Przydział stanowisk", workHint1:"Stanowisko:", workHint2:"– dotknij pola.", eraser:"Gumka", copyWeek:"Pierwsza kolumna na tydzień", clearAssign:"Wyczyść",
     absTitle:"Plan urlopów i nieobecności",
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Aktywne",
-    blTabs:["Przegląd","Nieobecni","Wnioski","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
+    blTabs:["Przegląd","Nieobecni","Wnioski","Przydział","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
     hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
@@ -813,6 +813,7 @@ export default function App(){
   const [selStation,setSelStation] = useState(STATIONS[0]); // aktuell gewählter Arbeitsplatz (Palette) | ABSENT | "__erase"
   const [weekOff,setWeekOff] = useState(0);            // Wochennavigation im Einteilungs-Raster
   const [assignGrid,setAssignGrid] = useState({});     // {`${pid}__${iso}`: station} für den sichtbaren Bereich
+  const [eiCrew,setEiCrew] = useState("");             // BL: gewählte Schicht im Einteilungs-Tab
   const [selCrew,setSelCrew] = useState(null);         // BL-Übersicht: aufgeklappte Schicht (team_id)
   const [directory,setDirectory] = useState([]);       // HR Betriebe-Verzeichnis (ganze Firma)
   const [openBetrieb,setOpenBetrieb] = useState(null); // aufgeklappter Betrieb im Betriebe-Tab
@@ -877,16 +878,18 @@ export default function App(){
     catch(e){ console.warn("[assign]", e.message); }
   }
   // ---- Einteilungs-Raster (Wochen) ----
-  function gridColsFor(off){
+  function gridColsFor(off, gridRot){
+    const r = gridRot || rot;
     const base=new Date(now.getFullYear(),now.getMonth(),now.getDate()+off*7);
     const cols=[];
-    for(let i=0;i<10 && cols.length<6;i++){ const d=new Date(base); d.setDate(d.getDate()+i); const st=shiftType(d,rot); if(st!=="F") cols.push({date:new Date(d),iso:isoOf(d),st}); }
+    for(let i=0;i<12 && cols.length<6;i++){ const d=new Date(base); d.setDate(d.getDate()+i); const st=shiftType(d,r); if(st!=="F") cols.push({date:new Date(d),iso:isoOf(d),st}); }
     return cols;
   }
   async function loadGrid(off){
     if(!hasSupabaseConfig) return;
-    const cols=gridColsFor(off); if(!cols.length){ setAssignGrid({}); return; }
-    try{ const rows=await listAssignmentsRange(cols[0].iso, cols[cols.length-1].iso);
+    const base=new Date(now.getFullYear(),now.getMonth(),now.getDate()+off*7);
+    const end=new Date(base); end.setDate(end.getDate()+13);
+    try{ const rows=await listAssignmentsRange(isoOf(base), isoOf(end));
       setAssignGrid(Object.fromEntries(rows.map(a=>[a.profile_id+"__"+a.work_date, a.station]))); }
     catch(e){ console.warn("[grid]", e.message); }
   }
@@ -1180,8 +1183,8 @@ export default function App(){
     try{ document.documentElement.style.colorScheme = theme==="dark" ? "dark" : "light"; }catch(e){}
   }, [theme]);
 
-  // Einteilungs-Raster laden (Schichtführung), bei Wochenwechsel neu.
-  useEffect(()=>{ if(role==="meister" && hasSupabaseConfig) loadGrid(weekOff); }, [role, weekOff, dbProfile]);
+  // Einteilungs-Raster laden (Schichtführung + Betriebsleitung), bei Wochenwechsel neu.
+  useEffect(()=>{ if((role==="meister"||role==="bl") && hasSupabaseConfig) loadGrid(weekOff); }, [role, weekOff, dbProfile]);
 
   // Demo-Deeplink für Screenshots/Vorschau (nur ohne Backend):
   //   #demo=<rolle>[:<tab>]   z.B. #demo=bl:0  -> direkt angemeldet in dieser Ansicht.
@@ -1981,6 +1984,74 @@ export default function App(){
     </div>
   );
 
+  // Wiederverwendbares Einteilungs-Raster (Meister = bearbeitbar, BL = nur ansehen).
+  const renderAssignGrid = ({rows, gridRot, editable, crewName})=>{
+    const cols = gridColsFor(weekOff, gridRot);
+    const p2 = (n)=>String(n).padStart(2,"0");
+    const rng = cols.length ? `${cols[0].date.getDate()}.–${cols[cols.length-1].date.getDate()}. ${t.months[cols[cols.length-1].date.getMonth()].slice(0,3)}` : "";
+    const ws = (rows||[]).map(m=>({ ...m, pid:m.id||m.name }));
+    return (
+      <>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+          <div>
+            <div className="disp" style={{fontSize:19,fontWeight:700}}>{t.workAssign} · {t.crewLabel} {crewName}</div>
+            {editable && <div style={{fontSize:12,color:"var(--muted)",marginTop:3}}>{t.workHint1} <b style={{color:"var(--text)"}}>{selStation==="__erase"?t.eraser:selStation}</b> {t.workHint2}</div>}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <button className="navbtn" onClick={()=>setWeekOff(weekOff-1)}><ChevronLeft size={18}/></button>
+            <span style={{fontSize:13,fontWeight:600,minWidth:92,textAlign:"center"}}>{rng}</span>
+            <button className="navbtn" onClick={()=>setWeekOff(weekOff+1)}><ChevronRight size={18}/></button>
+          </div>
+        </div>
+        {editable && (
+          <div style={{display:"flex",flexWrap:"wrap",gap:8,margin:"16px 0"}}>
+            {[...STATIONS, ABSENT].map(s=>(
+              <button key={s} onClick={()=>setSelStation(s)} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                border: selStation===s?"2.5px solid var(--text)":"1px solid var(--line)", background:stColor(s), color:stText(s)}}>{s}</button>
+            ))}
+            <button onClick={()=>setSelStation("__erase")} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",display:"inline-flex",alignItems:"center",gap:6,
+              border: selStation==="__erase"?"2.5px solid var(--text)":"1px solid var(--line)", background:"var(--surface)",color:"var(--muted)"}}><Eraser size={14}/>{t.eraser}</button>
+          </div>
+        )}
+        <div style={{overflowX:"auto",border:"1px solid var(--line)",borderRadius:12,marginTop:editable?0:14}}>
+          <table className="agrid">
+            <thead><tr>
+              <th style={{textAlign:"left"}}>{t.empLbl}</th>
+              {cols.map((c,ci)=>(
+                <th key={c.iso} style={ci===0?{background:"rgba(47,143,91,.07)"}:undefined}>
+                  {c.date.getDate()}.{p2(c.date.getMonth()+1)}.
+                  <div style={{fontWeight:500,fontSize:11,color:"var(--muted)",marginTop:2}}>{c.st==="N"?"🌙 "+t.nacht:"☀ "+t.tag}</div>
+                </th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {ws.length===0 && <tr><td style={{textAlign:"left",color:"var(--faint)",padding:"14px 12px"}} colSpan={cols.length+1}>{t.noEmp}</td></tr>}
+              {ws.map(m=>(
+                <tr key={m.pid}>
+                  <td style={{textAlign:"left",fontStyle:"italic",fontWeight:600}}>{m.name || m.full_name}</td>
+                  {cols.map((c,ci)=>{ const leave=onLeaveDay(m.id,c.iso); const v = leave?ABSENT:(assignGrid[m.pid+"__"+c.iso]||null);
+                    return (
+                      <td key={c.iso} onClick={()=>{ if(editable && !leave) paintCell(m.pid, c.iso); }} style={{cursor:(editable&&!leave)?"pointer":"default",padding:0, background:(!v&&ci===0)?"rgba(47,143,91,.07)":undefined}}>
+                        {v ? <div style={{background:stColor(v),color:stText(v),padding:"15px 6px",fontWeight:700,fontSize:12.5}}>{v}</div>
+                           : <div style={{padding:"15px 6px",color:"var(--faint)"}}>–</div>}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {editable && (
+          <div style={{display:"flex",gap:10,marginTop:14,flexWrap:"wrap"}}>
+            <button className="mini-btn" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const first=cols[0]?.iso; if(!first) return; const list=[]; ws.forEach(m=>{ const val=assignGrid[m.pid+"__"+first]; if(val==null) return; cols.slice(1).forEach(c=>{ if(!onLeaveDay(m.id,c.iso)) list.push([m.pid,c.iso,val]); }); }); bulkAssign(list); }}>{t.copyWeek}</button>
+            <button className="mini-btn danger" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const list=[]; ws.forEach(m=>cols.forEach(c=>{ if(assignGrid[m.pid+"__"+c.iso]!=null) list.push([m.pid,c.iso,null]); })); bulkAssign(list); }}>{t.clearAssign}</button>
+          </div>
+        )}
+      </>
+    );
+  };
+
   const calendarView = (
     <>
       <div className="cal-hd">
@@ -2388,69 +2459,36 @@ export default function App(){
           )}
 
           {role==="meister" && tab===1 && (()=>{
-            const workers = (hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team).map(m=>({ ...m, pid:m.id||m.name }));
-            const cols = gridColsFor(weekOff);
-            const rng = cols.length ? `${cols[0].date.getDate()}.–${cols[cols.length-1].date.getDate()}. ${t.months[cols[cols.length-1].date.getMonth()].slice(0,3)}` : "";
-            const p2 = (n)=>String(n).padStart(2,"0");
+            const workers = hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team;
+            const onDuty = workers.filter(m=>m.st==="duty").length;
             return (
             <>
-              <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
-                <div>
-                  <div className="disp" style={{fontSize:19,fontWeight:700}}>{t.workAssign} · {t.crewLabel} {crew}</div>
-                  <div style={{fontSize:12,color:"var(--muted)",marginTop:3}}>{t.workHint1} <b style={{color:"var(--text)"}}>{selStation==="__erase"?t.eraser:selStation}</b> {t.workHint2}</div>
-                </div>
-                <div style={{display:"flex",alignItems:"center",gap:6}}>
-                  <button className="navbtn" onClick={()=>setWeekOff(weekOff-1)}><ChevronLeft size={18}/></button>
-                  <span style={{fontSize:13,fontWeight:600,minWidth:92,textAlign:"center"}}>{rng}</span>
-                  <button className="navbtn" onClick={()=>setWeekOff(weekOff+1)}><ChevronRight size={18}/></button>
-                </div>
+              <div className="eyebrow">{t.teamTitle} · {t.crewLabel} {crew}</div>
+              <div className="card" style={{marginTop:0,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <span style={{fontSize:13,color:"var(--muted)"}}>{t.onDuty}</span>
+                <span className="num" style={{fontSize:22,fontWeight:700,color:"var(--plus)"}}>{onDuty} / {workers.length}</span>
               </div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:8,margin:"16px 0"}}>
-                {[...STATIONS, ABSENT].map(s=>(
-                  <button key={s} onClick={()=>setSelStation(s)} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                    border: selStation===s?"2.5px solid var(--text)":"1px solid var(--line)", background:stColor(s), color:stText(s)}}>{s}</button>
-                ))}
-                <button onClick={()=>setSelStation("__erase")} style={{padding:"9px 14px",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",display:"inline-flex",alignItems:"center",gap:6,
-                  border: selStation==="__erase"?"2.5px solid var(--text)":"1px solid var(--line)", background:"var(--surface)",color:"var(--muted)"}}><Eraser size={14}/>{t.eraser}</button>
-              </div>
-              <div style={{overflowX:"auto",border:"1px solid var(--line)",borderRadius:12}}>
-                <table className="agrid">
-                  <thead><tr>
-                    <th style={{textAlign:"left"}}>{t.empLbl}</th>
-                    {cols.map((c,ci)=>(
-                      <th key={c.iso} style={ci===0?{background:"rgba(47,143,91,.07)"}:undefined}>
-                        {c.date.getDate()}.{p2(c.date.getMonth()+1)}.
-                        <div style={{fontWeight:500,fontSize:11,color:"var(--muted)",marginTop:2}}>{c.st==="N"?"🌙 "+t.nacht:"☀ "+t.tag}</div>
-                      </th>
-                    ))}
-                  </tr></thead>
-                  <tbody>
-                    {workers.map(m=>(
-                      <tr key={m.pid}>
-                        <td style={{textAlign:"left",fontStyle:"italic",fontWeight:600}}>{m.name}</td>
-                        {cols.map((c,ci)=>{ const leave=onLeaveDay(m.id,c.iso); const v = leave?ABSENT:(assignGrid[m.pid+"__"+c.iso]||null);
-                          return (
-                            <td key={c.iso} onClick={()=>{ if(!leave) paintCell(m.pid, c.iso); }} style={{cursor:leave?"default":"pointer",padding:0, background: (!v && ci===0)?"rgba(47,143,91,.07)":undefined}}>
-                              {v ? <div style={{background:stColor(v),color:stText(v),padding:"15px 6px",fontWeight:700,fontSize:12.5}}>{v}</div>
-                                 : <div style={{padding:"15px 6px",color:"var(--faint)"}}>–</div>}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div style={{display:"flex",gap:10,marginTop:14,flexWrap:"wrap"}}>
-                <button className="mini-btn" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const first=cols[0]?.iso; if(!first) return; const list=[]; workers.forEach(m=>{ const val=assignGrid[m.pid+"__"+first]; if(val==null) return; cols.slice(1).forEach(c=>{ if(!onLeaveDay(m.id,c.iso)) list.push([m.pid,c.iso,val]); }); }); bulkAssign(list); }}>{t.copyWeek}</button>
-                <button className="mini-btn danger" style={{flex:"1 1 200px",justifyContent:"center"}} onClick={()=>{ const list=[]; workers.forEach(m=>cols.forEach(c=>{ if(assignGrid[m.pid+"__"+c.iso]!=null) list.push([m.pid,c.iso,null]); })); bulkAssign(list); }}>{t.clearAssign}</button>
+              <div className="card">
+                {workers.map((m,i)=>{ const s=statusMap[m.st]; return (
+                  <div className="row" key={m.id||i} style={{cursor:"default"}}>
+                    <span className="row-l"><span className="row-ic">{initials(m.name)}</span>{m.name}</span>
+                    <span className={"tg "+s.c}>{t[s.k]}</span>
+                  </div>
+                ); })}
               </div>
               <div className="foot">PROTOTYP · U. Kebeli</div>
             </>
             );
           })()}
 
-          {role==="meister" && tab===2 && (() => {
+          {role==="meister" && tab===2 && (
+            <>
+              {renderAssignGrid({ rows: (hasSupabaseConfig ? team.filter(m=>m.role==="mitarbeiter") : team), gridRot: rot, editable: true, crewName: crew })}
+              <div className="foot">PROTOTYP · U. Kebeli</div>
+            </>
+          )}
+
+          {role==="meister" && tab===3 && (() => {
             const absC = hasSupabaseConfig
               ? dbRequests.filter(r=>r.status==="genehmigt"||r.status==="geaendert")
               : (ABSENCES[crew] || []);
@@ -2514,7 +2552,7 @@ export default function App(){
             );
           })()}
 
-          {role==="meister" && tab===3 && (
+          {role==="meister" && tab===4 && (
             <>
               <div className="card" style={{marginTop:0}}>
                 <div className="eyebrow" style={{marginBottom:12}}>{t.personalArea}</div>
@@ -2661,7 +2699,28 @@ export default function App(){
             </>
           )}
 
-          {role==="bl" && tab===3 && (
+          {role==="bl" && tab===3 && (()=>{
+            const tm = teamOpts.find(x=>x.id===eiCrew) || teamOpts[0];
+            const gridRot = tm ? {offset:tm.rotation_offset||0, anchorMs:anchorToMs(tm.anchor_date)} : rot;
+            const members = emps.filter(e=>e.team_id===(tm&&tm.id) && e.role==="mitarbeiter");
+            return (
+            <>
+              <div className="eyebrow">{t.workAssign}</div>
+              <div className="card" style={{marginTop:0,display:"flex",gap:8,flexWrap:"wrap"}}>
+                {teamOpts.map(x=>{ const on=(tm&&tm.id)===x.id; return (
+                  <button key={x.id} onClick={()=>setEiCrew(x.id)} style={{flex:"1 1 60px",padding:"10px",borderRadius:9,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    border:on?"2px solid var(--accent)":"1px solid var(--line)", background:on?"var(--accent)":"var(--surface)", color:on?"#fff":"var(--text)"}}>{x.name}</button>
+                ); })}
+              </div>
+              <div style={{marginTop:16}}>
+                {renderAssignGrid({ rows: members, gridRot, editable:false, crewName: tm ? tm.name.trim().slice(-1).toUpperCase() : "" })}
+              </div>
+              <div className="foot">PROTOTYP · U. Kebeli</div>
+            </>
+            );
+          })()}
+
+          {role==="bl" && tab===4 && (
             <>
               <div className="card" style={{marginTop:0}}>
                 <div className="row" onClick={()=>openAdmin()}>
@@ -2918,8 +2977,8 @@ export default function App(){
           {(() => {
             const cfg = {
               ma:      {icons:[<Home size={20}/>,<CalendarDays size={20}/>,<Wallet size={20}/>,<LayoutGrid size={20}/>], labels:t.tabs},
-              meister: {icons:[<Inbox size={20}/>,<Users size={20}/>,<CalendarDays size={20}/>,<LayoutGrid size={20}/>], labels:t.mTabs},
-              bl:      {icons:[<LayoutGrid size={20}/>,<Plane size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.blTabs},
+              meister: {icons:[<Inbox size={20}/>,<Users size={20}/>,<Grid3x3 size={20}/>,<CalendarDays size={20}/>,<LayoutGrid size={20}/>], labels:t.mTabs},
+              bl:      {icons:[<LayoutGrid size={20}/>,<Plane size={20}/>,<Inbox size={20}/>,<Grid3x3 size={20}/>,<Settings size={20}/>], labels:t.blTabs},
               hr:      {icons:[<Wallet size={20}/>,<Building2 size={20}/>,<Inbox size={20}/>,<Settings size={20}/>], labels:t.hrTabs},
             }[role];
             return cfg.icons.map((ic,i)=>(
