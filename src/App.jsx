@@ -1865,13 +1865,19 @@ export default function App(){
                   const map = new Map();
                   emps.filter(e=>e.id!==meId).forEach(e=> map.set(e.id, {id:e.id, name:e.full_name, role:e.role||"mitarbeiter", pnr:e.personalnummer||null, betrieb:e.betrieb?.name||null}));
                   leadContacts.filter(l=>l.profile_id!==meId).forEach(l=>{ const ex=map.get(l.profile_id); if(ex){ ex.role=l.role; if(l.betrieb_name) ex.betrieb=l.betrieb_name; } else map.set(l.profile_id, {id:l.profile_id, name:l.full_name, role:l.role, pnr:null, betrieb:l.betrieb_name||null}); });
-                  const isLead = p => p.role && p.role!=="mitarbeiter";
+                  // Nur Betriebsleitung/Personal bilden die Gruppe "Leitung / Personal".
+                  // Schichtführung (Schichtmeister/Vorarbeiter/Gruppenführer) gehört in die normale Mitarbeiterliste.
+                  const LEAD_ROLES = ["betriebsleiter","assistent","personal"];
+                  const isLead = p => LEAD_ROLES.includes(p.role);
                   const all = [...map.values()].filter(p=>empMatch({full_name:p.name,personalnummer:p.pnr},empQuery));
-                  const mit = all.filter(p=>!isLead(p));
+                  const mit = all.filter(p=>!isLead(p)).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
                   const led = all.filter(isLead).sort((a,b)=>(a.role==="personal"?2:1)-(b.role==="personal"?2:1) || (a.name||"").localeCompare(b.name||""));
-                  const lbl = p => isLead(p)
-                    ? `${p.name} · ${leaderRole(p.role)}${(p.betrieb && p.role!=="personal")?` · ${p.betrieb}`:""}`
-                    : `${p.name}${p.pnr?` · ${p.pnr}`:""}`;
+                  const lbl = p => {
+                    if(isLead(p)) return `${p.name} · ${leaderRole(p.role)}${(p.betrieb && p.role!=="personal")?` · ${p.betrieb}`:""}`;
+                    // Mitarbeiterliste: Personalnummer, sonst (Schichtführung ohne Nummer) die Rolle.
+                    const extra = p.pnr ? p.pnr : (p.role && p.role!=="mitarbeiter" ? leaderRole(p.role) : null);
+                    return `${p.name}${extra?` · ${extra}`:""}`;
+                  };
                   return (
                     <div className="field"><label>{t.recipientLbl}</label>
                       <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
@@ -2728,15 +2734,20 @@ export default function App(){
               </div>
               {selCrew!==null && (()=>{
                 const cs = crewStats.find(x=>x.id===selCrew); if(!cs) return null;
-                const mem = cs.members.filter(m=>m.role==="mitarbeiter").sort((a,b)=>(a.full_name||"").localeCompare(b.full_name||""));
+                const byName = (a,b)=>(a.full_name||"").localeCompare(b.full_name||"");
+                const LEAD_ROLES = ["schichtmeister","vorarbeiter","gruppenfuehrer"];
+                // Schichtführung zuerst (mit Rollenkennzeichnung), danach die Mitarbeiter.
+                const leads = cs.members.filter(m=>LEAD_ROLES.includes(m.role)).sort(byName);
+                const mem = [...leads, ...cs.members.filter(m=>m.role==="mitarbeiter").sort(byName)];
+                const staff = cs.members.filter(m=>m.role==="mitarbeiter").length;
                 return (
                   <div className="card">
-                    <div className="eyebrow" style={{marginBottom:8}}>{t.crewLabel} {cs.c} · {mem.length} {t.empLbl}</div>
+                    <div className="eyebrow" style={{marginBottom:8}}>{t.crewLabel} {cs.c} · {staff} {t.empLbl}</div>
                     {mem.length===0
                       ? <div style={{color:"var(--faint)",fontSize:14,marginTop:8}}>{t.noEmp}</div>
                       : mem.map(m=>(
                           <div className="row" key={m.id} style={{cursor:"default"}}>
-                            <span className="row-l"><span className="row-ic"><Users size={15}/></span>{m.full_name}</span>
+                            <span className="row-l"><span className="row-ic"><Users size={15}/></span>{m.full_name}{LEAD_ROLES.includes(m.role)?<span style={{color:"var(--faint)",fontWeight:500,fontSize:12,marginLeft:6}}>· {leaderRole(m.role)}</span>:""}</span>
                             <span style={{display:"inline-flex",gap:6}}>
                               <button className="mini-btn" title={t.absenceSlip} onClick={()=>downloadEmpAbsencePdf(m)} style={{display:"inline-flex",alignItems:"center",padding:"7px 9px"}}><Download size={15}/></button>
                               <button className="mini-btn" title={t.writeMsg} onClick={()=>{ setShowPostfach(true); setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope("person"); setMRecipient(m.id); setMFiles([]); setEmpQuery(""); }} style={{display:"inline-flex",alignItems:"center",padding:"7px 9px"}}><Inbox size={15}/></button>
