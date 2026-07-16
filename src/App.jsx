@@ -8,7 +8,7 @@ import { hasSupabaseConfig } from "./lib/supabase";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage,
-  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments, companyDirectory, companyTeams, companyRequests, companyOverview } from "./lib/data";
+  listPayslips, payslipUrl, uploadPayslip, listAssignments, setAssignment, teamAssignments, companyDirectory, companyTeams, companyRequests, companyOverview, teamLeaveCounts } from "./lib/data";
 
 /* ============================================================
    PROTOTYP — Mitarbeiter-App für Chemie-Schichtbetrieb (12h Vollkonti)
@@ -144,6 +144,10 @@ const CSS = `
 .cell.empty{background:transparent; border:none; cursor:default;}
 .cell.today{outline:2px solid var(--text); outline-offset:1px;}
 .cell.sel{outline:2px solid var(--muted); outline-offset:1px;}
+.cell.pick{background:var(--plus) !important; border-color:var(--plus) !important; color:#fff !important;}
+.cell.pick .tp,.cell.pick .dot{color:#fff !important;}
+.cell .dot{width:6px; height:6px; border-radius:50%; margin-top:2px;}
+.cell.pick .dot{background:rgba(255,255,255,.9) !important;}
 .cell .tp{font-size:8px; margin-top:1px; opacity:.85;}
 .cell .sun{position:absolute; top:3px; right:4px; width:5px; height:5px; border-radius:50%; background:#E5484D;}
 .abs-badge{position:absolute; top:2px; right:2px; min-width:15px; height:15px; padding:0 3px; border-radius:8px;
@@ -270,8 +274,10 @@ const I18N = {
     tarifNote:"Beispielwerte. Grundentgelt, Stufe und Zulagen sind pro Mitarbeiter aus dem IG-BCE-Tarifwerk hinterlegt; die Zuschlagssätze gelten tariflich einheitlich.",
     krank:"Krankmeldung", urlaub:"Urlaub beantragen", docs:"Meine Dokumente",
     dFrom:"Von", dTo:"Bis", optional:"optional", send:"Antrag senden", sent:"Antrag gesendet ✓",
-    myReq:"Meine Anträge", reqSummaryUrlaub:"Urlaubsantrag geht an deinen Schichtmeister zur Freigabe.",
+    myReq:"Meine Anträge", reqSummaryUrlaub:"Wähle deinen Zeitraum im Kalender. Nach dem Absenden geht der Antrag an deinen Schichtmeister zur Freigabe – verbindlich über deinen Login, ohne Unterschrift.",
     reqSummaryKrank:"Krankmeldung geht an deinen Schichtmeister. Die eAU kommt separat von der Krankenkasse.",
+    legLeave:"Kollege im Urlaub", shiftDayWord:"Schichttag", shiftDaysWord:"Schichttage", bindingRequest:"Verbindlich beantragen",
+    overlapNote:(d,k)=>`An ${d} ${d===1?"Tag":"Tagen"} deiner Auswahl ${k===1?"ist schon 1 Kollege":`sind schon ${k} Kollegen`} aus deinem Team im Urlaub – es könnte knapp mit der Besetzung werden.`,
     sprache:"Sprache", settings:"Einstellungen", appearance:"Darstellung", light:"Hell", dark:"Dunkel", searchEmp:"Mitarbeiter suchen",
     cd:(d,h,m)=> d>0 ? `in ${d} Tg ${h} Std` : `in ${h} Std ${m} Min`,
     unitStd:"Std",
@@ -335,8 +341,10 @@ const I18N = {
     tarifNote:"Örnek değerler. Temel ücret, kademe ve primler her çalışan için IG-BCE toplu sözleşmesinden alınır; zam oranları herkes için aynıdır.",
     krank:"Hastalık bildirimi", urlaub:"İzin talep et", docs:"Belgelerim",
     dFrom:"Başlangıç", dTo:"Bitiş", optional:"opsiyonel", send:"Talep gönder", sent:"Talep gönderildi ✓",
-    myReq:"Taleplerim", reqSummaryUrlaub:"İzin talebi onay için vardiya amirine gider.",
+    myReq:"Taleplerim", reqSummaryUrlaub:"Takvimde dönemini seç. Gönderdikten sonra talep onay için vardiya amirine gider – girişinle bağlayıcı, imzasız.",
     reqSummaryKrank:"Hastalık bildirimi vardiya amirine gider. eAU ayrıca sigortadan gelir.",
+    legLeave:"İzinde meslektaş", shiftDayWord:"vardiya günü", shiftDaysWord:"vardiya günü", bindingRequest:"Bağlayıcı talep et",
+    overlapNote:(d,k)=>`Seçiminde ${d} gün ekibinden ${k} meslektaş zaten izinde – doluluk sıkışabilir.`,
     sprache:"Dil", settings:"Ayarlar", appearance:"Görünüm", light:"Açık", dark:"Koyu", searchEmp:"Personel ara",
     cd:(d,h,m)=> d>0 ? `${d} gün ${h} sa sonra` : `${h} sa ${m} dk sonra`,
     unitStd:"sa",
@@ -400,8 +408,10 @@ const I18N = {
     tarifNote:"Sample figures. Base pay, step and allowances are stored per employee from the IG BCE agreement; premium rates are uniform for everyone.",
     krank:"Report sick", urlaub:"Request leave", docs:"My documents",
     dFrom:"From", dTo:"To", optional:"optional", send:"Send request", sent:"Request sent ✓",
-    myReq:"My requests", reqSummaryUrlaub:"Your leave request goes to your shift supervisor for approval.",
+    myReq:"My requests", reqSummaryUrlaub:"Pick your dates in the calendar. After sending, the request goes to your shift supervisor for approval – binding via your login, no signature.",
     reqSummaryKrank:"Your sick note goes to your shift supervisor. The eAU arrives separately from your health insurer.",
+    legLeave:"Colleague on leave", shiftDayWord:"shift day", shiftDaysWord:"shift days", bindingRequest:"Submit bindingly",
+    overlapNote:(d,k)=>`On ${d} day${d===1?"":"s"} of your selection ${k===1?"1 colleague is":`${k} colleagues are`} already on leave – staffing could get tight.`,
     sprache:"Language", settings:"Settings", appearance:"Appearance", light:"Light", dark:"Dark", searchEmp:"Search employee",
     cd:(d,h,m)=> d>0 ? `in ${d}d ${h}h` : `in ${h}h ${m}min`,
     unitStd:"h",
@@ -465,8 +475,10 @@ const I18N = {
     tarifNote:"Примерные значения. Базовая оплата, ступень и надбавки хранятся для каждого сотрудника по тарифу IG BCE; ставки надбавок единые для всех.",
     krank:"Больничный", urlaub:"Запросить отпуск", docs:"Мои документы",
     dFrom:"С", dTo:"По", optional:"необязательно", send:"Отправить заявку", sent:"Заявка отправлена ✓",
-    myReq:"Мои заявки", reqSummaryUrlaub:"Заявка на отпуск отправляется бригадиру на согласование.",
+    myReq:"Мои заявки", reqSummaryUrlaub:"Выбери период в календаре. После отправки заявка идёт бригадиру на согласование – обязывающе через твой вход, без подписи.",
     reqSummaryKrank:"Больничный отправляется бригадиру. eAU приходит отдельно из больничной кассы.",
+    legLeave:"Коллега в отпуске", shiftDayWord:"смен. день", shiftDaysWord:"смен. дней", bindingRequest:"Подать заявку",
+    overlapNote:(d,k)=>`В ${d} дн. твоего выбора уже ${k===1?"1 коллега":`${k} коллег(и)`} в отпуске – с укомплектованностью может быть тесно.`,
     sprache:"Язык", settings:"Настройки", appearance:"Оформление", light:"Светлая", dark:"Тёмная", searchEmp:"Поиск сотрудника",
     cd:(d,h,m)=> d>0 ? `через ${d} дн ${h} ч` : `через ${h} ч ${m} мин`,
     unitStd:"ч",
@@ -530,8 +542,10 @@ const I18N = {
     tarifNote:"Wartości przykładowe. Wynagrodzenie podstawowe, stopień i dodatki są zapisane dla każdego pracownika wg układu IG BCE; stawki dodatków są jednolite dla wszystkich.",
     krank:"Zgłoś chorobę", urlaub:"Wniosek o urlop", docs:"Moje dokumenty",
     dFrom:"Od", dTo:"Do", optional:"opcjonalnie", send:"Wyślij wniosek", sent:"Wniosek wysłany ✓",
-    myReq:"Moje wnioski", reqSummaryUrlaub:"Wniosek o urlop trafia do mistrza zmiany do zatwierdzenia.",
+    myReq:"Moje wnioski", reqSummaryUrlaub:"Wybierz okres w kalendarzu. Po wysłaniu wniosek trafia do mistrza zmiany do zatwierdzenia – wiążąco przez Twój login, bez podpisu.",
     reqSummaryKrank:"Zgłoszenie choroby trafia do mistrza zmiany. eAU przychodzi osobno z kasy chorych.",
+    legLeave:"Kolega na urlopie", shiftDayWord:"dzień zmianowy", shiftDaysWord:"dni zmianowe", bindingRequest:"Złóż wiążąco",
+    overlapNote:(d,k)=>`W ${d} dniach Twojego wyboru ${k===1?"1 kolega jest":`${k} kolegów jest`} już na urlopie – obsada może być napięta.`,
     sprache:"Język", settings:"Ustawienia", appearance:"Wygląd", light:"Jasny", dark:"Ciemny", searchEmp:"Szukaj pracownika",
     cd:(d,h,m)=> d>0 ? `za ${d} dni ${h} godz` : `za ${h} godz ${m} min`,
     unitStd:"godz",
@@ -716,6 +730,8 @@ export default function App(){
   const [editId,setEditId] = useState(null);       // Antrags-ID beim Ändern, sonst null
   const [fFrom,setFFrom] = useState("");
   const [fTo,setFTo] = useState("");
+  const [fMonthOff,setFMonthOff] = useState(0);          // Monatsnavigation im Antrags-Kalender
+  const [leaveCounts,setLeaveCounts] = useState({});     // {iso: anzahl kollegen im urlaub} – nur Zahlen
   const [toast,setToast] = useState(false);
   const [submitErr,setSubmitErr] = useState("");   // sichtbarer Fehler beim Einreichen
   const [authed,setAuthed] = useState(false);      // Login + DSGVO-Einwilligung bestanden?
@@ -1144,8 +1160,31 @@ export default function App(){
   // Der eingeloggte Mitarbeiter (Demo): Daniel Schäfer, Schichtgruppe C.
   const EMP_NAME = "Daniel Schäfer", EMP_CREW = "C";
   const fmtDay = (iso)=>{ if(!iso) return "—"; const [,m,d] = iso.split("-"); return `${d}.${m}.`; };
-  const openForm = (type)=>{ setForm(type); setEditId(null); setFFrom(""); setFTo(""); setSubmitErr(""); };
-  const openEdit = (r)=>{ setForm(r.type); setEditId(r.id); setSubmitErr(""); setFFrom(r.startISO || ""); setFTo(r.endISO || ""); };
+  // Anzahl Kollegen im Urlaub je Tag laden (nur Zahlen – Datenschutz).
+  async function loadLeaveCounts(monthOff){
+    const base = new Date(now.getFullYear(), now.getMonth()+monthOff, 1);
+    const last = new Date(base.getFullYear(), base.getMonth()+1, 0);
+    const map = {};
+    if(hasSupabaseConfig){
+      try{ (await teamLeaveCounts(isoOf(base), isoOf(last))).forEach(r=>{ map[r.work_date]=r.cnt; }); }
+      catch(e){ console.warn("[leave]", e.message); }
+    } else {
+      const list = (ABSENCES[crew]||[]).filter(a=>a.type==="urlaub" && a.status==="approved");
+      for(let d=1; d<=last.getDate(); d++){ const date=new Date(base.getFullYear(),base.getMonth(),d);
+        const cnt=list.filter(a=>absCoversDay(a,date)).length; if(cnt>0) map[isoOf(date)]=cnt; }
+    }
+    setLeaveCounts(map);
+  }
+  const navFMonth = (delta)=>{ const n=fMonthOff+delta; setFMonthOff(n); loadLeaveCounts(n); };
+  function selectDay(iso){
+    if(!fFrom || (fFrom && fTo)){ setFFrom(iso); setFTo(""); }
+    else if(iso < fFrom){ setFFrom(iso); setFTo(""); }
+    else setFTo(iso);
+  }
+  const openForm = (type)=>{ setForm(type); setEditId(null); setFFrom(""); setFTo(""); setSubmitErr(""); setFMonthOff(0); loadLeaveCounts(0); };
+  const openEdit = (r)=>{ setForm(r.type); setEditId(r.id); setSubmitErr(""); setFFrom(r.startISO || ""); setFTo(r.endISO || "");
+    let mo=0; if(r.startISO){ const [y,m]=r.startISO.split("-").map(Number); mo=(y-now.getFullYear())*12+(m-1-now.getMonth()); }
+    setFMonthOff(mo); loadLeaveCounts(mo); };
   async function withdrawRequest(id){
     if(hasSupabaseConfig){
       try{ await deleteRequest(id); await loadRequests(); }
@@ -2661,16 +2700,65 @@ export default function App(){
             </div>
             <div className="sheet-body">
               <div className="summary">{form==="urlaub"?t.reqSummaryUrlaub:t.reqSummaryKrank}</div>
-              <div className="field">
-                <label>{t.dFrom}</label>
-                <input type="date" value={fFrom} onChange={e=>setFFrom(e.target.value)} />
-              </div>
-              <div className="field">
-                <label>{t.dTo}{form==="krank"?` (${t.optional})`:""}</label>
-                <input type="date" value={fTo} onChange={e=>setFTo(e.target.value)} />
-              </div>
-              <button className="submit" disabled={!fFrom || (form==="urlaub" && !fTo)} onClick={submitRequest}>
-                {editId ? t.save : t.send}
+              {(()=>{ const ff=(iso)=>iso?iso.split("-").reverse().join("."):"—"; return (
+                <div style={{display:"flex",gap:10,marginBottom:14}}>
+                  <div style={{flex:1}}>
+                    <label style={{fontSize:12,color:"var(--muted)",fontWeight:600}}>{t.dFrom}</label>
+                    <div style={{marginTop:5,padding:"12px",border:"1px solid var(--plus)",borderRadius:10,background:"var(--plus-soft)",textAlign:"center",fontWeight:700}}>{ff(fFrom)}</div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <label style={{fontSize:12,color:"var(--muted)",fontWeight:600}}>{t.dTo}{form==="krank"?` (${t.optional})`:""}</label>
+                    <div style={{marginTop:5,padding:"12px",border:"1px solid var(--plus)",borderRadius:10,background:"var(--plus-soft)",textAlign:"center",fontWeight:700}}>{ff(fTo||fFrom)}</div>
+                  </div>
+                </div>
+              ); })()}
+              {(()=>{
+                const base=new Date(now.getFullYear(),now.getMonth()+fMonthOff,1);
+                const yy=base.getFullYear(), mm=base.getMonth();
+                const dim=new Date(yy,mm+1,0).getDate(); const fd=(new Date(yy,mm,1).getDay()+6)%7;
+                const cells=[]; for(let i=0;i<fd;i++) cells.push(null);
+                for(let d=1;d<=dim;d++){ const date=new Date(yy,mm,d); const iso=isoOf(date);
+                  cells.push({ d, iso, st:shiftType(date,rot), cnt:leaveCounts[iso]||0,
+                    inRange: fFrom && (fTo? (iso>=fFrom&&iso<=fTo) : iso===fFrom), today: iso===isoOf(now) }); }
+                return (
+                  <div className="card" style={{marginTop:0}}>
+                    <div className="cal-hd">
+                      <button className="navbtn" onClick={()=>navFMonth(-1)}><ChevronLeft size={18}/></button>
+                      <div className="disp">{t.months[mm]} {yy}</div>
+                      <button className="navbtn" onClick={()=>navFMonth(1)}><ChevronRight size={18}/></button>
+                    </div>
+                    <div className="wk">{t.wk.map((w,i)=><span key={i}>{w}</span>)}</div>
+                    <div className="grid">
+                      {cells.map((c,i)=> c===null ? <div key={i} className="cell empty"/> :
+                        <div key={i} className={"cell"+(c.inRange?" pick":"")+(c.today?" today":"")} onClick={()=>selectDay(c.iso)}>
+                          {c.cnt>0 && <span className="abs-badge" style={{background:"var(--tag)"}}>{c.cnt}</span>}
+                          <span>{c.d}</span>
+                          <span className="dot" style={{background: c.st==="T"?"var(--tag)":c.st==="N"?"var(--nacht)":"var(--frei)"}}/>
+                        </div>
+                      )}
+                    </div>
+                    <div className="legend" style={{flexWrap:"wrap",gap:"8px 14px"}}>
+                      <span><i style={{background:"var(--tag)",borderRadius:"50%"}}/>{t.legTag}</span>
+                      <span><i style={{background:"var(--nacht)",borderRadius:"50%"}}/>{t.legNacht}</span>
+                      <span><i style={{background:"var(--frei)",borderRadius:"50%"}}/>{t.legFrei}</span>
+                      <span style={{display:"inline-flex",alignItems:"center",gap:6}}><span style={{minWidth:15,height:15,padding:"0 3px",borderRadius:8,background:"var(--tag)",color:"#fff",fontSize:9,fontWeight:700,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>1</span>{t.legLeave}</span>
+                    </div>
+                  </div>
+                );
+              })()}
+              {form==="urlaub" && fFrom && fTo && (()=>{
+                let total=0, shiftDays=0, tagN=0, nachtN=0, overlapDays=0, maxCnt=0;
+                const e=new Date(fTo+"T00:00:00");
+                for(let dt=new Date(fFrom+"T00:00:00"); dt<=e; dt.setDate(dt.getDate()+1)){ total++;
+                  const st=shiftType(dt,rot); if(st==="T"){shiftDays++;tagN++;} else if(st==="N"){shiftDays++;nachtN++;}
+                  const cnt=leaveCounts[isoOf(dt)]||0; if(cnt>0){ overlapDays++; if(cnt>maxCnt) maxCnt=cnt; } }
+                return (<>
+                  <div className="summary" style={{textAlign:"center",marginTop:14}}>{total} {t.daysWord} · {shiftDays} {shiftDays===1?t.shiftDayWord:t.shiftDaysWord} ({tagN} {t.legTag}, {nachtN} {t.legNacht})</div>
+                  {overlapDays>0 && <div className="preview-note" style={{background:"var(--tag-soft)",borderColor:"rgba(199,122,10,.25)",color:"var(--tag)",display:"flex",gap:8,alignItems:"flex-start",marginBottom:0}}><span>⚠️</span><span>{t.overlapNote(overlapDays,maxCnt)}</span></div>}
+                </>);
+              })()}
+              <button className="submit" style={{marginTop:14}} disabled={!fFrom || (form==="urlaub" && !fTo)} onClick={submitRequest}>
+                {editId ? t.save : (form==="urlaub" ? t.bindingRequest : t.send)}
               </button>
               {submitErr && <div className="login-note" style={{color:"var(--red)",marginTop:12}}>{submitErr}</div>}
             </div>

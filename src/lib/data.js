@@ -132,6 +132,12 @@ export async function companyOverview(date) {
   if (error) throw error
   return data
 }
+// Anzahl Team-Kollegen (ohne mich) mit genehmigtem Urlaub je Tag – nur Zahlen, keine Namen.
+export async function teamLeaveCounts(d1, d2) {
+  const { data, error } = await supabase.rpc('team_leave_counts', { d1, d2 })
+  if (error) throw error
+  return data
+}
 export async function sendMessage({ subject, body, team_id, betrieb_id, recipient_id = null, attachments = [] }) {
   const { data: u } = await supabase.auth.getUser()
   const { error } = await supabase.from('messages').insert({
