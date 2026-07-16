@@ -932,12 +932,17 @@ export default function App(){
     }catch(err){ setPsErr(err.message); }
     setPsBusy(false);
   }
+  // HR arbeitet firmenweit -> Mitarbeiterquelle für Lohnzettel ist das Firmen-Verzeichnis
+  // (company_directory), nicht die RLS-begrenzte emps-Liste (die zeigt HR ohne Betrieb nur die Leitung).
+  const psEmps = (role==="hr")
+    ? directory.filter(d=>d.profile_id).map(d=>({ id:d.profile_id, full_name:d.full_name, personalnummer:d.personalnummer, betrieb_name:d.betrieb_name, role:d.role }))
+    : emps;
   // Sammel-Upload: viele PDFs auf einmal, Zuordnung über die Personalnummer im Dateinamen.
   async function doBulkUpload(){
     if(!psPeriod || psBulkFiles.length===0) return;
     setPsBulkBusy(true); setPsBulkRes(null);
     // bekannte Personalnummern -> Profil-ID
-    const pnrMap = new Map(emps.filter(e=>e.personalnummer).map(e=>[String(e.personalnummer), e]));
+    const pnrMap = new Map(psEmps.filter(e=>e.personalnummer).map(e=>[String(e.personalnummer), e]));
     const done = []; const failed = [];
     for(const f of psBulkFiles){
       const groups = (f.name.match(/\d+/g) || []);
@@ -2897,7 +2902,7 @@ export default function App(){
                   <input value={empQuery} onChange={e=>setEmpQuery(e.target.value)} placeholder={t.searchEmp} style={{marginBottom:8}} />
                   <select className="lang-select" style={selStyle} value={psEmp} onChange={e=>{ setPsEmp(e.target.value); setPsOk(false); setPsErr(""); loadPsList(e.target.value); }}>
                     <option value="">—</option>
-                    {emps.filter(e=>empMatch(e,empQuery)).map(e=><option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}</option>)}
+                    {psEmps.filter(e=>empMatch(e,empQuery)).map(e=><option key={e.id} value={e.id}>{e.full_name}{e.personalnummer?` · ${e.personalnummer}`:""}{e.betrieb_name?` · ${e.betrieb_name}`:""}</option>)}
                   </select>
                 </div>
                 <div className="field"><label>{t.periodLabel}</label>

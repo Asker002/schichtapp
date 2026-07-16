@@ -270,11 +270,10 @@ create policy absence_decide on absence_requests for update using (
 -- Bewusst: Meister/Betriebsleiter sehen KEINE fremden Lohnzettel.
 create policy payslips_select_self on payslips for select
   using (profile_id = auth.uid());
-create policy payslips_personal on payslips for all using (
-  auth_role() = 'personal' and same_betrieb(profile_id)
-) with check (
-  auth_role() = 'personal' and same_betrieb(profile_id)
-);
+-- Personalabteilung verwaltet Lohnzettel firmenweit (zentrale HR über alle Betriebe).
+create policy payslips_personal on payslips for all
+  using (auth_role() = 'personal')
+  with check (auth_role() = 'personal');
 
 -- =====================================================================
 --  STORAGE-POLICIES  (Lohnzettel-PDFs)
