@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { hasSupabaseConfig } from "./lib/supabase";
 import { downloadAbsencePdf } from "./lib/absencePdf";
+import { GUIDE } from "./lib/guide";
 import { signIn, emailForPnr, signOut, getSession, getMyProfile, listRequests, createRequest, updateRequest, deleteRequest, decideRequest,
   listTeams, listEmployees, createEmployee, updateEmployee, removeFromTeam, changePassword, sendPasswordReset,
   listMessages, sendMessage, markMessageRead, uploadMessageFile, messageFileUrl, deleteMessage, myLeadership, leadershipContacts,
@@ -317,7 +318,7 @@ const I18N = {
     reqSummaryKrank:"Krankmeldung geht an deinen Schichtmeister. Die eAU kommt separat von der Krankenkasse.",
     legLeave:"Kollege im Urlaub", shiftDayWord:"Schichttag", shiftDaysWord:"Schichttage", bindingRequest:"Verbindlich beantragen",
     overlapNote:(d,k)=>`An ${d} ${d===1?"Tag":"Tagen"} deiner Auswahl ${k===1?"ist schon 1 Kollege":`sind schon ${k} Kollegen`} aus deinem Team im Urlaub – es könnte knapp mit der Besetzung werden.`,
-    sprache:"Sprache", settings:"Einstellungen", appearance:"Darstellung", light:"Hell", dark:"Dunkel", searchEmp:"Mitarbeiter suchen",
+    sprache:"Sprache", settings:"Einstellungen", appearance:"Darstellung", guideTitle:"Anleitung", guideSub:"Kurz erklärt: was du wo machst. Thema antippen zum Aufklappen.", light:"Hell", dark:"Dunkel", searchEmp:"Mitarbeiter suchen",
     cd:(d,h,m)=> d>0 ? `in ${d} Tg ${h} Std` : `in ${h} Std ${m} Min`,
     unitStd:"Std",
     roleMA:"Mitarbeiter", roleMeister:"Schichtmeister", roleVorarbeiter:"Vorarbeiter", roleGruppenfuehrer:"Gruppenführer", crewLabel:"Schicht",
@@ -384,7 +385,7 @@ const I18N = {
     reqSummaryKrank:"Hastalık bildirimi vardiya amirine gider. eAU ayrıca sigortadan gelir.",
     legLeave:"İzinde meslektaş", shiftDayWord:"vardiya günü", shiftDaysWord:"vardiya günü", bindingRequest:"Bağlayıcı talep et",
     overlapNote:(d,k)=>`Seçiminde ${d} gün ekibinden ${k} meslektaş zaten izinde – doluluk sıkışabilir.`,
-    sprache:"Dil", settings:"Ayarlar", appearance:"Görünüm", light:"Açık", dark:"Koyu", searchEmp:"Personel ara",
+    sprache:"Dil", settings:"Ayarlar", appearance:"Görünüm", guideTitle:"Kılavuz", guideSub:"Kısaca: neyi nerede yaparsın. Açmak için konuya dokun.", light:"Açık", dark:"Koyu", searchEmp:"Personel ara",
     cd:(d,h,m)=> d>0 ? `${d} gün ${h} sa sonra` : `${h} sa ${m} dk sonra`,
     unitStd:"sa",
     roleMA:"Çalışan", roleMeister:"Vardiya amiri", roleVorarbeiter:"Kısım başı", roleGruppenfuehrer:"Grup lideri", crewLabel:"Vardiya",
@@ -451,7 +452,7 @@ const I18N = {
     reqSummaryKrank:"Your sick note goes to your shift supervisor. The eAU arrives separately from your health insurer.",
     legLeave:"Colleague on leave", shiftDayWord:"shift day", shiftDaysWord:"shift days", bindingRequest:"Submit bindingly",
     overlapNote:(d,k)=>`On ${d} day${d===1?"":"s"} of your selection ${k===1?"1 colleague is":`${k} colleagues are`} already on leave – staffing could get tight.`,
-    sprache:"Language", settings:"Settings", appearance:"Appearance", light:"Light", dark:"Dark", searchEmp:"Search employee",
+    sprache:"Language", settings:"Settings", appearance:"Appearance", guideTitle:"Guide", guideSub:"In short: what to do where. Tap a topic to expand.", light:"Light", dark:"Dark", searchEmp:"Search employee",
     cd:(d,h,m)=> d>0 ? `in ${d}d ${h}h` : `in ${h}h ${m}min`,
     unitStd:"h",
     roleMA:"Employee", roleMeister:"Shift supervisor", roleVorarbeiter:"Foreman", roleGruppenfuehrer:"Group leader", crewLabel:"Crew",
@@ -518,7 +519,7 @@ const I18N = {
     reqSummaryKrank:"Больничный отправляется бригадиру. eAU приходит отдельно из больничной кассы.",
     legLeave:"Коллега в отпуске", shiftDayWord:"смен. день", shiftDaysWord:"смен. дней", bindingRequest:"Подать заявку",
     overlapNote:(d,k)=>`В ${d} дн. твоего выбора уже ${k===1?"1 коллега":`${k} коллег(и)`} в отпуске – с укомплектованностью может быть тесно.`,
-    sprache:"Язык", settings:"Настройки", appearance:"Оформление", light:"Светлая", dark:"Тёмная", searchEmp:"Поиск сотрудника",
+    sprache:"Язык", settings:"Настройки", appearance:"Оформление", guideTitle:"Инструкция", guideSub:"Кратко: что и где делать. Нажми тему, чтобы раскрыть.", light:"Светлая", dark:"Тёмная", searchEmp:"Поиск сотрудника",
     cd:(d,h,m)=> d>0 ? `через ${d} дн ${h} ч` : `через ${h} ч ${m} мин`,
     unitStd:"ч",
     roleMA:"Сотрудник", roleMeister:"Сменный мастер", roleVorarbeiter:"Старший рабочий", roleGruppenfuehrer:"Руководитель группы", crewLabel:"Смена",
@@ -585,7 +586,7 @@ const I18N = {
     reqSummaryKrank:"Zgłoszenie choroby trafia do mistrza zmiany. eAU przychodzi osobno z kasy chorych.",
     legLeave:"Kolega na urlopie", shiftDayWord:"dzień zmianowy", shiftDaysWord:"dni zmianowe", bindingRequest:"Złóż wiążąco",
     overlapNote:(d,k)=>`W ${d} dniach Twojego wyboru ${k===1?"1 kolega jest":`${k} kolegów jest`} już na urlopie – obsada może być napięta.`,
-    sprache:"Język", settings:"Ustawienia", appearance:"Wygląd", light:"Jasny", dark:"Ciemny", searchEmp:"Szukaj pracownika",
+    sprache:"Język", settings:"Ustawienia", appearance:"Wygląd", guideTitle:"Instrukcja", guideSub:"Krótko: co i gdzie zrobić. Dotknij temat, aby rozwinąć.", light:"Jasny", dark:"Ciemny", searchEmp:"Szukaj pracownika",
     cd:(d,h,m)=> d>0 ? `za ${d} dni ${h} godz` : `za ${h} godz ${m} min`,
     unitStd:"godz",
     roleMA:"Pracownik", roleMeister:"Mistrz zmiany", roleVorarbeiter:"Brygadzista", roleGruppenfuehrer:"Lider grupy", crewLabel:"Zmiana",
@@ -780,6 +781,8 @@ export default function App(){
   const [showLoginPw,setShowLoginPw] = useState(false);   // Passwort im Login sichtbar?
   const [theme,setTheme] = useState(()=>{ try{ return localStorage.getItem("theme")||"light"; }catch(e){ return "light"; } });
   const [showSettings,setShowSettings] = useState(false); // Einstellungen-Overlay
+  const [showGuide,setShowGuide] = useState(false);       // Anleitung-Overlay (je Rolle)
+  const [guideOpen,setGuideOpen] = useState(null);         // aufgeklapptes Anleitungs-Thema
   const [empQuery,setEmpQuery] = useState("");            // Suchfeld für Mitarbeiterlisten
   const [reminderOn,setReminderOn] = useState(false);   // Schicht-Erinnerung aktiv?
   const [lead,setLead] = useState("eve");               // Vorlauf: "eve" | "hours"
@@ -2008,10 +2011,54 @@ export default function App(){
               <ChevronRight size={16} color="var(--faint)"/>
             </div>
           )}
+          <div className="row" onClick={()=>{ setShowSettings(false); setShowGuide(true); setGuideOpen(0); }}>
+            <span className="row-l"><span className="row-ic"><FileText size={16}/></span>{t.guideTitle}</span>
+            <ChevronRight size={16} color="var(--faint)"/>
+          </div>
         </div>
       </div>
     </div>
   );
+  // Anleitung: jede Rolle sieht NUR die eigene Anleitung (ma/meister/bl/hr).
+  const guideSheet = showGuide && (()=>{
+    const topics = (GUIDE[lang] || GUIDE.de)[role] || (GUIDE.de)[role] || [];
+    return (
+      <div className="sheet">
+        <div className="sheet-hd">
+          <button className="navbtn" onClick={()=>setShowGuide(false)}><ChevronLeft size={18}/></button>
+          <span className="disp">{t.guideTitle}</span>
+        </div>
+        <div className="sheet-body">
+          <div style={{fontSize:12,color:"var(--muted)",marginBottom:14,lineHeight:1.5}}>{t.guideSub}</div>
+          {topics.map((tp,i)=>{
+            const open = guideOpen===i;
+            return (
+              <div className="card" key={i} style={{marginTop:0,marginBottom:10}}>
+                <div className="row" onClick={()=>setGuideOpen(open?null:i)}>
+                  <span className="row-l">
+                    <span className="row-ic" style={{background:"var(--accent)",color:"#fff",fontWeight:800,fontSize:13}}>{i+1}</span>
+                    <b>{tp.t}</b>
+                  </span>
+                  <ChevronRight size={16} color="var(--faint)" style={{transform:open?"rotate(90deg)":"none",transition:"transform .15s"}}/>
+                </div>
+                {open && (
+                  <div style={{marginTop:6,paddingLeft:4}}>
+                    {tp.s.map((step,j)=>(
+                      <div key={j} style={{display:"flex",gap:10,padding:"7px 0",alignItems:"flex-start",borderBottom:j<tp.s.length-1?"1px solid var(--line)":"none"}}>
+                        <span style={{flexShrink:0,width:22,height:22,borderRadius:"50%",background:"var(--surface2)",border:"1px solid var(--line)",color:"var(--muted)",fontSize:11,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",marginTop:1}}>{j+1}</span>
+                        <span style={{fontSize:13.5,lineHeight:1.5}}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          <div className="foot">PROTOTYP · U. Kebeli</div>
+        </div>
+      </div>
+    );
+  })();
   const settingsCard = (
     <div className="card" style={{marginTop:0}}>
       <div className="row" onClick={()=>setShowSettings(true)}>
@@ -3022,6 +3069,7 @@ export default function App(){
         {adminSheet}
         {pwSheet}
         {settingsSheet}
+        {guideSheet}
         {dirActionSheet}
         {postfachSheet}
 
