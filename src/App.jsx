@@ -1823,7 +1823,7 @@ export default function App(){
             {!dec && (
               <div style={{display:"flex",gap:8,marginTop:10}}>
                 <button className="mini-btn" onClick={()=>openEdit(r)}>{t.change}</button>
-                <button className="mini-btn danger" onClick={()=>withdrawRequest(r.id)}>{t.withdraw}</button>
+                {r.type==="urlaub" && <button className="mini-btn danger" onClick={()=>withdrawRequest(r.id)}>{t.withdraw}</button>}
               </div>
             )}
           </div>
