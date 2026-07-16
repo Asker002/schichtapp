@@ -1445,7 +1445,7 @@ export default function App(){
           duty: worksToday ? members.length-absent : 0, absent,
           open: dbRequests.filter(r=>r.teamId===tm.id && !decOf(r)).length };
       })
-    : crewsAll.map(c=>({ c, id:c, members:(TEAM[c]||[]).map(m=>({id:m.name,full_name:m.name})), worksToday:true,
+    : crewsAll.map(c=>({ c, id:c, members:(TEAM[c]||[]).map(m=>({id:m.name,full_name:m.name,role:"mitarbeiter"})), worksToday:true,
         duty:(TEAM[c]||[]).filter(m=>m.st==="duty").length, total:(TEAM[c]||[]).length,
         open:(REQUESTS[c]||[]).filter(r=>!decisions[r.id]).length, absent:(TEAM[c]||[]).filter(m=>m.st==="sick"||m.st==="vac").length,
       }));
@@ -2312,9 +2312,9 @@ export default function App(){
           <div className="hdr-top">
             <img src="/setylose-logo.svg" className="brand-logo" alt="SE Tylose" />
             {hasSupabaseConfig && (
-              <button className="navbtn" style={{position:"relative"}} onClick={openPostfach} aria-label={t.postfach}>
-                <Inbox size={18}/>
-                {unreadCount>0 && <span style={{position:"absolute",top:-5,right:-5,minWidth:16,height:16,padding:"0 4px",borderRadius:8,background:"var(--red)",color:"#fff",fontSize:10,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{unreadCount}</span>}
+              <button className="navbtn" style={{position:"relative",width:"auto",padding:"0 13px",gap:8,fontFamily:"inherit",fontSize:13,fontWeight:600,color:"var(--text)"}} onClick={openPostfach} aria-label={t.postfach}>
+                <Inbox size={18}/><span>{t.postfach}</span>
+                {unreadCount>0 && <span style={{position:"absolute",top:-6,left:24,minWidth:16,height:16,padding:"0 4px",borderRadius:8,background:"var(--red)",color:"#fff",fontSize:10,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{unreadCount}</span>}
               </button>
             )}
           </div>
@@ -2720,17 +2720,16 @@ export default function App(){
                 const mem = cs.members.filter(m=>m.role==="mitarbeiter").sort((a,b)=>(a.full_name||"").localeCompare(b.full_name||""));
                 return (
                   <div className="card">
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginBottom:4}}>
-                      <div className="eyebrow" style={{margin:0}}>{t.crewLabel} {cs.c} · {t.einteilung}</div>
-                      <input type="date" value={assignDate} onChange={e=>loadAssignments(e.target.value)}
-                        style={{background:"var(--surface)",border:"1px solid var(--line)",color:"var(--text)",borderRadius:8,padding:"6px 8px",fontSize:12,fontFamily:"inherit"}} />
-                    </div>
+                    <div className="eyebrow" style={{marginBottom:8}}>{t.crewLabel} {cs.c} · {mem.length} {t.empLbl}</div>
                     {mem.length===0
                       ? <div style={{color:"var(--faint)",fontSize:14,marginTop:8}}>{t.noEmp}</div>
                       : mem.map(m=>(
                           <div className="row" key={m.id} style={{cursor:"default"}}>
                             <span className="row-l"><span className="row-ic"><Users size={15}/></span>{m.full_name}</span>
-                            <span className="tg" style={{color:assignments[m.id]?"var(--nacht)":"var(--faint)",fontWeight:600}}>{assignments[m.id]||t.notAssigned}</span>
+                            <span style={{display:"inline-flex",gap:6}}>
+                              <button className="mini-btn" title={t.absenceSlip} onClick={()=>downloadEmpAbsencePdf(m)} style={{display:"inline-flex",alignItems:"center",padding:"7px 9px"}}><Download size={15}/></button>
+                              <button className="mini-btn" title={t.writeMsg} onClick={()=>{ setShowPostfach(true); setComposing(true); setPostErr(""); setMSubject(""); setMBody(""); setMScope("person"); setMRecipient(m.id); setMFiles([]); setEmpQuery(""); }} style={{display:"inline-flex",alignItems:"center",padding:"7px 9px"}}><Inbox size={15}/></button>
+                            </span>
                           </div>
                         ))}
                   </div>
