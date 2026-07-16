@@ -2534,9 +2534,11 @@ export default function App(){
             for(let i=0;i<firstDow;i++) acells.push(null);
             for(let d=1; d<=daysIn; d++){
               const date = new Date(yr,mo,d);
-              // Pro PERSON nur einmal zählen (mehrere Anträge einer Person nicht doppelt).
+              // Pro PERSON nur einmal zählen; bei Urlaub UND Krank am selben Tag zählt KRANK.
               const seen = new Set();
-              const who = absC.filter(a=>absCoversDay(a,date)).filter(a=>{ const k=a.profileId||a.name; if(seen.has(k)) return false; seen.add(k); return true; });
+              const who = absC.filter(a=>absCoversDay(a,date))
+                .sort((a,b)=>(a.type==="krank"?0:1)-(b.type==="krank"?0:1))
+                .filter(a=>{ const k=a.profileId||a.name; if(seen.has(k)) return false; seen.add(k); return true; });
               acells.push({ d, date, who, shift: shiftType(date, rot), today: date.toDateString()===now.toDateString() });
             }
             const selAbs = sel!==null ? acells.find(c=>c&&c.d===sel) : acells.find(c=>c&&c.today);
