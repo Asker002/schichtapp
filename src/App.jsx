@@ -2736,8 +2736,10 @@ export default function App(){
                 const cs = crewStats.find(x=>x.id===selCrew); if(!cs) return null;
                 const byName = (a,b)=>(a.full_name||"").localeCompare(b.full_name||"");
                 const LEAD_ROLES = ["schichtmeister","vorarbeiter","gruppenfuehrer"];
-                // Schichtführung zuerst (mit Rollenkennzeichnung), danach die Mitarbeiter.
-                const leads = cs.members.filter(m=>LEAD_ROLES.includes(m.role)).sort(byName);
+                // Schichtführung zuerst nach Rang (Schichtmeister → Vorarbeiter → Gruppenführer),
+                // danach die Mitarbeiter.
+                const leadRank = m => LEAD_ROLES.indexOf(m.role);
+                const leads = cs.members.filter(m=>LEAD_ROLES.includes(m.role)).sort((a,b)=>leadRank(a)-leadRank(b) || byName(a,b));
                 const mem = [...leads, ...cs.members.filter(m=>m.role==="mitarbeiter").sort(byName)];
                 const staff = cs.members.filter(m=>m.role==="mitarbeiter").length;
                 return (
@@ -2959,7 +2961,9 @@ export default function App(){
                   const open = openBetrieb===b.id;
                   const bl  = b.people.filter(p=>p.role==="betriebsleiter");
                   const asi = b.people.filter(p=>p.role==="assistent");
-                  const fue = b.people.filter(p=>["schichtmeister","vorarbeiter","gruppenfuehrer"].includes(p.role));
+                  const FUE_ORDER = ["schichtmeister","vorarbeiter","gruppenfuehrer"];
+                  const fue = b.people.filter(p=>FUE_ORDER.includes(p.role))
+                    .sort((a,b)=>FUE_ORDER.indexOf(a.role)-FUE_ORDER.indexOf(b.role) || (a.full_name||"").localeCompare(b.full_name||""));
                   const shifts = [];
                   b.people.filter(p=>p.role==="mitarbeiter").forEach(p=>{
                     const key=p.team_name||t.noTeamCat; let s=shifts.find(x=>x.name===key);
