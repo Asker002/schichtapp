@@ -36,14 +36,24 @@ returns table (
   personalnummer text
 )
 language sql stable security definer set search_path = public as $$
-  select b.id, b.name, p.id, p.full_name, p.role::text, t.name, p.personalnummer
-  from betriebe b
-  left join profiles p on p.betrieb_id = b.id and p.active
-  left join teams t on t.id = p.team_id
-  where auth_role() = 'personal'
+  select * from (
+    select b.id as betrieb_id, b.name as betrieb_name, p.id as profile_id, p.full_name,
+           p.role::text as role, t.name as team_name, p.personalnummer
+    from betriebe b
+    left join profiles p on p.betrieb_id = b.id and p.active
+    left join teams t on t.id = p.team_id
+    where auth_role() = 'personal'
+    union all
+    -- firmenweite Profile OHNE Betrieb (z.B. Personalabteilung), damit sie
+    -- im Verzeichnis / in der HR-Liste sichtbar sind.
+    select null::uuid, null::text, p.id, p.full_name, p.role::text, null::text, p.personalnummer
+    from profiles p
+    where auth_role() = 'personal' and p.active and p.betrieb_id is null
+  ) d
   order by
-    b.name,
-    case p.role::text
+    (d.betrieb_name is null),   -- Betriebe zuerst, firmenweit zuletzt
+    d.betrieb_name,
+    case d.role
       when 'betriebsleiter'  then 1
       when 'assistent'       then 2
       when 'schichtmeister'  then 3
@@ -52,8 +62,8 @@ language sql stable security definer set search_path = public as $$
       when 'personal'        then 4
       else 5
     end,
-    coalesce(t.name, ''),
-    p.full_name;
+    coalesce(d.team_name, ''),
+    d.full_name;
 $$;
 
 grant execute on function company_directory() to authenticated;

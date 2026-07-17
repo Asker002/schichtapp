@@ -344,7 +344,7 @@ const I18N = {
     stApproved:"Genehmigt", stPending:"Offen", stActive:"Krank",
     blTabs:["Übersicht","Abwesend","Anträge","Einteilung","Mehr"], blTitle:"GLUTOLIN Betrieb · Alle Schichten",
     plantDutyLbl:"Im Dienst", plantOpenLbl:"Offene Anträge",
-    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", reallyWithdraw:"Wirklich zurückziehen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
+    hrTabs:["Lohnlauf","Betriebe","Anträge","Mehr"], roleAssistent:"Betriebsassistent", catFuehrung:"Schichtführung", catBelegschaft:"Belegschaft", noBetriebEmp:"Noch keine Zuordnung", newLeitung:"Leitung anlegen", hrTeam:"HR-Team", hrOverview:"Anträge & Abwesenheiten", presenceToday:"Heute", writeMsg:"Nachricht schreiben", sendPayslip:"Lohnzettel senden", absenceSlip:"Abwesenheitsnachweis (PDF)", reallyRemove:"Wirklich entfernen?", reallyWithdraw:"Wirklich zurückziehen?", yes:"Ja", no:"Nein", betriebLbl:"Betrieb", noBetrieb:"Kein Betrieb", leitungHint:"Betriebsleiter und Betriebsassistent haben dieselben Rechte.",
     payrollTitle:"Lohnlauf", payrollStatus:"In Prüfung", payrollDone:"geprüft",
     empLbl:"Mitarbeiter", timeTitle:"Zeitkorrekturen", hrEmpTitle:"Belegschaft", exportDatev:"Export an DATEV",
     tiMissOut:"Ausstempeln fehlt", tiMissIn:"Einstempeln fehlt", tiBreak:"Pause unplausibel",
@@ -411,7 +411,7 @@ const I18N = {
     stApproved:"Onaylı", stPending:"Bekliyor", stActive:"Hasta",
     blTabs:["Genel","Devamsız","Talepler","Yerleşim","Diğer"], blTitle:"GLUTOLIN Betrieb · Tüm vardiyalar",
     plantDutyLbl:"Görevde", plantOpenLbl:"Bekleyen talep",
-    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", reallyWithdraw:"Gerçekten geri çek?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
+    hrTabs:["Bordro","İşletmeler","Talepler","Diğer"], roleAssistent:"İşletme asistanı", catFuehrung:"Vardiya yönetimi", catBelegschaft:"Çalışanlar", noBetriebEmp:"Henüz atama yok", newLeitung:"Yönetim ekle", hrTeam:"İK ekibi", hrOverview:"Talepler & Devamsızlık", presenceToday:"Bugün", writeMsg:"Mesaj yaz", sendPayslip:"Bordro gönder", absenceSlip:"Devamsızlık belgesi (PDF)", reallyRemove:"Gerçekten kaldır?", reallyWithdraw:"Gerçekten geri çek?", yes:"Evet", no:"Hayır", betriebLbl:"İşletme", noBetrieb:"İşletme yok", leitungHint:"Betriebsleiter ve Asistan aynı haklara sahiptir.",
     payrollTitle:"Bordro dönemi", payrollStatus:"İncelemede", payrollDone:"incelendi",
     empLbl:"çalışan", timeTitle:"Zaman düzeltmeleri", hrEmpTitle:"Kadro", exportDatev:"DATEV'e aktar",
     tiMissOut:"Çıkış eksik", tiMissIn:"Giriş eksik", tiBreak:"Mola tutarsız",
@@ -478,7 +478,7 @@ const I18N = {
     stApproved:"Approved", stPending:"Pending", stActive:"Sick",
     blTabs:["Overview","Absences","Requests","Assignment","More"], blTitle:"GLUTOLIN Betrieb · All crews",
     plantDutyLbl:"On duty", plantOpenLbl:"Open requests",
-    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", reallyWithdraw:"Really withdraw?", yes:"Yes", no:"No", betriebLbl:"Plant", leitungHint:"Plant manager and assistant have the same rights.",
+    hrTabs:["Payroll","Plants","Requests","More"], roleAssistent:"Plant assistant", catFuehrung:"Shift leads", catBelegschaft:"Workforce", noBetriebEmp:"No one assigned yet", newLeitung:"Add management", hrTeam:"HR team", hrOverview:"Requests & absences", presenceToday:"Today", writeMsg:"Write message", sendPayslip:"Send payslip", absenceSlip:"Absence record (PDF)", reallyRemove:"Really remove?", reallyWithdraw:"Really withdraw?", yes:"Yes", no:"No", betriebLbl:"Plant", noBetrieb:"No plant", leitungHint:"Plant manager and assistant have the same rights.",
     payrollTitle:"Payroll run", payrollStatus:"In review", payrollDone:"reviewed",
     empLbl:"employees", timeTitle:"Time corrections", hrEmpTitle:"Workforce", exportDatev:"Export to DATEV",
     tiMissOut:"Missing clock-out", tiMissIn:"Missing clock-in", tiBreak:"Break implausible",
@@ -545,7 +545,7 @@ const I18N = {
     stApproved:"Одобрено", stPending:"Ожидает", stActive:"Болеет",
     blTabs:["Обзор","Отсутствия","Заявки","Расстановка","Ещё"], blTitle:"GLUTOLIN Betrieb · Все смены",
     plantDutyLbl:"На смене", plantOpenLbl:"Открытые заявки",
-    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", reallyWithdraw:"Точно отозвать?", yes:"Да", no:"Нет", betriebLbl:"Завод", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
+    hrTabs:["Зарплата","Заводы","Заявки","Ещё"], roleAssistent:"Ассистент предприятия", catFuehrung:"Руководство смены", catBelegschaft:"Работники", noBetriebEmp:"Пока никто не назначен", newLeitung:"Добавить руководство", hrTeam:"Отдел кадров", hrOverview:"Заявки и отсутствия", presenceToday:"Сегодня", writeMsg:"Написать сообщение", sendPayslip:"Отправить расчётный лист", absenceSlip:"Справка об отсутствии (PDF)", reallyRemove:"Точно удалить?", reallyWithdraw:"Точно отозвать?", yes:"Да", no:"Нет", betriebLbl:"Завод", noBetrieb:"Без завода", leitungHint:"Руководитель и ассистент имеют одинаковые права.",
     payrollTitle:"Расчёт зарплаты", payrollStatus:"На проверке", payrollDone:"проверено",
     empLbl:"сотрудников", timeTitle:"Корректировки времени", hrEmpTitle:"Персонал", exportDatev:"Экспорт в DATEV",
     tiMissOut:"Нет отметки об уходе", tiMissIn:"Нет отметки о приходе", tiBreak:"Перерыв неправдоподобен",
@@ -612,7 +612,7 @@ const I18N = {
     stApproved:"Zatwierdzono", stPending:"Oczekuje", stActive:"Chory",
     blTabs:["Przegląd","Nieobecni","Wnioski","Przydział","Więcej"], blTitle:"GLUTOLIN Betrieb · Wszystkie zmiany",
     plantDutyLbl:"Na służbie", plantOpenLbl:"Otwarte wnioski",
-    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", reallyWithdraw:"Na pewno wycofać?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", leitungHint:"Kierownik i asystent mają te same prawa.",
+    hrTabs:["Płace","Zakłady","Wnioski","Więcej"], roleAssistent:"Asystent zakładu", catFuehrung:"Kierownictwo zmiany", catBelegschaft:"Załoga", noBetriebEmp:"Brak przypisania", newLeitung:"Dodaj kierownictwo", hrTeam:"Zespół HR", hrOverview:"Wnioski i nieobecności", presenceToday:"Dziś", writeMsg:"Napisz wiadomość", sendPayslip:"Wyślij pasek", absenceSlip:"Zaświadczenie o nieobecności (PDF)", reallyRemove:"Na pewno usunąć?", reallyWithdraw:"Na pewno wycofać?", yes:"Tak", no:"Nie", betriebLbl:"Zakład", noBetrieb:"Bez zakładu", leitungHint:"Kierownik i asystent mają te same prawa.",
     payrollTitle:"Naliczanie płac", payrollStatus:"W weryfikacji", payrollDone:"zweryfikowano",
     empLbl:"pracowników", timeTitle:"Korekty czasu", hrEmpTitle:"Załoga", exportDatev:"Eksport do DATEV",
     tiMissOut:"Brak wylogowania", tiMissIn:"Brak zalogowania", tiBreak:"Przerwa niewiarygodna",
@@ -1106,8 +1106,8 @@ export default function App(){
       await createEmployee({
         email:aEmail.trim(), password:aPw, full_name:aName.trim(), personalnummer:aPnr.trim(),
         team_id: isHRmode ? null : (role==="bl" ? aTeam : dbProfile?.team?.id),
-        role: adminScope==="hrteam" ? "personal" : (adminScope==="leitung" ? aRole : (role==="bl" ? aRole : "mitarbeiter")),
-        betrieb_id: isHRmode ? aBetrieb : dbProfile?.betrieb_id,
+        role: isHRmode ? aRole : (role==="bl" ? aRole : "mitarbeiter"),
+        betrieb_id: isHRmode ? (aBetrieb || null) : dbProfile?.betrieb_id,
       });
       setAName(""); setAEmail(""); setAPw(""); setAPnr(""); setAdminOk(true);
       if(isHRmode){ try{ setDirectory(await companyDirectory()); }catch(e){} }
@@ -1537,6 +1537,8 @@ export default function App(){
   const ROLE_OPTS = [["mitarbeiter",t.roleMA],["assistent",t.roleAssistent],["schichtmeister",t.roleMeister],["vorarbeiter",t.roleVorarbeiter],["gruppenfuehrer",t.roleGruppenfuehrer],["betriebsleiter",t.roleBL],["personal",t.roleHR]];
   // HR legt nur Leitung an: Betriebsleiter + Assistent (gleiche Rechte).
   const ROLE_OPTS_LEIT = [["betriebsleiter",t.roleBL],["assistent",t.roleAssistent]];
+  // HR darf Betriebsleitung, Assistent UND Personalabteilung anlegen.
+  const ROLE_OPTS_HR = [["betriebsleiter",t.roleBL],["assistent",t.roleAssistent],["personal",t.roleHR]];
   // Mitarbeiter-Suche (Name oder Personalnummer).
   const empMatch = (e,q)=>{ const s=(q||"").trim().toLowerCase(); if(!s) return true;
     return (e.full_name||"").toLowerCase().includes(s) || String(e.personalnummer||"").toLowerCase().includes(s); };
@@ -1544,13 +1546,13 @@ export default function App(){
   const BL_MANAGED = ["mitarbeiter","schichtmeister","vorarbeiter","gruppenfuehrer"];
   const ROLE_OPTS_BL = ROLE_OPTS.filter(([v])=>BL_MANAGED.includes(v));
   // Betriebe-Liste (für HR) aus dem Firmen-Verzeichnis ableiten.
-  const betriebeOpts = [...new Map(directory.map(r=>[r.betrieb_id, r.betrieb_name])).entries()].map(([id,name])=>({id,name}));
+  const betriebeOpts = [...new Map(directory.filter(r=>r.betrieb_id).map(r=>[r.betrieb_id, r.betrieb_name])).entries()].map(([id,name])=>({id,name}));
   const adminIsBL = role==="bl";
   const adminIsHR = role==="hr";
   const scopeLeitung = adminScope==="leitung";  // HR legt Betriebsleitung/Assistent an
   const scopeHRteam  = adminScope==="hrteam";   // HR legt HR-Kollegen (Personalabteilung) an
-  // HR-Liste (Leitung bzw. Personalabteilung) aus dem Firmen-Verzeichnis.
-  const hrList = directory.filter(r=>r.profile_id && (scopeHRteam ? r.role==="personal" : ["betriebsleiter","assistent"].includes(r.role)));
+  // HR verwaltet Betriebsleitung + Assistent + Personalabteilung – alle aus dem Firmen-Verzeichnis.
+  const hrList = directory.filter(r=>r.profile_id && ["betriebsleiter","assistent","personal"].includes(r.role));
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
   // Monat robust wählen (Jahr + Monat als Auswahllisten) -> immer "YYYY-MM",
   // unabhängig davon, ob der Browser <input type="month"> unterstützt.
@@ -1689,30 +1691,21 @@ export default function App(){
           )}
           {adminIsHR && (
             <>
+              <div className="field"><label>{t.roleLbl}</label>
+                <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
+                  {ROLE_OPTS_HR.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                </select>
+              </div>
               <div className="field"><label>{t.betriebLbl}</label>
                 <select className="lang-select" style={selStyle} value={aBetrieb} onChange={e=>setABetrieb(e.target.value)}>
-                  {betriebeOpts.length===0 && <option value={dbProfile?.betrieb_id||""}>—</option>}
+                  <option value="">{t.noBetrieb}</option>
                   {betriebeOpts.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}
                 </select>
               </div>
-              {scopeLeitung && (
-                <>
-                  <div className="field"><label>{t.roleLbl}</label>
-                    <select className="lang-select" style={selStyle} value={aRole} onChange={e=>setARole(e.target.value)}>
-                      {ROLE_OPTS_LEIT.map(([v,l])=><option key={v} value={v}>{l}</option>)}
-                    </select>
-                  </div>
-                  <div style={{fontSize:11,color:"var(--faint)",marginBottom:12,lineHeight:1.5}}>{t.leitungHint}</div>
-                </>
-              )}
-              {scopeHRteam && (
-                <div className="field"><label>{t.roleLbl}</label>
-                  <span className="tg mut" style={{alignSelf:"flex-start"}}>{t.roleHR}</span>
-                </div>
-              )}
+              <div style={{fontSize:11,color:"var(--faint)",marginBottom:12,lineHeight:1.5}}>{t.leitungHint}</div>
             </>
           )}
-          <button className="submit" disabled={aBusy || !aName || !aEmail || !aPw || (adminIsHR && !aBetrieb)} onClick={doCreateEmployee}>{aBusy?"…":t.createBtn}</button>
+          <button className="submit" disabled={aBusy || !aName || !aEmail || !aPw} onClick={doCreateEmployee}>{aBusy?"…":t.createBtn}</button>
           {adminOk && <div className="login-note" style={{color:"var(--plus)",marginTop:10}}>{t.empCreated}</div>}
           {adminErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{adminErr}</div>}
           <div className="login-note" style={{marginTop:12}}>{t.adminHint}</div>
@@ -2979,6 +2972,7 @@ export default function App(){
             // Verzeichnis nach Betrieb gruppieren (DB liefert bereits nach Hierarchie sortiert).
             const byB = [];
             directory.forEach(r=>{
+              if(!r.betrieb_id) return; // firmenweite Profile (ohne Betrieb) gehören in keine Betriebs-Gruppe
               let g = byB.find(x=>x.id===r.betrieb_id);
               if(!g){ g={id:r.betrieb_id, name:r.betrieb_name, people:[]}; byB.push(g); }
               if(r.profile_id) g.people.push(r);
