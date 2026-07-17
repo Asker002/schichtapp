@@ -1448,7 +1448,7 @@ export default function App(){
         const absent = members.filter(m=>absentTodayIds.has(m.id)).length;
         return { c: tm.name.trim().slice(-1).toUpperCase(), id: tm.id, members, worksToday, total: members.length,
           duty: worksToday ? members.length-absent : 0, absent,
-          open: dbRequests.filter(r=>r.teamId===tm.id && !decOf(r)).length };
+          open: dbRequests.filter(r=>r.teamId===tm.id && r.reqRole==="schichtmeister" && !decOf(r)).length };
       })
     : crewsAll.map(c=>({ c, id:c, members:(TEAM[c]||[]).map(m=>({id:m.name,full_name:m.name,role:"mitarbeiter"})), worksToday:true,
         duty:(TEAM[c]||[]).filter(m=>m.st==="duty").length, total:(TEAM[c]||[]).length,
