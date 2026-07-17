@@ -2747,7 +2747,7 @@ export default function App(){
                       <span className="row-ic">{cs.c}</span>
                       <div>
                         <div style={{fontWeight:600}}>{t.crewLabel} {cs.c}</div>
-                        <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{cs.duty}/{cs.total} {t.statusDuty}{cs.absent>0?` · ${cs.absent} ${t.stActive}`:""}</div>
+                        <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{cs.duty}/{cs.total} {t.statusDuty}{cs.absent>0?` · ${cs.absent} ${t.absentLbl}`:""}</div>
                       </div>
                     </div>
                     <span style={{display:"flex",alignItems:"center",gap:8}}>
