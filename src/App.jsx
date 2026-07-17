@@ -2898,13 +2898,26 @@ export default function App(){
                 <div className="field"><label>{t.periodLabel}</label>
                   {monthPicker(()=>setPsBulkRes(null))}
                 </div>
-                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:12}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:psBulkFiles.length?8:12}}>
                   <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",maxWidth:"100%"}}>
-                    <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psBulkFiles.length ? `${psBulkFiles.length} ${t.empLbl}` : t.pickPdfs}</span>
-                    <input type="file" accept="application/pdf,.pdf" multiple onChange={e=>{ setPsBulkFiles(Array.from(e.target.files||[])); setPsBulkRes(null); e.target.value=""; }} style={{display:"none"}} />
+                    <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.pickPdfs}</span>
+                    <input type="file" accept="application/pdf,.pdf" multiple onChange={e=>{ const add=Array.from(e.target.files||[]); setPsBulkFiles(prev=>{ const seen=new Set(prev.map(f=>f.name+f.size)); return [...prev, ...add.filter(f=>!seen.has(f.name+f.size))]; }); setPsBulkRes(null); e.target.value=""; }} style={{display:"none"}} />
                   </label>
-                  {psBulkFiles.length>0 && <button type="button" className="mini-btn" title={t.remove} aria-label={t.remove} onClick={()=>{ setPsBulkFiles([]); setPsBulkRes(null); }} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",padding:"7px 10px",fontWeight:700,lineHeight:1}}>✕</button>}
+                  {psBulkFiles.length>0 && <span style={{fontSize:12,color:"var(--muted)",fontWeight:600}}>{psBulkFiles.length} {t.empLbl}</span>}
+                  {psBulkFiles.length>0 && <button type="button" className="mini-btn" onClick={()=>{ setPsBulkFiles([]); setPsBulkRes(null); }} style={{fontSize:12,padding:"6px 10px"}}>{t.remove} · alle</button>}
                 </div>
+                {psBulkFiles.length>0 && (
+                  <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+                    {psBulkFiles.map((f,i)=>(
+                      <div key={f.name+f.size+i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,background:"var(--surface)",border:"1px solid var(--line)",borderRadius:9,padding:"7px 10px"}}>
+                        <span style={{display:"inline-flex",alignItems:"center",gap:7,overflow:"hidden"}}>
+                          <FileText size={13} color="var(--faint)"/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontSize:12.5}}>{f.name}</span>
+                        </span>
+                        <button type="button" className="mini-btn" title={t.remove} aria-label={t.remove} onClick={()=>{ setPsBulkFiles(prev=>prev.filter((_,j)=>j!==i)); setPsBulkRes(null); }} style={{flex:"0 0 auto",padding:"4px 9px",fontWeight:700,lineHeight:1}}>✕</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <button className="submit" disabled={psBulkBusy || !psPeriod || psBulkFiles.length===0} onClick={doBulkUpload}>{psBulkBusy?"…":t.bulkBtn}</button>
                 {psBulkRes && (
                   <div style={{marginTop:12,fontSize:13}}>
