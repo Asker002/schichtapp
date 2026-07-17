@@ -2878,10 +2878,13 @@ export default function App(){
                 <div className="field"><label>{t.periodLabel}</label>
                   <input type="month" value={psPeriod} onChange={e=>{ setPsPeriod(e.target.value); setPsBulkRes(null); }} />
                 </div>
-                <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:12,maxWidth:"100%"}}>
-                  <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psBulkFiles.length ? `${psBulkFiles.length} ${t.empLbl}` : t.pickPdfs}</span>
-                  <input type="file" accept="application/pdf,.pdf" multiple onChange={e=>{ setPsBulkFiles(Array.from(e.target.files||[])); setPsBulkRes(null); e.target.value=""; }} style={{display:"none"}} />
-                </label>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:12}}>
+                  <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",maxWidth:"100%"}}>
+                    <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psBulkFiles.length ? `${psBulkFiles.length} ${t.empLbl}` : t.pickPdfs}</span>
+                    <input type="file" accept="application/pdf,.pdf" multiple onChange={e=>{ setPsBulkFiles(Array.from(e.target.files||[])); setPsBulkRes(null); e.target.value=""; }} style={{display:"none"}} />
+                  </label>
+                  {psBulkFiles.length>0 && <button type="button" className="mini-btn" title={t.remove} aria-label={t.remove} onClick={()=>{ setPsBulkFiles([]); setPsBulkRes(null); }} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",padding:"7px 10px",fontWeight:700,lineHeight:1}}>✕</button>}
+                </div>
                 <button className="submit" disabled={psBulkBusy || !psPeriod || psBulkFiles.length===0} onClick={doBulkUpload}>{psBulkBusy?"…":t.bulkBtn}</button>
                 {psBulkRes && (
                   <div style={{marginTop:12,fontSize:13}}>
@@ -2908,10 +2911,13 @@ export default function App(){
                 <div className="field"><label>{t.periodLabel}</label>
                   <input type="month" value={psPeriod} onChange={e=>setPsPeriod(e.target.value)} />
                 </div>
-                <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",marginBottom:12,maxWidth:"100%"}}>
-                  <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psFile ? psFile.name : t.pickPdf}</span>
-                  <input type="file" accept="application/pdf,.pdf" onChange={e=>{ setPsFile(e.target.files?.[0]||null); e.target.value=""; }} style={{display:"none"}} />
-                </label>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:12}}>
+                  <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",maxWidth:"100%"}}>
+                    <FileText size={14}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{psFile ? psFile.name : t.pickPdf}</span>
+                    <input type="file" accept="application/pdf,.pdf" onChange={e=>{ setPsFile(e.target.files?.[0]||null); setPsOk(false); setPsErr(""); e.target.value=""; }} style={{display:"none"}} />
+                  </label>
+                  {psFile && <button type="button" className="mini-btn" title={t.remove} aria-label={t.remove} onClick={()=>{ setPsFile(null); setPsOk(false); setPsErr(""); }} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",padding:"7px 10px",fontWeight:700,lineHeight:1}}>✕</button>}
+                </div>
                 <button className="submit" disabled={psBusy || !psEmp || !psPeriod || !psFile} onClick={doUploadPayslip}>{psBusy?"…":t.uploadBtn}</button>
                 {psOk && <div className="login-note" style={{color:"var(--plus)",marginTop:10}}>{t.uploadOk}</div>}
                 {psErr && <div className="login-note" style={{color:"var(--red)",marginTop:10}}>{psErr}</div>}
