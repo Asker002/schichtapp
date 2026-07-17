@@ -1552,6 +1552,26 @@ export default function App(){
   // HR-Liste (Leitung bzw. Personalabteilung) aus dem Firmen-Verzeichnis.
   const hrList = directory.filter(r=>r.profile_id && (scopeHRteam ? r.role==="personal" : ["betriebsleiter","assistent"].includes(r.role)));
   const selStyle = {width:"100%",padding:"12px",backgroundPosition:"right 12px center"};
+  // Monat robust wählen (Jahr + Monat als Auswahllisten) -> immer "YYYY-MM",
+  // unabhängig davon, ob der Browser <input type="month"> unterstützt.
+  const monthPicker = (after)=>{
+    const curY = new Date().getFullYear();
+    const valid = /^\d{4}-\d{2}$/.test(psPeriod);
+    const py = valid ? psPeriod.slice(0,4) : String(curY);
+    const pm = valid ? psPeriod.slice(5,7) : "";
+    const build = (y,m)=>{ setPsPeriod(m ? `${y}-${m}` : ""); if(after) after(); };
+    return (
+      <div style={{display:"flex",gap:8}}>
+        <select className="lang-select" style={{...selStyle,flex:"0 0 96px"}} value={py} onChange={e=>build(e.target.value, pm)}>
+          {[curY-1,curY,curY+1].map(y=><option key={y} value={String(y)}>{y}</option>)}
+        </select>
+        <select className="lang-select" style={selStyle} value={pm} onChange={e=>build(py, e.target.value)}>
+          <option value="">—</option>
+          {t.months.map((nm,i)=>{ const m=String(i+1).padStart(2,"0"); return <option key={m} value={m}>{nm}</option>; })}
+        </select>
+      </div>
+    );
+  };
   // Belegschaft nach Schichten gruppieren (nur Mitarbeiter + Schichtführung; Leitung/HR erscheinen hier nicht).
   const empGroups = (()=>{
     const mEmps = emps.filter(e=>BL_MANAGED.includes(e.role));
@@ -2876,7 +2896,7 @@ export default function App(){
               <div className="card" style={{marginTop:0}}>
                 <div style={{fontSize:12,color:"var(--muted)",lineHeight:1.5,marginBottom:12}}>{t.bulkHint}</div>
                 <div className="field"><label>{t.periodLabel}</label>
-                  <input type="month" value={psPeriod} onChange={e=>{ setPsPeriod(e.target.value); setPsBulkRes(null); }} />
+                  {monthPicker(()=>setPsBulkRes(null))}
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:12}}>
                   <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",maxWidth:"100%"}}>
@@ -2909,7 +2929,7 @@ export default function App(){
                   </select>
                 </div>
                 <div className="field"><label>{t.periodLabel}</label>
-                  <input type="month" value={psPeriod} onChange={e=>setPsPeriod(e.target.value)} />
+                  {monthPicker()}
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:12}}>
                   <label className="mini-btn" style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",maxWidth:"100%"}}>
