@@ -2817,8 +2817,8 @@ export default function App(){
             <>
               <div className="eyebrow">{t.approvalsTitle}</div>
               <div className="card" style={{marginTop:0}}>
-                {allRequests.filter(r=>!decOf(r)).length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.allClear}</div>}
-                {allRequests.filter(r=>!decOf(r)).map(r=>{
+                {allRequests.filter(r=>r.reqRole==="schichtmeister" && !decOf(r)).length===0 && <div style={{color:"var(--faint)",fontSize:14}}>{t.allClear}</div>}
+                {allRequests.filter(r=>r.reqRole==="schichtmeister" && !decOf(r)).map(r=>{
                   const dec = decOf(r);
                   const label = !dec ? t.stPending : dec==="approved"?t.approved : dec==="rejected"?t.rejected : t.acked;
                   const cls = !dec ? "s" : dec==="rejected"?"h":"g";
